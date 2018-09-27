@@ -1,0 +1,15 @@
+/*
+ * STROAM Website CSS file
+ */
+
+.navbar-brand {
+    transform: translateX(-50%);
+    left: 50%;
+    position: absolute;
+}
+
+.navbar-brand>img {
+    height: 50px;
+    width: auto;
+    padding: 7px 14px;
+}
