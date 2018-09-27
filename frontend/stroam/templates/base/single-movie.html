@@ -1,0 +1,48 @@
+{% extends 'base/layout.html' %}
+
+{% block content %}
+    <section>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Movies</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Man of Steel</li>
+            </ol>
+        </nav>
+        <div class="container" style="margin-top: -16px;">
+            <div class="row">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12 text-center">
+                            <div class="movie-card-single">
+                                <div class="movie-header-single"
+                                     style="background: url('{{ image }}'); background-size: cover">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-sm-12" style="margin-top: 20px; padding: 20px">
+                            <h2>Man of Steel <span class="text-danger" style="font-size: 15px">(2018)</span></h2>
+                            <h6>Genre:
+                                <span style="font-size: 15px">Action, Drama, Suspense</span>
+                            </h6>
+                            <h6>Director:
+                                <span style="font-size: 15px">John Doe</span>
+                            </h6>
+                            <h6>Cast:
+                                <span style="font-size: 15px">Zé Cabra, Toy, Quim Barreiros</span>
+                            </h6>
+                            <p style="margin-top: 15px; margin-bottom: 30px">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque volutpat iaculis ipsum quis consectetur. Sed vulputate ex dui, vel accumsan ligula feugiat et. Sed sagittis mollis augue, vel tristique elit finibus sed. Praesent a ultrices nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Cras non auctor lacus. Fusce euismod lobortis ligula, id accumsan enim sagittis sed. Suspendisse ut tellus quam. Aliquam sollicitudin, eros vel facilisis consequat, sem nisl semper dolor, at fermentum augue leo quis ipsum. Nulla porttitor vehicula libero, eu dictum nunc ullamcorper id.</p>
+                            <button type="button" class="btn btn-danger">
+                                <span class="fas fa-play"></span>
+                                Play
+                            </button>
+                            <button type="button" class="btn btn-danger">
+                                <span class="fas fa-cart-plus"></span>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

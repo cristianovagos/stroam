@@ -1,0 +1,25 @@
+{% load staticfiles %}
+<footer class="bg-dark">
+    <div class="container-fluid">
+        <div class="row p-5">
+            <div class="col-md-3 col-sm-7 text-center">
+                <img src="{% static 'images/logo.png' %}" style="height: 80px"/>
+            </div>
+            <div class="col-md-4 col-sm-5" style="padding-top: 15px;">
+                <p class="text-white align-middle">
+                    STROAM is a Django web-app developed for Services Engineering course.
+                </p>
+            </div>
+            <div class="col-md-5 col-sm-12 text-center">
+                <h6 class="text-white">Built with <i class="fas fa-heart"></i> in</h6>
+                <a href="https://www.ua.pt/deti">
+                    <img src="{% static 'images/deti.png' %}" style="height: 65px"/>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/jquery-3.3.1.slim.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</footer>

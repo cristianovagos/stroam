@@ -1,0 +1,43 @@
+<!--
+INDEX PAGE
+apenas mostra uma lista com os filmes existentes no catálogo
+-->
+
+{% extends "base/layout.html" %}
+
+{% block content %}
+    <div class="container" style="margin-top: 20px">
+        {% for movie in movies %}
+            <div class="movie-card">
+            <div class="movie-header"
+                 style="background: url('{{ movie.image }}'); background-size: cover">
+                <div class="header-icon-container">
+                    <!-- TODO - ID deve ser o ID do filme/série, este é para teste só -->
+                    <a href="{% url 'movie-single' id=forloop.counter %}">
+                        <i class="fas fa-play header-icon"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="movie-content">
+                <div class="movie-content-header">
+                    <!-- TODO - ID deve ser o ID do filme/série, este é para teste só -->
+                    <a href="{% url 'movie-single' id=forloop.counter %}">
+                        <h3 class="movie-title">{{ movie.title }}</h3>
+                    </a>
+{#                    <div class="imax-logo"></div>#}
+                </div>
+                <div class="movie-info">
+                    <div class="info-section">
+                        <label>Year</label>
+                        <span>2018</span>
+                    </div>
+                    <div class="info-section">
+                        <label>Genre</label>
+                        <span>Action, Drama</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
