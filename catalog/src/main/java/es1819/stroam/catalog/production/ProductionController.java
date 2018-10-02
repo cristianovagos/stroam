@@ -1,5 +1,6 @@
 package es1819.stroam.catalog.production;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,10 @@ import java.util.Optional;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api")
 public class ProductionController {
-    private static final Logger log = LoggerFactory.getLogger(ProductionController.class);
-
     @Autowired
     private ProductionRepository productionRepository;
 

@@ -31,13 +31,10 @@ public class Production {
     private String releaseDate;
 
     @NotNull
-    @Size(max = 4, min = 4)
-    private Integer year;
+    private String year;
 
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,
-    fetch = FetchType.EAGER,
-    mappedBy = "production")
+    fetch = FetchType.EAGER)
     private Set<Genre> genres;
 
     @NotNull
