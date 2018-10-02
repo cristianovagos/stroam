@@ -19,6 +19,8 @@ from stroam import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.homeView, name='homepage'),
-    path('movie/<int:id>', views.movieView, name='movie-single'),
+    path('', views.home, name='homepage'),
+    path('movie/<int:id>', views.singleMovie, name='movie-single'),
+    path('cart/', views.shoppingCart, name='shopping-cart'),
+    path('checkout/', views.checkout, name='checkout'),
 ]
