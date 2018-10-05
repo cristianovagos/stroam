@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS CHECKOUT;
+
+CREATE TABLE CHECKOUT (
+  id TEXT PRIMARY KEY,
+  amount REAL NOT NULL,
+  return_url TEXT NOT NULL,
+  cancel_url TEXT NOT NULL,
+  merchant TEXT NOT NULL
+);
