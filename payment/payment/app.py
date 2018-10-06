@@ -5,7 +5,7 @@ Engenharia de Servicos 2018/19 MEC:76678 asergio@ua.pt
 '''
 
 from flask import Flask, request, jsonify, render_template
-from urllib.parse import urlparse
+from util import *
 import database as db
 import secrets
 
@@ -21,17 +21,23 @@ def create_checkout():
     '''
         /CreateCheckout - Creates a checkout for later to be paid by a client
 
-        Arguments:
+        Header : [content-type: application/x-www-form-urlencoded]
+
+        Required Parameters:
             AMOUNT - amount the client as to pay
             RETURN_URL - URL the client is redirected to after paying
             CANCEL_URL - URL the client is redirected to in case he cancels
-            MERCHANT - ID of merchant
+            MERCHANT - ID of merchant [Use "tokensample123" for debug]
+
+        Optional Parameters:
+            TODO
     '''
+    # request.form looks ugly and takes too much space...
     param = request.form
+    keys = [k for k in param.keys()]
 
     # Checking for required parameters
-    if not param or not check_parameters(['AMOUNT','RETURN_URL', \
-                'CANCEL_URL', 'MERCHANT'], param):
+    if not param or not check_parameters(keys, param):
         return jsonify({'ERROR': 'Invalid format or parameters missing.'}), 400
 
     # Cheking if URI are valid
@@ -42,69 +48,26 @@ def create_checkout():
     if not is_number(param['AMOUNT']):
         return jsonify({'ERROR': 'AMOUNT not valid.'}), 400
 
-    # Generating token
-    token = secrets.token_urlsafe(16)
+    # Checking if merchant exists
+    if not db.exists('MERCHANT', 'id', param['MERCHANT']):
+        return jsonify({'ERROR': 'MERCHANT doesn\'t exist.'}), 400
 
+    # Generating token and checking if it doesn't exist already
+    while True:
+        token = secrets.token_urlsafe(16)
+        if not db.exists('CHECKOUT', 'id', token):
+            break
+
+    # Inserting new checkout to database
     try:
-        validation = insert('CHECKOUT', \
+        validation = db.insert('CHECKOUT', \
             ('id', 'amount', 'return_url', 'cancel_url', 'merchant'), \
-            (token, param['AMOUNT'] , param['RETURN_URL'], param['CANCEL_URL'], \
-            param['MERCHANT']))
+            tuple( [token] + [param[k] for k in keys] ) )
     except Exception as e:
         return jsonify({'ERROR': 'An error ocurred on the Database.'}), 500
 
     # Everything went well, returning token for new checkout
     return jsonify({'CHECKOUT_TOKEN': token}), 201
-
-def insert(table, fields=(), values=()):
-    '''
-        Inserts a row in a table on database
-    '''
-    cur = db.get_db().cursor()
-
-    query = 'INSERT INTO %s (%s) VALUES (%s)' % (
-        table,
-        ', '.join(fields),
-        ', '.join(['?'] * len(values))
-    )
-
-    cur.execute(query, values)
-    db.get_db().commit()
-
-    id = cur.lastrowid
-    cur.close()
-
-    return id
-
-
-def check_parameters(parameters, request):
-    '''
-        Checks if every required parameters is on the request
-    '''
-    for key in parameters:
-        if key not in request:
-            return False
-    return True
-
-def uri_validator(x):
-    '''
-        Checks if url x is valid
-    '''
-    try:
-        result = urlparse(x)
-        return all([result.scheme, result.netloc])
-    except:
-        return False
-
-def is_number(s):
-    '''
-        Checks if s is a number
-    '''
-    try:
-        float(s)
-        return True
-    except ValueError:
-        return False
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000) #run app in debug mode on port 5000
