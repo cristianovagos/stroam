@@ -1,4 +1,4 @@
-package es1819.stroam.catalog.retrofit;
+package es1819.stroam.catalog.model.retrofit;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -45,4 +45,10 @@ public class OmdbResult {
 
     @JsonProperty(value = "Country")
     private String country;
+
+    @JsonProperty(value = "totalSeasons")
+    private String totalSeasons;
+
+    @JsonProperty(value = "imdbID")
+    private String imdbID;
 }

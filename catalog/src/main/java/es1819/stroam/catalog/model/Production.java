@@ -1,7 +1,7 @@
-package es1819.stroam.catalog.production;
+package es1819.stroam.catalog.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import es1819.stroam.catalog.genre.Genre;
+import es1819.stroam.catalog.model.Genre;
+import es1819.stroam.catalog.model.SeriesSeason;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +10,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -47,7 +48,19 @@ public class Production {
 
     private String poster;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
 
     private String runtime;
+
+    private int seasons;
+
+    private double price = 10.00;
+
+    @NotNull
+    private String imdbID;
+
+    @OneToMany(cascade = CascadeType.ALL,
+    fetch = FetchType.EAGER, mappedBy = "production")
+    private List<SeriesSeason> seasonList;
 }

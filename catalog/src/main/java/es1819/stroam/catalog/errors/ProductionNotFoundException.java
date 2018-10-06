@@ -1,4 +1,4 @@
-package es1819.stroam.catalog.production;
+package es1819.stroam.catalog.errors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

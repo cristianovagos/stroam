@@ -1,4 +1,4 @@
-package es1819.stroam.catalog.genre;
+package es1819.stroam.catalog.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
@@ -8,21 +8,32 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Getter
 @Setter
 @ToString
 @EqualsAndHashCode
 @Entity
-@Table(name = "genre")
-public class Genre {
+@Table(name = "episode")
+public class Episode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Long id;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "season_id")
+    private SeriesSeason season;
+
     @NotNull
-    @Size(max = 50)
-    private String name;
+    private int episode;
+
+    @NotNull
+    private String title;
+
+    @NotNull
+    private String releaseDate;
+
+    @NotNull
+    private String imdbID;
 }
