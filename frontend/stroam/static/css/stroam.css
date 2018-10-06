@@ -50,8 +50,8 @@ a:hover {
   margin-left: auto;
   margin-right: auto;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
 .navbar-brand {

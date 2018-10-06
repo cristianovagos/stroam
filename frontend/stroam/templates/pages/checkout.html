@@ -15,32 +15,30 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- INÍCIO PRODUTOS -->
-                                <tr>
-                                    <td scope="row">
-                                        <div class="media">
-                                            <a class="img-thumbnail">
-                                                <img src="http://icons.iconarchive.com/icons/custom-icon-design/flatastic-2/72/product-icon.png"
-                                                     style="width: 65px; height: 65px;">
-                                            </a>
-                                            <div class="media-body" style="margin-left: 10px">
-                                                <h6>Product name</h6>
-                                                <p>blablabla</p>
+                                {% for product in products %}
+                                    <tr>
+                                        <td scope="row">
+                                            <div class="media">
+                                                <a class="img-thumbnail">
+                                                    <img src="{{ product.poster }}"
+                                                         style="width: 65px; height: 65px;">
+                                                </a>
+                                                <div class="media-body" style="margin-left: 10px">
+                                                    <h6><a href="{% url 'movie-single' id=product.id %}">{{ product.title }}</a></h6>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">
-                                        <strong>10€</strong>
-                                    </td>
-                                </tr>
-                                <!-- FIM PRODUTOS -->
-                                <!-- INÍCIO TOTAIS -->
+                                        </td>
+                                        <td class="text-center">
+                                            <strong>{{ product.price }}€</strong>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
                                 <tr>
                                     <td class="text-right">
                                         <h4>Total:</h4>
                                     </td>
                                     <td>
-                                        <h4>15€</h4>
+                                        <h4>{{ totalPrice }}€</h4>
                                     </td>
                                 </tr>
                                 <tr>

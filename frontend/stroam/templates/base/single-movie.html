@@ -5,44 +5,74 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Movies</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Man of Steel</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ movie.title }}</li>
             </ol>
         </nav>
-        <div class="container" style="margin-top: -16px;">
+        <div class="container" style="margin-top: -16px; background: white">
             <div class="row">
-                <div class="card">
-                    <div class="row">
-                        <div class="col-md-4 col-sm-12 text-center">
-                            <div class="movie-card-single">
-                                <div class="movie-header-single"
-                                     style="background: url('{{ image }}'); background-size: cover">
-                                </div>
-                            </div>
+                <div class="col-md-4 col-sm-12 text-center">
+                    <div class="movie-card-single">
+                        <div class="movie-header-single"
+                             style="background: url('{{ movie.poster }}'); background-size: cover">
                         </div>
-                        <div class="col-md-8 col-sm-12" style="margin-top: 20px; padding: 30px">
-                            <h2>Man of Steel <span class="text-danger" style="font-size: 15px">(2018)</span></h2>
-                            <h6>Genre:
-                                <span style="font-size: 15px">Action, Drama, Suspense</span>
-                            </h6>
-                            <h6>Director:
-                                <span style="font-size: 15px">John Doe</span>
-                            </h6>
-                            <h6>Cast:
-                                <span style="font-size: 15px">Zé Cabra, Toy, Quim Barreiros</span>
-                            </h6>
-                            <p style="margin-top: 15px; margin-bottom: 30px">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque volutpat iaculis ipsum quis consectetur. Sed vulputate ex dui, vel accumsan ligula feugiat et. Sed sagittis mollis augue, vel tristique elit finibus sed. Praesent a ultrices nibh. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Cras non auctor lacus. Fusce euismod lobortis ligula, id accumsan enim sagittis sed. Suspendisse ut tellus quam. Aliquam sollicitudin, eros vel facilisis consequat, sem nisl semper dolor, at fermentum augue leo quis ipsum. Nulla porttitor vehicula libero, eu dictum nunc ullamcorper id.</p>
-                            <button type="button" class="btn btn-danger">
-                                <span class="fas fa-play"></span>
-                                Play
-                            </button>
-                            <button type="button" class="btn btn-danger">
-                                <span class="fas fa-cart-plus"></span>
-                                Add to Cart
-                            </button>
-                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 col-sm-12" style="margin-top: 20px; padding: 30px">
+                    <h2>{{ movie.title }}
+                        <span class="text-danger" style="font-size: 15px">({{ movie.year }})</span>
+                    </h2>
+                    <h6>Genre:
+                        <span style="font-size: 15px">
+                            {% for genre in movie.genres %}
+                                <span class="badge badge-danger">{{ genre }}</span>
+                            {% endfor %}
+                        </span>
+                    </h6>
+                    <h6>Director:
+                        <span style="font-size: 15px">{{ movie.director }}</span>
+                    </h6>
+                    <p style="margin-top: 15px; margin-bottom: 30px; min-width: 300px">{{ movie.description }}</p>
+                    <button type="button" class="btn btn-danger">
+                        <span class="fas fa-play"></span>
+                        Play
+                    </button>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <button name="productID" value="{{ movie.id }}" type="submit" class="btn btn-danger">
+                            <span class="fas fa-cart-plus"></span>
+                            Add to Cart
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="addedCart" tabindex="-1" role="dialog" aria-labelledby="addedCartLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addedCartLabel">{{ movie.title }} added to cart</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        This {{ movie.type }} was added to your shopping cart.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="{% url 'shopping-cart' %}" class="btn btn-danger">View cart</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    {% if addedToCart %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#addedCart").modal('show');
+            });
+        </script>
+    {% endif %}
+
 {% endblock %}

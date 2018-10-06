@@ -4,176 +4,104 @@
     <section>
         <div class="container-fluid" style="margin-top: 25px; margin-bottom: 30px">
             <div class="row justify-content-center">
-                <div class="col-sm-10 col-md-10">
-                    <h4>
-                        Your shopping cart
-                        <span style="font-size: 13px">(3 items)</span>
-                    </h4>
-                    <div class="table-responsive">
-                        <table class="table table-hover" style="margin-top: 30px;">
-                            <thead class="table-secondary">
-                                <tr>
-                                    <th class="w-75" scope="col">
-                                        <h6><strong>Product</strong></h6>
-                                    </th>
-                                    <th class="w-auto text-center" scope="col"><h6><strong>Price</strong></h6></th>
-                                    <th class="w-auto" scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- INÍCIO PRODUTOS -->
-                                <tr>
-                                    <td scope="row">
-                                        <div class="media">
-                                            <a class="img-thumbnail">
-                                                <img src="http://icons.iconarchive.com/icons/custom-icon-design/flatastic-2/72/product-icon.png"
-                                                     style="width: 65px; height: 65px;">
-                                            </a>
-                                            <div class="media-body" style="margin-left: 10px">
-                                                <h6>Product #1</h6>
-                                                <p>Awesome product</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">
-                                        <strong>10€</strong>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-danger" data-toggle="modal" data-target="#removeModal">
-                                            <span class="fas fa-times-circle"></span> Remove
-                                        </button>
-
-                                        <div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="removeModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="removeModalLabel">Remove product</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        Are you sure you want to remove this item from your shopping cart?
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-danger">Remove</button>
+                {% if products|length > 0 %}
+                    <div class="col-sm-10 col-md-10">
+                        <h4>
+                            Your shopping cart
+                            <span style="font-size: 13px">({{ products|length }} items)</span>
+                        </h4>
+                        <div class="table-responsive">
+                            <table class="table table-hover" style="margin-top: 30px;">
+                                <thead class="table-secondary">
+                                    <tr>
+                                        <th class="w-75" scope="col">
+                                            <h6><strong>Product</strong></h6>
+                                        </th>
+                                        <th class="w-auto text-center" scope="col"><h6><strong>Price</strong></h6></th>
+                                        <th class="w-auto" scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for product in products %}
+                                        <tr>
+                                            <td scope="row">
+                                                <div class="media">
+                                                    <a class="img-thumbnail">
+                                                        <img src="{{ product.poster }}"
+                                                             style="width: 65px; height: 65px;">
+                                                    </a>
+                                                    <div class="media-body" style="margin-left: 10px">
+                                                        <h6>
+                                                            <a href="{% url 'movie-single' id=product.id %}">
+                                                                {{ product.title }}
+                                                            </a>
+                                                        </h6>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td scope="row">
-                                        <div class="media">
-                                            <a class="img-thumbnail">
-                                                <img src="http://icons.iconarchive.com/icons/custom-icon-design/flatastic-2/72/product-icon.png"
-                                                     style="width: 65px; height: 65px;">
+                                            </td>
+                                            <td class="text-center">
+                                                <strong>{{ product.price }}€</strong>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-danger" data-toggle="modal" data-target="#removeModal" data-productid="{{ product.id }}">
+                                                    <span class="fas fa-times-circle"></span> Remove
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <td></td>
+                                        <td class="text-right">
+                                            <h4>Total:</h4>
+                                        </td>
+                                        <td>
+                                            <h4>{{ totalPrice }}€</h4>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td class="text-right">
+                                            <a class="btn btn-info" href="{% url 'homepage' %}">
+                                                <span class="fas fa-shopping-cart"></span> Continue shopping
                                             </a>
-                                            <div class="media-body" style="margin-left: 10px">
-                                                <h6>Product #2</h6>
-                                                <p>Awesome product also</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">
-                                        <strong>10€</strong>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-danger" data-toggle="modal" data-target="#removeModal">
-                                            <span class="fas fa-times-circle"></span> Remove
-                                        </button>
-
-                                        <div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="removeModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="removeModalLabel">Remove product</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        Are you sure you want to remove this item from your shopping cart?
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-danger">Remove</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td scope="row">
-                                        <div class="media">
-                                            <a class="img-thumbnail">
-                                                <img src="http://icons.iconarchive.com/icons/custom-icon-design/flatastic-2/72/product-icon.png"
-                                                     style="width: 65px; height: 65px;">
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-success" href="{% url 'checkout' %}">
+                                                <span class="fas fa-check"></span> Checkout
                                             </a>
-                                            <div class="media-body" style="margin-left: 10px">
-                                                <h6>Product #3</h6>
-                                                <p>This product is also good</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">
-                                        <strong>10€</strong>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-danger" data-toggle="modal" data-target="#removeModal">
-                                            <span class="fas fa-times-circle"></span> Remove
-                                        </button>
-
-                                        <div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="removeModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="removeModalLabel">Remove product</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        Are you sure you want to remove this item from your shopping cart?
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-danger">Remove</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <!-- FIM PRODUTOS -->
-                                <!-- INÍCIO TOTAIS -->
-                                <tr>
-                                    <td></td>
-                                    <td class="text-right">
-                                        <h4>Total:</h4>
-                                    </td>
-                                    <td>
-                                        <h4>30€</h4>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td class="text-right">
-                                        <a class="btn btn-info" href="{% url 'homepage' %}">
-                                            <span class="fas fa-shopping-cart"></span> Continue shopping
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-success" href="{% url 'checkout' %}">
-                                            <span class="fas fa-check"></span> Checkout
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-sm-10 col-md-10" style="padding-top: 200px; padding-bottom: 200px;">
+                        <h3 class="text-center">
+                            Oops... seems like your shopping cart is empty!
+                            <br><br>
+                            <a href="{% url 'homepage' %}" class="btn-lg btn-danger">Shop now</a>
+                        </h3>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="removeModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                {% csrf_token %}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="removeModalLabel">Remove product</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to remove this item from your shopping cart?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Remove</button>
                     </div>
                 </div>
             </div>
