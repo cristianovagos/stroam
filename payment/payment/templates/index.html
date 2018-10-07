@@ -1,1 +1,47 @@
-<p> hello </p>
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+    <link rel= "stylesheet" type= "text/css" href="{{ url_for('static',filename='style/style.css') }}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="background">
+        <div class="container">
+            <div class="wrap-login">
+
+                <div class="image-div">
+                    <img src="{{ url_for('static',filename='images/logo-musk.png') }}" alt="StrongPay"/>
+                </div>
+
+                <form class="login-form">
+                    <span class="login-title"> Login </span>
+
+                    <div class="login-input">
+                        <input type="text" name="email" placeholder="Email" />
+                        <span> <i class="fa fa-envelope" aria-hidden="true"></i> </span>
+                    </div>
+
+                    <div class="login-input">
+                        <input type="password" name="pass" placeholder="Password" />
+                        <span> <i class="fa fa-lock" aria-hidden="true"></i> </span>
+                    </div>
+
+                    <div class="login-button">
+                        <button>Login</button>
+                    </div>
+
+                    <div class="create-account">
+                        <a href="#" >Create your Account ⭬</a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
