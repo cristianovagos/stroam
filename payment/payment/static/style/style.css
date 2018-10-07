@@ -172,3 +172,15 @@
     width: 50%;
   }
 }
+
+/* Alert */
+
+.alert::after {
+  content: "⚠️";
+  display: block;
+  top:15%;
+  position: absolute;
+  color: #c80000;
+  font-size: 25px;
+  right: 13px;
+}
