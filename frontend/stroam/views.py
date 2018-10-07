@@ -12,7 +12,9 @@ MAIN_TITLE = WEBSITE_TITLE + SPACING + WEBSITE_SEPARATOR + SPACING
 
 def home(request):
     title = 'Stream strong, anytime and anywhere.'
-    numCartProducts = len(request.session.get('productList'))
+    numCartProducts = 0
+    if 'productList' in request.session:
+        numCartProducts = len(request.session.get('productList'))
     movies = catalog.getAllCatalog()
     shuffle(movies)
     tparams = {
@@ -24,7 +26,9 @@ def home(request):
 
 def homeMovies(request):
     title = 'Our movies'
-    numCartProducts = len(request.session.get('productList'))
+    numCartProducts = 0
+    if 'productList' in request.session:
+        numCartProducts = len(request.session.get('productList'))
     movies = [x for x in catalog.getAllCatalog() if x.type == 'movie']
     shuffle(movies)
     tparams = {
@@ -36,7 +40,9 @@ def homeMovies(request):
 
 def homeSeries(request):
     title = 'Our TV Series'
-    numCartProducts = len(request.session.get('productList'))
+    numCartProducts = 0
+    if 'productList' in request.session:
+        numCartProducts = len(request.session.get('productList'))
     movies = [x for x in catalog.getAllCatalog() if x.type == 'series']
     shuffle(movies)
     tparams = {
@@ -48,7 +54,9 @@ def homeSeries(request):
 
 def singleMovie(request, id):
     assert isinstance(id, int)
-    numCartProducts = len(request.session.get('productList'))
+    numCartProducts = 0
+    if 'productList' in request.session:
+        numCartProducts = len(request.session.get('productList'))
 
     movie = catalog.getSingleCatalog(id)
     if movie is not None:
@@ -80,7 +88,9 @@ def singleMovie(request, id):
 
 def shoppingCart(request):
     title = 'Your shopping cart'
-    numCartProducts = len(request.session.get('productList'))
+    numCartProducts = 0
+    if 'productList' in request.session:
+        numCartProducts = len(request.session.get('productList'))
 
     if request.method == 'POST':
         if 'productList' in request.session:
@@ -108,7 +118,9 @@ def shoppingCart(request):
 
 def checkout(request):
     title = 'Checkout'
-    numCartProducts = len(request.session.get('productList'))
+    numCartProducts = 0
+    if 'productList' in request.session:
+        numCartProducts = len(request.session.get('productList'))
 
     products = []
     price = 0
