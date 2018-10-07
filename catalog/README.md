@@ -8,11 +8,11 @@ This section will be updated as soon as development goes on.
 * Basic entities created (Production, Genre, SeriesSeason and Episode), persisting to H2 database
 * CRUD capabilities for each entity
 * REST API for Productions (movies + series), Seasons and Episodes (series specific)
-* Initial database loader with basic data (from OMDb API): 15 movies + 15 series
+* Initial database loader with basic data (from OMDb API): 15 movies + 15 series, as well as the series seasons and episodes
 
 ## TODO
 This section will (_also_) be updated as soon as development goes on.
-* Add more data into database (seasons, episodes) from loader or other way
+* Build more APIs for frontend consumption (_as needed_)
 * Migrate service into Docker containers (in the end...)
 
 ### APIs
