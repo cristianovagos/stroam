@@ -1,0 +1,14 @@
+{
+  "name": "cdn",
+  "version": "1.0.0",
+  "description": "Node.js server & webrtc stream for mediating user acess of cdn contents",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "author": "João Amaral",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}

@@ -25,6 +25,7 @@ Service responsible for notifying users upon multiple usage in app.
 
 * **Streaming CDN**  
 A content delivery network which serves media sources based on user location.
+Built with Node.js and WebRTC API
 
 
 ### Server Ports
@@ -33,7 +34,7 @@ A content delivery network which serves media sources based on user location.
 * **Auth** - 3000
 * **Payment** - 5000
 * **Notification** - (_to be known_)
-* **Streaming CDN** - (_to be known_)
+* **Streaming CDN** - 1935 
 
 
 ### Authors
