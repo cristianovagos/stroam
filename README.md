@@ -33,7 +33,7 @@ Built with Node.js and WebRTC API
 * **Catalog** - 4000
 * **Auth** - 3000
 * **Payment** - 5000
-* **Notification** - (_to be known_)
+* **Notification** - 1883
 * **Streaming CDN** - 1935 
 
 
@@ -50,5 +50,5 @@ _Auth_
 * **João Amaral** ([GitHub](https://github.com/joaoamaral28) / [joaop.amaral@ua.pt](mailto:joaop.amaral@ua.pt))  
 _Streaming CDN_
 
-* **João Verdasca**  
+* **João Verdasca** ([GitHub](https://github.com/jfrverdasca) / [jfrverdasca@ua.pt](mailto:jfrverdasca@ua.pt))
 _Notification_
