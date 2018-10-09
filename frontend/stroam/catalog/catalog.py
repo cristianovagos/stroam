@@ -1,7 +1,7 @@
 import json
 from urllib.request import urlopen, HTTPError
 
-BASE_CATALOG_URL = "http://localhost:8090/api"
+BASE_CATALOG_URL = "http://localhost:4000/api"
 
 class Production:
     def __init__(self, id, title, releaseDate, year, genres, director, type, poster, description, runtime, price):

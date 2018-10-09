@@ -14,7 +14,6 @@ This section will be updated as soon as development goes on.
 
 ## TODO
 This section will (_also_) be updated as soon as development goes on.
-* Fix redirection when item is deleted from Shopping Cart
 * Create a user database (_needs Auth service_) for purchase information, etc
 * Create a TV Series page (with seasons info, episodes, etc)
 * Add async notification support (_needs Notification service_)
