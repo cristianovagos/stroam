@@ -11,6 +11,9 @@ $(document).ready(function () {
                $.post('/cart/', {
                    csrfmiddlewaretoken: csrfToken,
                    productID: productID
+               }, function () {
+                   console.log("refreshing");
+                   location.reload();
                });
            });
            $(modal + ' button.btn.btn-secondary').click(function () {

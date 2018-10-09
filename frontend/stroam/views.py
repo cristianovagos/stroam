@@ -1,6 +1,6 @@
 from random import shuffle
 from django.shortcuts import render, redirect
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
 
 from .catalog import catalog
 
@@ -97,7 +97,7 @@ def shoppingCart(request):
             auxList = request.session.get('productList')
             auxList.remove(int(request.POST['productID']))
             request.session['productList'] = auxList
-            return redirect('homepage')
+            return HttpResponse('')
 
     products = []
     price = 0
