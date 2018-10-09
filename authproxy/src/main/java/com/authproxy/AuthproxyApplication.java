@@ -5,6 +5,7 @@ import java.util.Arrays;
 import javax.sql.DataSource;
 
 import com.authproxy.models.Account;
+import com.authproxy.models.Roles;
 import com.authproxy.service.AccountService;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,8 +16,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
+@EnableAsync
 public class AuthproxyApplication {
 
 	public static void main(String[] args) {
@@ -40,10 +43,10 @@ public class AuthproxyApplication {
                     Account acct = new Account();
                     acct.setUsername(username);
                     acct.setPassword("password");
-                    acct.setRole("ROLE_USER");
+                    acct.grantAuthority(Roles.ROLE_USER);
                     if (username.equals("admin"))
-                        acct.setRole("ROLE_ADMIN");
-                    accountService.register(acct);
+                        acct.grantAuthority(Roles.ROLE_ADMIN);
+                    accountService.registerUser(acct);
                 }
 		);
 	}
