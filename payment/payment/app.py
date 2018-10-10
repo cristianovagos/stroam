@@ -6,31 +6,78 @@ Engenharia de Servicos 2018/19 MEC:76678 asergio@ua.pt
 
 from flask import Flask, request, jsonify, render_template
 from util import *
+from apispec import APISpec
+from apispec.ext.flask import FlaskPlugin
 import database as db
-import secrets
+import secrets, json
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
+
+# Create an APISpec
+spec = APISpec(
+    title='StrongPay',
+    base_path='http://127.0.0.1:5000/',
+    version='1.0.0',
+    openapi_version='3.0.0',
+    plugins=[
+        FlaskPlugin()
+    ]
+)
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
+@app.route('/docs')
+def docs():
+    return render_template('doc.html')
+
 @app.route('/CreateCheckout', methods=['POST'])
 def create_checkout():
-    '''
-        /CreateCheckout - Creates a checkout for later to be paid by a client
-
-        Header : [content-type: application/x-www-form-urlencoded]
-
-        Required Parameters:
-            AMOUNT - amount the client as to pay
-            RETURN_URL - URL the client is redirected to after paying
-            CANCEL_URL - URL the client is redirected to in case he cancels
-            MERCHANT - ID of merchant [Use "tokensample123" for debug]
-
-        Optional Parameters:
-            TODO
+    ''' CreateCheckout
+    ---
+    post:
+        description: Creates a checkout
+        tags:
+            - Generating a payment
+        requestBody:
+            required: true
+            content:
+              application/x-www-form-urlencoded:
+                schema:
+                  type: object
+                  properties:
+                    AMOUNT:
+                      type: double
+                    MERCHANT:
+                      type: string
+                    RETURN_URL:
+                      type: string
+                    CANCEL_URL:
+                      type: string
+                  required:
+                    - AMOUNT
+                    - MERCHANT
+                    - RETURN_URL
+                    - CANCEL_URL
+        responses:
+            200:
+                description: A JSON containing a TOKEN that indentifies the Checkout
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          TOKEN:
+                            type: string
+            400:
+                description: A JSON containing a ERROR that indentifies the problem
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          ERROR:
+                            type: string
     '''
     # request.form looks ugly and takes too much space...
     param = request.form
@@ -68,6 +115,12 @@ def create_checkout():
 
     # Everything went well, returning token for new checkout
     return jsonify({'CHECKOUT_TOKEN': token}), 201
+
+with app.test_request_context():
+    spec.add_path(view=create_checkout)
+
+with open('static/swagger.json', 'w') as f:
+    json.dump(spec.to_dict(), f)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000) #run app in debug mode on port 5000

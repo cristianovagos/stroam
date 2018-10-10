@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Swagger UI</title>
+  <link href="//unpkg.com/swagger-ui-dist@3.19.3/swagger-ui.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body class="swagger-section">
+  <div id="message-bar" class="swagger-ui-wrap" data-sw-translate>&nbsp;</div>
+  <div id="swagger-ui-container" class="swagger-ui-wrap"></div>
+<script src="//unpkg.com/swagger-ui-dist@3/swagger-ui-bundle.js"></script>
+<script src="//unpkg.com/swagger-ui-dist@3/swagger-ui-standalone-preset.js"></script>
+<script type="text/javascript">
+  var ui = SwaggerUIBundle({
+    url: '{{ url_for('static',filename='swagger.json') }}',
+    dom_id: '#swagger-ui-container',
+    deepLinking: true,
+    presets: [
+      SwaggerUIBundle.presets.apis,
+      SwaggerUIStandalonePreset
+    ],
+    plugins: [
+      SwaggerUIBundle.plugins.DownloadUrl
+    ],
+    layout: "BaseLayout"
+  })
+  window.ui = ui
+</script>
+</body>
+
+</html>
