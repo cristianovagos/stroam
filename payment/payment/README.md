@@ -42,3 +42,5 @@ sqlite> .read StrongPay_schema.sql
 ```
 python app.py
 ```
+
+# API documentation is available at /docs
