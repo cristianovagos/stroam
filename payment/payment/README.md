@@ -6,6 +6,39 @@ StrongPay is a payment gateway service based on PayPal. It's composed of a front
 
 ### API Endpoints
 
-| Method        | Call           | Header |Description  | Parameters |
-| ------------- | :------------: | :----------: | :----------: | :--------- |
-| POST    | /CreateCheckout | **content-type:** <br> application/x-www-form-urlencoded | Creates Checkout <br> for later to be paid by a client | **AMOUNT** - Amount to be paid. <br/> **MERCHANT** - Token that identifies the merchant. <br/> **RETURN_URL** - URL to where the client is redirected to after payment. <br/> **CANCEL_URL** - URL to where the client is redirected to in case the payment in cancelled.
+**URL** : `/CreateCheckout`
+**Method** : `POST`
+**Description** : Create a checkout for later to be paid by an user.
+
+### What is done
+
+- Index page with login form
+- /CreateCheckout API call
+
+### TODO
+
+- Login/Register for Client and Merchant
+- Redirect link for payment to be done
+- Profile Management for the Client and Merchant
+- API call for Checkout information
+- Bonus features like credit card validation
+
+### Deployment
+
+* Start by installing the project requirements:
+```shell
+pip install -r requirements.txt
+```
+
+* Setting up Database:
+```shell
+sqlite3 StrongPay_database.db
+SQLite version 3.25.0 2018-09-15 04:01:47
+Enter ".help" for usage hints.
+sqlite> .read StrongPay_schema.sql
+```
+
+* Run the app
+```shell
+python app.py
+```

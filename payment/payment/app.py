@@ -62,7 +62,7 @@ def create_checkout():
                     - RETURN_URL
                     - CANCEL_URL
         responses:
-            200:
+            201:
                 description: A JSON containing a TOKEN that indentifies the Checkout
                 content:
                     application/json:
