@@ -50,12 +50,16 @@ def create_checkout():
                   properties:
                     AMOUNT:
                       type: double
+                      description: Amount to be paid by the client
                     MERCHANT:
                       type: string
+                      description: Token that indentifies the merchant
                     RETURN_URL:
                       type: string
+                      description: URL to where the client in redirect if the payment is successful
                     CANCEL_URL:
                       type: string
+                      description: URL to where the client in redirect if the payment is cancelled
                   required:
                     - AMOUNT
                     - MERCHANT
@@ -82,9 +86,10 @@ def create_checkout():
     # request.form looks ugly and takes too much space...
     param = request.form
     keys = [k for k in param.keys()]
+    required_keys = ['AMOUNT', 'MERCHANT', 'RETURN_URL', 'CANCEL_URL']
 
     # Checking for required parameters
-    if not param or not check_parameters(keys, param):
+    if not param or not check_keys(required_keys, keys):
         return jsonify({'ERROR': 'Invalid format or parameters missing.'}), 400
 
     # Cheking if URI are valid
@@ -115,6 +120,19 @@ def create_checkout():
 
     # Everything went well, returning token for new checkout
     return jsonify({'CHECKOUT_TOKEN': token}), 201
+
+@app.route('/pay', methods=['GET'])
+def pay():
+    # request.args looks ugly and takes too much space...
+    args = request.args
+    keys = [k for k in args.keys()]
+    required_keys = ['checkout_token']
+
+    # Checking for required arguments TODO: information for client that something went wrong
+    if not args or not check_keys(required_keys, keys):
+        return jsonify({'ERROR': 'Invalid format or arguments missing.'}), 400
+
+    return render_template('index.html')
 
 with app.test_request_context():
     spec.add_path(view=create_checkout)

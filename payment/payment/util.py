@@ -1,11 +1,11 @@
 from urllib.parse import urlparse
 
-def check_parameters(parameters, request):
+def check_keys(required_keys, keys):
     '''
         Checks if every required parameter is on the request
     '''
-    for key in parameters:
-        if key not in request:
+    for key in required_keys:
+        if key not in keys:
             return False
     return True
 

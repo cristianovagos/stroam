@@ -6,9 +6,17 @@ StrongPay is a payment gateway service based on PayPal. It's composed of a front
 
 ## API Endpoints
 
-**URL** : `/CreateCheckout`
+> **URL** : `/CreateCheckout`
 **Method** : `POST`
 **Description** : Create a checkout for later to be paid by an user.
+
+> **URL** : `/GetCheckoutDetails'
+**Method** : `GET`
+**Description** : Gets checkout details such as who paid and billing address
+
+> **URL** : `/ExecuteCheckout'
+**Method** : `GET`
+**Description** : Confirm and execute payment. Return Success or Failure.
 
 ## What is done
 
