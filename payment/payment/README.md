@@ -1,21 +1,21 @@
 ![alt text](http://code.ua.pt/projects/es1819-stroam/repository/revisions/master/raw/payment/payment/static/images/logo.png)
 
-### About
+## About
 StrongPay is a payment gateway service based on PayPal. It's composed of a front-end interface and an API running on a flask framework.  
 
 
-### API Endpoints
+## API Endpoints
 
 **URL** : `/CreateCheckout`
 **Method** : `POST`
 **Description** : Create a checkout for later to be paid by an user.
 
-### What is done
+## What is done
 
 - Index page with login form
 - /CreateCheckout API call
 
-### TODO
+## What is left
 
 - Login/Register for Client and Merchant
 - Redirect link for payment to be done
@@ -23,7 +23,7 @@ StrongPay is a payment gateway service based on PayPal. It's composed of a front
 - API call for Checkout information
 - Bonus features like credit card validation
 
-### Deployment
+## Deployment
 
 * Start by installing the project requirements:
 ```shell
