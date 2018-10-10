@@ -26,12 +26,12 @@ StrongPay is a payment gateway service based on PayPal. It's composed of a front
 ## Deployment
 
 * Start by installing the project requirements:
-```shell
+```
 pip install -r requirements.txt
 ```
 
 * Setting up Database:
-```shell
+```
 sqlite3 StrongPay_database.db
 SQLite version 3.25.0 2018-09-15 04:01:47
 Enter ".help" for usage hints.
@@ -39,6 +39,6 @@ sqlite> .read StrongPay_schema.sql
 ```
 
 * Run the app
-```shell
+```
 python app.py
 ```
