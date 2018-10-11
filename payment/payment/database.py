@@ -52,7 +52,7 @@ def exists(table, column, value):
     '''
         Checks if row exists on Database
     '''
-    
+
     cur = get_db().cursor()
 
     query = 'SELECT EXISTS(SELECT 1 FROM %s WHERE %s=\"%s\" LIMIT 1);' % (
@@ -61,6 +61,24 @@ def exists(table, column, value):
         value
     )
     result = cur.execute(query).fetchone()[0]
+    cur.close()
+
+    return result
+
+def get(table, column, value):
+    '''
+        Returns Row from database
+    '''
+
+    cur = get_db().cursor()
+
+    query = 'SELECT * FROM %s WHERE %s=\"%s\" LIMIT 1' % (
+        table,
+        column,
+        value
+    )
+    
+    result = cur.execute(query).fetchone()
     cur.close()
 
     return result

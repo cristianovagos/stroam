@@ -128,11 +128,18 @@ def pay():
     keys = [k for k in args.keys()]
     required_keys = ['checkout_token']
 
-    # Checking for required arguments TODO: information for client that something went wrong
+    # Checking for required arguments TODO: frontend information for client that something went wrong
     if not args or not check_keys(required_keys, keys):
         return jsonify({'ERROR': 'Invalid format or arguments missing.'}), 400
 
-    return render_template('index.html')
+    # Getting row from database of the checkout
+    checkout = db.get('CHECKOUT', 'id', args['checkout_token']);
+
+    # Checking if checkout is valid
+    if not checkout:
+        return jsonify({'ERROR': 'No such checkout'}), 400 #TODO: frontend information for client that something went wrong
+
+    return render_template('pay.html')
 
 with app.test_request_context():
     spec.add_path(view=create_checkout)
