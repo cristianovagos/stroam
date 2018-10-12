@@ -33,7 +33,7 @@ Built with Node.js and WebRTC API
 * **Catalog** - 4000
 * **Auth** - 3000
 * **Payment** - 5000
-* **Notification** - 1883
+* **Notification** - 1884
 * **Streaming CDN** - 1935 
 
 
