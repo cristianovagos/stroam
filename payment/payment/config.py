@@ -1,2 +1,3 @@
 DEBUG = True
 DATABASE = "StrongPay_database.db"
+SECRET_KEY = "SUPERSECRETKEY123"

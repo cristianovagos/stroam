@@ -28,6 +28,7 @@
 }
 
 .wrap-login{
+  opacity: 0.95;
   width: 960px;
   background: #fff;
   border-radius: 10px;
@@ -41,7 +42,7 @@
   display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 100px 100px 100px 100px;
+  padding: 50px 50px 50px 50px;
 }
 
 /* Responsive */

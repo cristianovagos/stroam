@@ -4,7 +4,7 @@ asergiosilv@gmail.com https://asergio.pw
 Engenharia de Servicos 2018/19 MEC:76678 asergio@ua.pt
 '''
 
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect, url_for, session
 from util import *
 from apispec import APISpec
 from apispec.ext.flask import FlaskPlugin
@@ -25,13 +25,43 @@ spec = APISpec(
     ]
 )
 
+# Root page, only shows login form for now
 @app.route('/')
 def index():
     return render_template('index.html')
 
+
 @app.route('/docs')
 def docs():
+    ''' Root for docs page '''
     return render_template('doc.html')
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    ''' Login (create session) '''
+
+    # Checking if there is already a valid session
+    if 'user_id' in session and db.exists('CLIENT', 'id', session['user_id']):
+        redirect(request.args.get('next'))
+
+    # request.form looks ugly and takes too much space...
+    param = request.form
+    keys = [k for k in param.keys()]
+    required_keys = ['email', 'pass']
+
+    # Checking for required parameters, in case of error goes to index TODO: error message at index
+    if not param or not check_keys(required_keys, keys):
+        return redirect(url_for('index'))
+
+    # Super insecure authentication, don't try this outside localhost kids
+    if db.exists('USER', ['email', 'password'], [ param['email'], param['pass'] ] ):
+        session['user_id'] = db.get('USER', 'email', param['email'])['id']
+    else:
+        pass #TODO: error of login failed
+
+    # Returning to origin
+    return redirect(request.args.get('next'))
 
 @app.route('/CreateCheckout', methods=['POST'])
 def create_checkout():
@@ -139,13 +169,20 @@ def pay():
     if not checkout:
         return jsonify({'ERROR': 'No such checkout'}), 400 #TODO: frontend information for client that something went wrong
 
-    return render_template('pay.html')
+    login_form = True
+    if session.get('user_id'):
+        login_form = False
 
+    return render_template('pay.html', amount = str(checkout['AMOUNT']) + " €",
+                                        login_form = login_form )
+
+
+### Generating openapi json file for swagger
 with app.test_request_context():
     spec.add_path(view=create_checkout)
-
 with open('static/swagger.json', 'w') as f:
     json.dump(spec.to_dict(), f)
+###
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000) #run app in debug mode on port 5000

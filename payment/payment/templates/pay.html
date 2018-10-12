@@ -5,7 +5,6 @@
 <head>
     <link rel= "stylesheet" type= "text/css" href="{{ url_for('static',filename='style/style.css') }}">
     <link rel= "stylesheet" type= "text/css" href="{{ url_for('static',filename='style/pay.css') }}">
-    <link rel= "stylesheet" type= "text/css" href="{{ url_for('static',filename='style/login.css') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 </head>
 
@@ -14,32 +13,56 @@
         <div class="container">
             <div class="wrap-login">
 
-                <div class="checkout_details">
+                <div class="checkout-details">
+                    <img src="{{ url_for('static',filename='images/stroam-logo.png') }}" alt="StrongPay"/>
+
+                    <span class="order-details"> Order Details: </span>
+                    <table class="order-table">
+                      <tr>
+                        <th>Description</th>
+                        <th>Amount</th>
+                      </tr>
+                      <tr>
+                        <td>Item</td>
+                        <td>{{amount}}</td>
+                      </tr>
+                      <tr>
+                        <td>Total:</td>
+                        <td>{{amount}}</td>
+                      </tr>
+                    </table>
 
                 </div>
 
-                <form class="login-form">
-                    <span class="login-title"> Login </span>
+                <div class="vl"></div>
 
-                    <div class="login-input">
-                        <input type="text" name="email" placeholder="Email" />
-                        <span> <i class="fa fa-envelope" aria-hidden="true"></i> </span>
-                    </div>
+                {% if login_form %}
+                  <form class="login-form" method='POST' action="{{ url_for('login', next=request.full_path) }}">
+                      <link rel= "stylesheet" type= "text/css" href="{{ url_for('static',filename='style/login.css') }}">
+                      <img src="{{ url_for('static',filename='images/logo.png') }}" alt="StrongPay"/>
 
-                    <div class="login-input">
-                        <input type="password" name="pass" placeholder="Password" />
-                        <span> <i class="fa fa-lock" aria-hidden="true"></i> </span>
-                    </div>
+                      <span class="login-title"> Login to finish your order</span>
 
-                    <div class="login-button">
-                        <button>Login</button>
-                    </div>
+                      <div class="login-input">
+                          <input type="text" name="email" placeholder="Email" />
+                          <span> <i class="fa fa-envelope" aria-hidden="true"></i> </span>
+                      </div>
 
-                    <div class="create-account">
-                        <a href="#" >Create your Account ⭬</a>
-                    </div>
+                      <div class="login-input">
+                          <input type="password" name="pass" placeholder="Password" />
+                          <span> <i class="fa fa-lock" aria-hidden="true"></i> </span>
+                      </div>
 
-                </form>
+                      <div class="login-button">
+                          <button>Login</button>
+                      </div>
+
+                      <div class="create-account">
+                          <a href="#" >Create your Account ⭬</a>
+                      </div>
+
+                  </form>
+                {% endif %}
 
             </div>
         </div>

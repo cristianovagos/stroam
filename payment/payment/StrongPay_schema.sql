@@ -6,7 +6,8 @@ DROP TABLE IF EXISTS CLIENT;
 CREATE TABLE USER(
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
-  email TEXT NOT NULL
+  email TEXT NOT NULL,
+  password TEXT NOT NULL
 );
 
 CREATE TABLE MERCHANT(
@@ -28,5 +29,6 @@ CREATE TABLE CHECKOUT (
   FOREIGN KEY (merchant) REFERENCES MERCHANT(id)
 );
 
-INSERT INTO USER (id, name, email) VALUES ("tokensample123", "STROAM", "geral@stroam.net");
+INSERT INTO USER (id, name, email, password) VALUES ("tokensample123", "STROAM", "geral@stroam.net", "password123");
 INSERT INTO MERCHANT (id) VALUES ("tokensample123");
+INSERT INTO CLIENT (id) VALUES ("tokensample123");

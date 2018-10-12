@@ -1,4 +1,4 @@
-import sqlite3
+import sqlite3, sys
 
 from flask import current_app, g
 
@@ -48,19 +48,25 @@ def insert(table, fields=(), values=()):
 
     return id
 
-def exists(table, column, value):
+def exists(table, columns, values):
     '''
         Checks if row exists on Database
     '''
+    if isinstance(columns, str):
+        columns = [columns]
+
+    if isinstance(values, str):
+        values = [values]
 
     cur = get_db().cursor()
 
-    query = 'SELECT EXISTS(SELECT 1 FROM %s WHERE %s=\"%s\" LIMIT 1);' % (
+    query = 'SELECT EXISTS(SELECT 1 FROM %s WHERE %s %s LIMIT 1);' % (
         table,
-        column,
-        value
+        '= ? AND '.join(columns),
+        '= ?'
     )
-    result = cur.execute(query).fetchone()[0]
+    
+    result = cur.execute(query, values).fetchone()[0]
     cur.close()
 
     return result
@@ -77,7 +83,7 @@ def get(table, column, value):
         column,
         value
     )
-    
+
     result = cur.execute(query).fetchone()
     cur.close()
 
