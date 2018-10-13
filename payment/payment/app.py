@@ -45,9 +45,14 @@ def docs():
 def login():
     ''' Login (create session) '''
 
+    # Cleaning URL to get args being used by the next url
+    args = request.args.to_dict()
+    args.pop('next', None)
+    args.pop('error', None)
+
     # Checking if there is already a valid session
     if 'user_id' in session and db.exists('CLIENT', 'id', session['user_id']):
-        redirect(request.args.get('next'))
+        redirect(url_for(request.args.get('next'), **args))
 
     # request.form looks ugly and takes too much space...
     param = request.form
@@ -56,16 +61,20 @@ def login():
 
     # Checking for required parameters
     if not param or not check_keys(required_keys, keys):
-        return redirect(request.args.get('next') + "&error=Login failed, please try again..")
+        return redirect(url_for(request.args.get('next'), \
+                                error="Login failed, please try again...",
+                                **args))
 
     # Super insecure authentication, don't try this outside localhost kids
     if db.exists('USER', ['email', 'password'], [ param['email'], param['pass'] ] ):
         session['user_id'] = db.get('USER', 'email', param['email'])['id']
     else:
-        return redirect(request.args.get('next') + "&error=Wrong e-mail or password, please try again.")
+        return redirect(url_for(request.args.get('next'), \
+                            error="Wrong e-mail or password, please try again.", \
+                            **args))
 
     # Returning to origin
-    return redirect(request.args.get('next'))
+    return redirect(url_for(request.args.get('next'), **args))
 
 @app.route('/CreateCheckout', methods=['POST'])
 def create_checkout():
