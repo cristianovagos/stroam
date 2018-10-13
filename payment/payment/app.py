@@ -33,6 +33,9 @@ def index():
     if request.args.get('error'):
         return render_template('index.html', error = request.args.get('error')), 400
 
+    if session.get('user_id'):
+        return 'i know you are logged in, i just don\'t have a page yet'
+
     return render_template('index.html'), 200
 
 
@@ -167,6 +170,10 @@ def create_checkout():
 
 @app.route('/pay', methods=['GET'])
 def pay():
+    '''
+        Payment page, the client comes to this page after clicking "Pay" on the merchant page
+    '''
+
     # request.args looks ugly and takes too much space...
     args = request.args
     keys = [k for k in args.keys()]
@@ -193,6 +200,33 @@ def pay():
 
     return render_template('pay.html', amount = str(checkout['AMOUNT']) + " €",
                                         login_form = login_form, error = error ), 200
+
+@app.route('/proccess_payment', methods=['POST'])
+def proccess_payment():
+    '''
+        After the client fills all the information the payment is proccessed
+    '''
+
+    # request.args looks ugly and takes too much space...
+    args = request.args
+    keys = [k for k in args.keys()]
+    required_keys = ['checkout']
+
+    # Checking for required arguments
+    if not args or not check_keys(required_keys, keys):
+        return redirect(url_for('index', error = "Checkout not valid, please contact the responsible merchant."))
+
+    # Getting row from database of the checkout
+    checkout = db.get('CHECKOUT', 'id', args['checkout']);
+
+    # Checking if checkout is valid
+    if not checkout:
+        return redirect(url_for('index', error = "Checkout not valid, please contact the responsible merchant."))
+
+    # TODO: Store Credit Card and mark checkout as paid
+
+    # Redirect to the URL given by the merchant
+    return redirect(checkout["RETURN_URL"])
 
 ### Generating openapi json file for swagger
 with app.test_request_context():

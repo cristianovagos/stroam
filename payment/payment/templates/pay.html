@@ -63,23 +63,23 @@
                   </form>
 
                   {% else %}
-                    <form class="payment-form">
+                    <form class="payment-form" method='POST' action="{{ url_for('proccess_payment', checkout = request.args.get('checkout_token') ) }}">
                       <img src="{{ url_for('static',filename='images/logo.png') }}" alt="StrongPay"/>
                       <span class="payment-title"> Payment Details</span>
                       <img src="{{ url_for('static',filename='images/credit.png') }}" alt="StrongPay"/>
 
                       <div class="payment-input">
-                          <input type="text" name="card-number" placeholder="Card Number" />
+                          <input  type="text" name="card-number" placeholder="Card Number" maxlength="15"/>
                           <span> <i class="fa fa-credit-card" aria-hidden="true"></i> </span>
                       </div>
 
                       <div id="half" class="payment-input">
-                          <input type="text" name="exp" placeholder="MM/YY" />
+                          <input type="text" name="exp" placeholder="MM/YY" maxlength="5"/>
                           <span> <i class="fa fa-calendar" aria-hidden="true"></i> </span>
                       </div>
 
                       <div id="half" class="payment-input">
-                          <input type="text" name="cvc" placeholder="CVC" />
+                          <input type="text" name="cvc" placeholder="CVC" maxlength="3" />
                           <span> <i class="fa fa-lock" aria-hidden="true"></i> </span>
                       </div>
 
