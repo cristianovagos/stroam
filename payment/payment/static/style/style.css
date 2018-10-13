@@ -42,7 +42,7 @@
   display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 50px 50px 50px 50px;
+  padding: 50px 50px 20px 50px;
 }
 
 /* Responsive */
@@ -60,6 +60,15 @@
   .login100-form {
     width: 50%;
   }
+}
+
+.error {
+    width: 100%;
+    text-align: center;
+    margin: 10px 0px;
+    padding:12px;
+    color: #D8000C;
+    background-color: #FFD2D2;
 }
 
 /* Alert */

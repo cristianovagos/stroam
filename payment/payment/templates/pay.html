@@ -64,6 +64,13 @@
                   </form>
                 {% endif %}
 
+                {% if error %}
+                <div class="error">
+                   <i class="fa fa-times-circle"></i>
+                   {{error}}
+                </div>
+                {% endif %}
+
             </div>
         </div>
     </div>

@@ -17,7 +17,7 @@
                     <img src="{{ url_for('static',filename='images/logo.png') }}" alt="StrongPay"/>
                 </div>
 
-                <form class="login-form" method='POST' action="{{ url_for('login', next=request.endpoint) }}">
+                <form class="login-form" method='POST' action="{{ url_for('login', next=request.full_path) }}">
                     <span class="login-title"> Login </span>
 
                     <div class="login-input">
@@ -39,6 +39,13 @@
                     </div>
 
                 </form>
+
+                {% if error %}
+                <div class="error">
+                   <i class="fa fa-times-circle"></i>
+                   {{error}}
+                </div>
+                {% endif %}
 
             </div>
         </div>
