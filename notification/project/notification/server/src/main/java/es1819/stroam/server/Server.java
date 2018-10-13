@@ -2,7 +2,6 @@ package es1819.stroam.server;
 
 import es1819.stroam.commons.communication.Communication;
 import es1819.stroam.commons.communication.CommunicationCallback;
-import es1819.stroam.server.handlers.Handler;
 
 import java.util.LinkedList;
 import java.util.Queue;
