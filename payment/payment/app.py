@@ -80,6 +80,78 @@ def login():
     # Returning to origin
     return redirect(url_for(request.args.get('next'), **args))
 
+@app.route('/GetCheckoutDetails', methods=['GET'])
+def get_checkout():
+    ''' GetCheckoutDetails
+    ---
+    get:
+        description: Gets checkout details such as who paid and billing address
+        tags:
+            - Payment
+        parameters:
+            - in: path
+              name: checkout_token
+              schema:
+                type: string
+              required: true
+              description: Checkout token given by create_checkout
+        responses:
+            200:
+                description: A JSON containing buyer information and checkout status (not defined yet)
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          NAME:
+                            type: string
+            400:
+                description: A JSON containing a ERROR that indentifies the problem
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          ERROR:
+                            type: string
+    '''
+    # Sturb api just for testing
+    return jsonify({'NAME': 'ZE MANEL'}), 200
+
+@app.route('/ExecuteCheckout', methods=['GET'])
+def execute_checkout():
+    ''' ExecuteCheckout
+    ---
+    get:
+        description: Confirm and execute payment. Returns Success or Failure.
+        tags:
+            - Payment
+        parameters:
+            - in: path
+              name: checkout_token
+              schema:
+                type: string
+              required: true
+              description: Checkout token given by create_checkout
+        responses:
+            200:
+                description: A JSON containing result of payment
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          SUCCESS:
+                            type: boolean
+            400:
+                description: A JSON containing a ERROR that indentifies the problem
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          ERROR:
+                            type: string
+    '''
+    # Sturb api just for testing
+    return jsonify({'SUCCESS': True}), 200
+
 @app.route('/CreateCheckout', methods=['POST'])
 def create_checkout():
     ''' CreateCheckout
@@ -87,7 +159,7 @@ def create_checkout():
     post:
         description: Creates a checkout
         tags:
-            - Generating a payment
+            - Payment
         requestBody:
             required: true
             content:
@@ -231,6 +303,9 @@ def proccess_payment():
 ### Generating openapi json file for swagger
 with app.test_request_context():
     spec.add_path(view=create_checkout)
+    spec.add_path(view=get_checkout)
+    spec.add_path(view=execute_checkout)
+
 with open('static/swagger.json', 'w') as f:
     json.dump(spec.to_dict(), f)
 ###
