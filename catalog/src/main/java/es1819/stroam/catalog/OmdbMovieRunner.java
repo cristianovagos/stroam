@@ -11,6 +11,7 @@ import es1819.stroam.catalog.model.retrofit.OmdbResult;
 import es1819.stroam.catalog.model.retrofit.OmdbService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import retrofit2.Response;
@@ -44,53 +45,59 @@ public class OmdbMovieRunner implements CommandLineRunner {
     String auxID;
     List<SeriesSeason> seasonList;
 
+    @Value("${spring.jpa.hibernate.ddl-auto}")
+    String databaseMethod;
+
     @Override
     public void run(String... args) throws Exception {
-        log.info("Running OmdbMovieRunner...");
+        if (databaseMethod.equals("create")) {
+            log.info("Running OmdbMovieRunner...");
 
-        for(int i = 0; i < moviesIDs.length; i++) {
-            auxID = moviesIDs[i];
+            for (int i = 0; i < moviesIDs.length; i++) {
+                auxID = moviesIDs[i];
 
-            Response<OmdbResult> response = omdbService.getMovieData(auxID, "full", API_KEY).execute();
-            if (response.isSuccessful()) {
-                OmdbResult result = response.body();
-                Production production = new Production();
-                production.setName(result.getTitle());
-                production.setDescription(result.getPlot());
-                production.setDirector(result.getDirector());
-                production.setPoster(result.getPoster());
-                production.setReleaseDate(result.getReleased());
-                production.setYear(result.getYear());
-                production.setType(result.getType());
-                production.setRuntime(result.getRuntime());
-                production.setImdbID(result.getImdbID());
+                Response<OmdbResult> response = omdbService.getMovieData(auxID, "full", API_KEY).execute();
+                if (response.isSuccessful()) {
+                    OmdbResult result = response.body();
+                    Production production = new Production();
+                    production.setName(result.getTitle());
+                    production.setDescription(result.getPlot());
+                    production.setDirector(result.getDirector());
+                    production.setPoster(result.getPoster());
+                    production.setReleaseDate(result.getReleased());
+                    production.setYear(result.getYear());
+                    production.setType(result.getType());
+                    production.setRuntime(result.getRuntime());
+                    production.setImdbID(result.getImdbID());
 
-                List<Genre> genreList = new ArrayList<>();
-                String[] genres = result.getGenre().split(",");
-                for (int j = 0; j < genres.length; j++) {
-                    Genre genre = new Genre();
-                    genre.setName(genres[j].trim());
-                    genreList.add(genre);
-                }
-                production.setGenres(new HashSet<>(genreList));
-
-                try {
-                    production.setSeasons(Integer.parseInt(result.getTotalSeasons()));
-                    if(production.getSeasons() > 0) {
-                        seasonList = new ArrayList<>();
-                        for (int j = 1; j <= production.getSeasons(); j++) {
-                            production = getSeasonsData(production, j);
-                        }
-                        production.setSeasonList(seasonList);
+                    List<Genre> genreList = new ArrayList<>();
+                    String[] genres = result.getGenre().split(",");
+                    for (int j = 0; j < genres.length; j++) {
+                        Genre genre = new Genre();
+                        genre.setName(genres[j].trim());
+                        genreList.add(genre);
                     }
+                    production.setGenres(new HashSet<>(genreList));
+
+                    try {
+                        production.setSeasons(Integer.parseInt(result.getTotalSeasons()));
+                        if (production.getSeasons() > 0) {
+                            seasonList = new ArrayList<>();
+                            for (int j = 1; j <= production.getSeasons(); j++) {
+                                production = getSeasonsData(production, j);
+                            }
+                            production.setSeasonList(seasonList);
+                        }
+                    } catch (NumberFormatException e) {
+                        production.setSeasons(0);
+                    }
+                    repository.save(production);
+                } else {
+                    log.error("getMovieData - response not successful");
                 }
-                catch (NumberFormatException e) {
-                    production.setSeasons(0);
-                }
-                repository.save(production);
-            } else {
-                log.error("getMovieData - response not successful");
             }
+        } else {
+            log.info("Initial data already on database, no need to add");
         }
     }
 

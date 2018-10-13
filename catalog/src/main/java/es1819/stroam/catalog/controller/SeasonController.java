@@ -33,7 +33,7 @@ public class SeasonController {
         return seasonRepository.findAllByProductionId(productionID);
     }
 
-    @RequestMapping(value = "/catalog/{prodID}/season/{num}")
+    @RequestMapping(value = "/catalog/{prodID}/season/{num}", method = GET)
     public SeriesSeason getSeasonByID(@PathVariable("prodID") Long productionID, @PathVariable("num") int seasonNumber) {
         Optional<SeriesSeason> season = seasonRepository.findByProductionIdAndAndSeason(productionID, seasonNumber);
         if(!season.isPresent())

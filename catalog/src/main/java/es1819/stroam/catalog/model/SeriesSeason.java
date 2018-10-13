@@ -30,6 +30,6 @@ public class SeriesSeason {
     private Production production;
 
     @OneToMany(cascade = CascadeType.ALL,
-    fetch = FetchType.EAGER, mappedBy = "season")
+    fetch = FetchType.LAZY, mappedBy = "season")
     private List<Episode> episodes;
 }

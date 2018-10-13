@@ -1,5 +1,6 @@
 package es1819.stroam.catalog.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import es1819.stroam.catalog.model.Genre;
 import es1819.stroam.catalog.model.SeriesSeason;
 import lombok.EqualsAndHashCode;
@@ -35,7 +36,7 @@ public class Production {
     private String year;
 
     @OneToMany(cascade = CascadeType.ALL,
-    fetch = FetchType.EAGER)
+    fetch = FetchType.LAZY)
     private Set<Genre> genres;
 
     @NotNull
@@ -60,7 +61,8 @@ public class Production {
     @NotNull
     private String imdbID;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,
-    fetch = FetchType.EAGER, mappedBy = "production")
+    fetch = FetchType.LAZY, mappedBy = "production")
     private List<SeriesSeason> seasonList;
 }
