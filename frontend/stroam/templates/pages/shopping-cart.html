@@ -22,28 +22,31 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for product in products %}
+                                    {% for product in products.items %}
                                         <tr>
                                             <td scope="row">
                                                 <div class="media">
                                                     <a class="img-thumbnail">
-                                                        <img src="{{ product.poster }}"
+                                                        <img src="{{ product.1.product.poster }}"
                                                              style="width: 65px; height: 65px;">
                                                     </a>
                                                     <div class="media-body" style="margin-left: 10px">
                                                         <h6>
-                                                            <a href="{% url 'movie-single' id=product.id %}">
-                                                                {{ product.title }}
+                                                            <a href="{% url 'movie-single' id=product.1.product.id %}">
+                                                                {{ product.1.product.title }}
                                                             </a>
                                                         </h6>
+                                                        {% if product.1.product.type == "series" %}
+                                                            <p>Season {{ product.1.season }}</p>
+                                                        {% endif %}
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="text-center">
-                                                <strong>{{ product.price }}€</strong>
+                                                <strong>{{ product.1.product.price }}€</strong>
                                             </td>
                                             <td>
-                                                <button class="btn btn-danger" data-toggle="modal" data-target="#removeModal" data-productid="{{ product.id }}">
+                                                <button class="btn btn-danger" data-toggle="modal" data-target="#removeModal" data-productid="{{ product.1.product.id }}">
                                                     <span class="fas fa-times-circle"></span> Remove
                                                 </button>
                                             </td>

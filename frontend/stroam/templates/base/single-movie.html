@@ -4,12 +4,18 @@
     <section>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Movies</a></li>
+                <li class="breadcrumb-item">
+                    {% if movie.type == "movie" %}
+                        <a href="{% url 'homeMovies' %}">Movies</a>
+                    {% else %}
+                        <a href="{% url 'homeSeries' %}">TV Series</a>
+                    {% endif %}
+                </li>
                 <li class="breadcrumb-item active" aria-current="page">{{ movie.title }}</li>
             </ol>
         </nav>
         <div class="container" style="margin-top: -16px; background: white">
-            <div class="row">
+            <div class="row" style="width: 100%">
                 <div class="col-md-4 col-sm-12 text-center">
                     <div class="movie-card-single">
                         <div class="movie-header-single"
@@ -32,19 +38,73 @@
                         <span style="font-size: 15px">{{ movie.director }}</span>
                     </h6>
                     <p style="margin-top: 15px; margin-bottom: 30px; min-width: 300px">{{ movie.description }}</p>
+
+                    <!-- TODO mostrar play só se user comprou o filme / série -->
                     <button type="button" class="btn btn-danger">
                         <span class="fas fa-play"></span>
                         Play
                     </button>
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        <button name="productID" value="{{ movie.id }}" type="submit" class="btn btn-danger">
-                            <span class="fas fa-cart-plus"></span>
-                            Add to Cart
-                        </button>
-                    </form>
+
+                    {% if movie.type == "movie" %}
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <button id="addcart" name="productID" value="{{ movie.id }}" type="submit" class="btn btn-danger">
+                                <span class="fas fa-cart-plus"></span>
+                                Add to Cart
+                            </button>
+                        </form>
+                    {% endif %}
                 </div>
             </div>
+            {% if movie.type == "series" and movie.seasons > 0 %}
+                <div class="row" style="padding-bottom: 50px; width: 80%">
+                    <div class="w-100">
+                        <h5 class="text-center" style="padding-bottom: 20px">Seasons available:</h5>
+                        <ul class="list-group">
+                            {% for season in movie.seasonList %}
+                                <li class="list-group-item">
+                                    <div class="row toggle" id="dropdown-detail-{{ forloop.counter }}" data-toggle="detail-{{ forloop.counter }}" style="padding: 5px">
+                                        <div class="w-50">
+                                            Season {{ season.seasonNum }}
+                                            <br>
+                                            {% if season.episodes|length == 1 %}
+                                                <span class="badge badge-dark badge-pill">
+                                                    1 episode
+                                                </span>
+                                            {% elif season.episodes|length > 1 %}
+                                                <span class="badge badge-dark badge-pill">
+                                                    {{ season.episodes|length }} episodes
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="w-50 text-right">
+                                            <form action="" method="post">
+                                                {% csrf_token %}
+                                                <button class="btn btn-danger fas fa-cart-plus" type="submit" id="addcart" name="productID" value="{{ movie.id }}" style="color: white"></button>
+                                                <input type="hidden" id="seasonID" name="seasonID" value="{{ season.id }}">
+                                                <input type="hidden" id="seasonNum" name="seasonNum" value="{{ season.seasonNum }}">
+                                                <a class="btn btn-secondary fa fa-chevron-down" style="color: white"></a>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div id="detail-{{ forloop.counter }}">
+                                        <hr/>
+                                        <div class="w-100">
+                                            <ul class="list-group list-group-flush">
+                                                {% for episode in season.episodes %}
+                                                    <li class="list-group-item">
+                                                        <span class="badge badge-danger badge-pill">#{{ episode.num }}</span> {{ episode.title }}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
         </div>
         <div class="modal fade" id="addedCart" tabindex="-1" role="dialog" aria-labelledby="addedCartLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">

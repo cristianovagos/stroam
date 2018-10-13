@@ -20,9 +20,9 @@
                 <a class="nav-link" href="{% url 'shopping-cart' %}">
                     <span class="fas fa-shopping-cart"></span>
                     {% if numCart > 0 %}
-                        Cart ({{ numCart }})
+                        <span id="cartnum">Cart ({{ numCart }})</span>
                     {% else %}
-                        Cart
+                        <span id="cartnum">Cart</span>
                     {% endif %}
                 </a>
             </li>

@@ -1,6 +1,8 @@
 from random import shuffle
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 from .catalog import catalog
 
@@ -16,7 +18,8 @@ def home(request):
     if 'productList' in request.session:
         numCartProducts = len(request.session.get('productList'))
     movies = catalog.getAllCatalog()
-    shuffle(movies)
+    if movies:
+        shuffle(movies)
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
@@ -30,7 +33,8 @@ def homeMovies(request):
     if 'productList' in request.session:
         numCartProducts = len(request.session.get('productList'))
     movies = [x for x in catalog.getAllCatalog() if x.type == 'movie']
-    shuffle(movies)
+    if movies:
+        shuffle(movies)
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
@@ -44,7 +48,8 @@ def homeSeries(request):
     if 'productList' in request.session:
         numCartProducts = len(request.session.get('productList'))
     movies = [x for x in catalog.getAllCatalog() if x.type == 'series']
-    shuffle(movies)
+    if movies:
+        shuffle(movies)
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
@@ -63,12 +68,17 @@ def singleMovie(request, id):
         movieTitle = movie.title
 
     if request.method == 'POST':
-        if 'productList' in request.session and request.POST['productID'] not in request.session['productList']:
-            auxList = request.session.get('productList')
-            auxList.append(int(request.POST['productID']))
-            request.session['productList'] = auxList
+        request.session.flush()
+        auxDict = {}
+        if 'productList' in request.session:
+            auxDict = request.session.get('productList')
+        if request.POST['seasonID'] and request.POST['seasonNum']:
+            auxDict[int(request.POST['productID'])] = {
+                'season': int(request.POST['seasonNum']),
+                'seasonID': int(request.POST['seasonID'])}
         else:
-            request.session['productList'] = [int(request.POST['productID'])]
+            auxDict[int(request.POST['productID'])] = {'season': None}
+        request.session['productList'] = auxDict
 
         tparams = {
             'title': MAIN_TITLE + movieTitle,
@@ -89,24 +99,32 @@ def singleMovie(request, id):
 def shoppingCart(request):
     title = 'Your shopping cart'
     numCartProducts = 0
-    if 'productList' in request.session:
-        numCartProducts = len(request.session.get('productList'))
 
     if request.method == 'POST':
         if 'productList' in request.session:
-            auxList = request.session.get('productList')
-            auxList.remove(int(request.POST['productID']))
-            request.session['productList'] = auxList
+            auxDict = request.session.get('productList')
+            auxDict.pop(request.POST['productID'], None)
+            request.session['productList'] = auxDict
             return HttpResponse('')
 
-    products = []
+    products = {}
     price = 0
     if 'productList' in request.session:
+        numCartProducts = len(request.session.get('productList'))
         prodList = request.session.get('productList')
         for product in prodList:
             p = catalog.getSingleCatalog(int(product))
-            price += p.price
-            products.append(p)
+            if p:
+                price += p.price
+                products[p.id] = {}
+                products[p.id]['product'] = p
+                if 'season' in prodList[product] and prodList[product]['season'] is not None:
+                    products[p.id]['season'] = prodList[product]['season']
+                if 'seasonID' in prodList[product] and prodList[product]['seasonID'] is not None:
+                    products[p.id]['seasonID'] = prodList[product]['seasonID']
+            else:
+                request.session['productList'] = {}
+                numCartProducts = 0
 
     tparams = {
         'title': MAIN_TITLE + title,
@@ -119,16 +137,24 @@ def shoppingCart(request):
 def checkout(request):
     title = 'Checkout'
     numCartProducts = 0
-    if 'productList' in request.session:
-        numCartProducts = len(request.session.get('productList'))
-
-    products = []
+    products = {}
     price = 0
     if 'productList' in request.session:
-        for product in request.session['productList']:
+        numCartProducts = len(request.session.get('productList'))
+        prodList = request.session.get('productList')
+        for product in prodList:
             p = catalog.getSingleCatalog(int(product))
-            price += p.price
-            products.append(p)
+            if p:
+                price += p.price
+                products[p.id] = {}
+                products[p.id]['product'] = p
+                if 'season' in prodList[product] and prodList[product]['season'] is not None:
+                    products[p.id]['season'] = prodList[product]['season']
+                if 'seasonID' in prodList[product] and prodList[product]['seasonID'] is not None:
+                    products[p.id]['seasonID'] = prodList[product]['seasonID']
+            else:
+                request.session['productList'] = {}
+                numCartProducts = 0
 
     tparams = {
         'title': MAIN_TITLE + title,
@@ -137,3 +163,4 @@ def checkout(request):
         'numCart': numCartProducts
     }
     return render(request, 'pages/checkout.html', tparams)
+
