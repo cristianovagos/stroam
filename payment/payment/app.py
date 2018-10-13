@@ -28,13 +28,17 @@ spec = APISpec(
 # Root page, only shows login form for now
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # Checking if it came from a error redirect
+    if request.args.get('error'):
+        return render_template('index.html', error = request.args.get('error')), 400
+
+    return render_template('index.html'), 200
 
 
 @app.route('/docs')
 def docs():
     ''' Root for docs page '''
-    return render_template('doc.html')
+    return render_template('doc.html'), 200
 
 
 @app.route('/login', methods=['POST'])
@@ -50,15 +54,15 @@ def login():
     keys = [k for k in param.keys()]
     required_keys = ['email', 'pass']
 
-    # Checking for required parameters, in case of error goes to index TODO: error message at index
+    # Checking for required parameters
     if not param or not check_keys(required_keys, keys):
-        return redirect(url_for('index'))
+        return redirect(request.args.get('next') + "&error=Login failed, please try again..")
 
     # Super insecure authentication, don't try this outside localhost kids
     if db.exists('USER', ['email', 'password'], [ param['email'], param['pass'] ] ):
         session['user_id'] = db.get('USER', 'email', param['email'])['id']
     else:
-        pass #TODO: error of login failed
+        return redirect(request.args.get('next') + "&error=Wrong e-mail or password, please try again.")
 
     # Returning to origin
     return redirect(request.args.get('next'))
@@ -158,24 +162,27 @@ def pay():
     keys = [k for k in args.keys()]
     required_keys = ['checkout_token']
 
-    # Checking for required arguments TODO: frontend information for client that something went wrong
+    # Checking for required arguments
     if not args or not check_keys(required_keys, keys):
-        return jsonify({'ERROR': 'Invalid format or arguments missing.'}), 400
+        return redirect(url_for('index', error = "Checkout not valid, please contact the responsible merchant."))
 
     # Getting row from database of the checkout
     checkout = db.get('CHECKOUT', 'id', args['checkout_token']);
 
     # Checking if checkout is valid
     if not checkout:
-        return jsonify({'ERROR': 'No such checkout'}), 400 #TODO: frontend information for client that something went wrong
+        return redirect(url_for('index', error = "Checkout not valid, please contact the responsible merchant."))
 
     login_form = True
     if session.get('user_id'):
         login_form = False
 
-    return render_template('pay.html', amount = str(checkout['AMOUNT']) + " €",
-                                        login_form = login_form )
+    error = False
+    if request.args.get('error'):
+        error = request.args.get('error')
 
+    return render_template('pay.html', amount = str(checkout['AMOUNT']) + " €",
+                                        login_form = login_form, error = error ), 200
 
 ### Generating openapi json file for swagger
 with app.test_request_context():
