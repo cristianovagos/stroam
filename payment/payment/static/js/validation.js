@@ -1,13 +1,30 @@
 
-document.getElementsByClassName("login-form")[0].onsubmit = function(){
-    var email = document.getElementsByName("email")[0];
-    var password = document.getElementsByName("pass")[0];
+if(document.getElementsByClassName("login-form")[0]){
+  document.getElementsByClassName("login-form")[0].onsubmit = function(){
+      var email = document.getElementsByName("email")[0];
+      var password = document.getElementsByName("pass")[0];
 
-    if(!validateEmail(email.value)) { showWarning(email); return false; }
-    else if (!validatePassword(password.value)) { showWarning(password); return false; }
+      if(!validateEmail(email.value)) { showWarning(email); return false; }
+      else if (!validatePassword(password.value)) { showWarning(password); return false; }
 
-    return true;
-};
+      return true;
+  };
+}
+else {
+  document.getElementsByClassName("payment-form")[0].onsubmit = function(){
+      document.getElementById("loading").style.display = "block";
+      document.getElementById("proccess").innerHTML = "Processing, please wait"
+      document.getElementById("proccess").disabled = true;
+
+      var card_number = document.getElementsByName("card-number")[0];
+      var expiration = document.getElementsByName("exp")[0];
+      var cvc = document.getElementsByName("cvc")[0];
+      var card_owner = document.getElementsByName("card-owner")[0];
+
+      // Validation goes here TODO
+      return false;
+  };
+}
 
 function showWarning(input) {
     var inputDiv = input.parentElement;

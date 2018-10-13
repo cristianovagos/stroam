@@ -25,9 +25,10 @@ spec = APISpec(
     ]
 )
 
-# Root page, only shows login form for now
+
 @app.route('/')
 def index():
+    ''' Index page, simply returns a login form for now '''
     # Checking if it came from a error redirect
     if request.args.get('error'):
         return render_template('index.html', error = request.args.get('error')), 400
@@ -37,7 +38,7 @@ def index():
 
 @app.route('/docs')
 def docs():
-    ''' Root for docs page '''
+    ''' Docs page '''
     return render_template('doc.html'), 200
 
 
@@ -62,7 +63,7 @@ def login():
     # Checking for required parameters
     if not param or not check_keys(required_keys, keys):
         return redirect(url_for(request.args.get('next'), \
-                                error="Login failed, please try again...",
+                                error = error_message('login_fails'),
                                 **args))
 
     # Super insecure authentication, don't try this outside localhost kids
@@ -70,7 +71,7 @@ def login():
         session['user_id'] = db.get('USER', 'email', param['email'])['id']
     else:
         return redirect(url_for(request.args.get('next'), \
-                            error="Wrong e-mail or password, please try again.", \
+                            error = error_message('wrong_pass'), \
                             **args))
 
     # Returning to origin

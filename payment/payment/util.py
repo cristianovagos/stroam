@@ -28,3 +28,15 @@ def is_number(s):
         return True
     except ValueError:
         return False
+
+def error_message(error):
+    '''
+        Dict that translate error messages
+    '''
+
+    errors = {
+        "wrong_pass" : "Wrong e-mail or password, please try again.",
+        "login_fails" : "Login failed, please try again...",
+    }
+
+    return errors.get(error)

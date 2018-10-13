@@ -36,33 +36,66 @@
 
                 <div class="vl"></div>
 
-                {% if login_form %}
+                  {% if login_form %}
                   <form class="login-form" method='POST' action="{{ url_for('login', next=request.endpoint, **request.args) }}">
                       <link rel= "stylesheet" type= "text/css" href="{{ url_for('static',filename='style/login.css') }}">
                       <img src="{{ url_for('static',filename='images/logo.png') }}" alt="StrongPay"/>
 
-                      <span class="login-title"> Login to finish your order</span>
+                        <span class="login-title"> Login to finish your order</span>
 
-                      <div class="login-input">
-                          <input type="text" name="email" placeholder="Email" />
-                          <span> <i class="fa fa-envelope" aria-hidden="true"></i> </span>
+                        <div class="login-input">
+                            <input type="text" name="email" placeholder="Email" />
+                            <span> <i class="fa fa-envelope" aria-hidden="true"></i> </span>
+                        </div>
+
+                        <div class="login-input">
+                            <input type="password" name="pass" placeholder="Password" />
+                            <span> <i class="fa fa-lock" aria-hidden="true"></i> </span>
+                        </div>
+
+                        <div class="login-button">
+                            <button>Login</button>
+                        </div>
+
+                        <div class="create-account">
+                            <a href="#" >Create your Account ⭬</a>
+                        </div>
+                  </form>
+
+                  {% else %}
+                    <form class="payment-form">
+                      <img src="{{ url_for('static',filename='images/logo.png') }}" alt="StrongPay"/>
+                      <span class="payment-title"> Payment Details</span>
+                      <img src="{{ url_for('static',filename='images/credit.png') }}" alt="StrongPay"/>
+
+                      <div class="payment-input">
+                          <input type="text" name="card-number" placeholder="Card Number" />
+                          <span> <i class="fa fa-credit-card" aria-hidden="true"></i> </span>
                       </div>
 
-                      <div class="login-input">
-                          <input type="password" name="pass" placeholder="Password" />
+                      <div id="half" class="payment-input">
+                          <input type="text" name="exp" placeholder="MM/YY" />
+                          <span> <i class="fa fa-calendar" aria-hidden="true"></i> </span>
+                      </div>
+
+                      <div id="half" class="payment-input">
+                          <input type="text" name="cvc" placeholder="CVC" />
                           <span> <i class="fa fa-lock" aria-hidden="true"></i> </span>
                       </div>
 
-                      <div class="login-button">
-                          <button>Login</button>
+                      <div class="payment-input">
+                          <input type="text" name="card-owner" placeholder="Card Owner Name" />
+                          <span> <i class="fa fa-user" aria-hidden="true"></i> </span>
                       </div>
 
-                      <div class="create-account">
-                          <a href="#" >Create your Account ⭬</a>
+                      <div class="payment-button">
+                          <button id="proccess">Proccess payment</button>
+                          <img id="loading" src="{{ url_for('static',filename='images/loading.gif') }}" alt="StrongPay"/>
                       </div>
 
-                  </form>
-                {% endif %}
+                    </form>
+                  {% endif %}
+
 
                 {% if error %}
                 <div class="error">
