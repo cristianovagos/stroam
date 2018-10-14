@@ -21,15 +21,20 @@ StrongPay is a payment gateway service based on PayPal. It's composed of a front
 ## What is done
 
 - Index page with login form
+- Login Page
 - /CreateCheckout API call
+- Redirect link for payment to be done
+- Basic credit card Validation
+- Sturb API endpoints (/GetCheckoutDetails and /ExecuteCheckout)
 
 ## What is left
 
-- Login/Register for Client and Merchant
-- Redirect link for payment to be done
+- Register for Client and Merchant
 - Profile Management for the Client and Merchant
-- API call for Checkout information
-- Bonus features like credit card validation
+- /GetCheckoutDetails endpoint development
+- /ExecuteCheckout endpoint development
+- Hability to store used credit cards
+- Billing Address
 
 ## Deployment
 
@@ -51,4 +56,8 @@ sqlite> .read StrongPay_schema.sql
 python app.py
 ```
 
-# API documentation is available at /docs
+## How it works
+
+![alt text](http://code.ua.pt/projects/es1819-stroam/repository/revisions/fdd29f60e13318beb696942e5a73db2b7e1a9870/raw/payment/payment/static/images/strongpay_payment.png)
+
+# **API documentation is available at /docs**
