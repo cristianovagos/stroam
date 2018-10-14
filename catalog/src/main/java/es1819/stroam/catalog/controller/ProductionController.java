@@ -39,23 +39,18 @@ public class ProductionController {
     @RequestMapping(value = "/catalog/{id}", method = GET)
     public Production getCatalogByID(@PathVariable Long id) {
         Optional<Production> production = productionRepository.findById(id);
-
         if(!production.isPresent())
             throw new ProductionNotFoundException("id=" + id);
-
         return production.get();
     }
 
     @RequestMapping(value = "/catalog/{id}", method = PUT)
     public ResponseEntity<Object> updateCatalogByID(@RequestBody Production prod, @PathVariable Long id) {
         Optional<Production> production = productionRepository.findById(id);
-
         if(!production.isPresent())
-            return ResponseEntity.notFound().build();
-
+            throw new ProductionNotFoundException("id=" + id);
         prod.setId(id);
         productionRepository.save(prod);
-
         return ResponseEntity.noContent().build();
     }
 
