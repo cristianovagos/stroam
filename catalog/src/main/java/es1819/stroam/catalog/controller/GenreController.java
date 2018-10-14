@@ -42,7 +42,7 @@ public class GenreController {
     }
 
     @RequestMapping(value = "/catalog/genre/{id}", method = DELETE)
-    public ResponseEntity<Object> removeCatalogByID(@PathVariable Long id) {
+    public ResponseEntity<Object> removeGenreByID(@PathVariable Long id) {
         genreRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
@@ -53,5 +53,15 @@ public class GenreController {
         if(!genre.isPresent())
             throw new GenreNotFoundException("id=" + id);
         return genre.get();
+    }
+
+    @RequestMapping(value = "/catalog/genre/{id}", method = PUT)
+    public ResponseEntity<Object> updateGenreByID(@PathVariable Long id, @RequestBody Genre genre) {
+        Optional<Genre> genre1 = genreRepository.findById(id);
+        if(!genre1.isPresent())
+            throw new GenreNotFoundException("id=" + id);
+        genre.setId(genre1.get().getId());
+        genreRepository.save(genre);
+        return ResponseEntity.noContent().build();
     }
 }

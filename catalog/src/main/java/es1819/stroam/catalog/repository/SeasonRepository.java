@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface SeasonRepository extends JpaRepository<SeriesSeason, Long> {
     Optional<SeriesSeason> findById(Long seasonID);
     List<SeriesSeason> findAllByProductionId(Long productionID);
-    Optional<SeriesSeason> findByProductionIdAndAndSeason(Long productionID, int season);
+    Optional<SeriesSeason> findByProductionIdAndSeason(Long productionID, int seasonNum);
+    void deleteByProductionIdAndSeason(Long productionID, int seasonNum);
 }
