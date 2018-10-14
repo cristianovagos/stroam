@@ -8,8 +8,6 @@
 
 	<link rel="stylesheet" href="css/styles.css?v=1.0">
 
-	<script src="config.js"></script>
-
 	<style>
 	    video {
 	        width: 800px;
@@ -19,18 +17,25 @@
 
 </head>
 
-<body >
+<body onload = "pageReady()">
 
 	<div align="center" border-style="hidden" border-width="5 px ">
 		<h1 align="center"> Movie name here </h1>
+		<button align="center" onClick="playerSetup()">
+			Watch movie
+		</button>
 	</div>
-	<div align="center">
-        <video controls id="sourceVideoPlayer" src="./movies/1.mp4" type="video/mp4">Video stream not available.</video>
+
+	 </button>
+
+	<div id="playerDiv" align="center" style="display: none;">
+        <video controls id="videoPlayer" type="video/mp4">Video stream not available.</video>
         
         <!-- <video id="remoteVideo">Video stream not available.</video> -->
     </div>
 
-  <script src="config.js"></script>
+  <script src="./client_stream.js"></script>
+  <script src="./client.js"> </script>
 
 </body>
 </html>
