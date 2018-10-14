@@ -116,7 +116,7 @@ def get_checkout():
                             type: string
     '''
     # Sturb api just for testing
-    return jsonify({'NAME': 'ZE MANEL'}), 200
+    return jsonify({'NAME': 'ZE MANEL', 'ID' : 'BUYERID123'}), 200
 
 @app.route('/ExecuteCheckout', methods=['GET'])
 def execute_checkout():
