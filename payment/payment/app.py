@@ -104,6 +104,8 @@ def get_checkout():
                         properties:
                           NAME:
                             type: string
+                          BUYER_ID:
+                            type: string
             400:
                 description: A JSON containing a ERROR that indentifies the problem
                 content:
@@ -131,6 +133,12 @@ def execute_checkout():
                 type: string
               required: true
               description: Checkout token given by create_checkout
+            - in: path
+              name: buyer_id
+              schema:
+                type: string
+              required: true
+              description: Buyer ID given by /GetCheckoutDetails
         responses:
             200:
                 description: A JSON containing result of payment
