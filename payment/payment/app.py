@@ -306,7 +306,7 @@ def proccess_payment():
     # TODO: Store Credit Card and mark checkout as paid
 
     # Redirect to the URL given by the merchant
-    return redirect(checkout["RETURN_URL"])
+    return redirect(checkout["RETURN_URL"] + "?checkout_token=" + args['checkout'] )
 
 ### Generating openapi json file for swagger
 with app.test_request_context():
