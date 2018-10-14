@@ -13,16 +13,19 @@
             <class>es1819.stroam.persistence.entities.ServiceProducerEntity</class>
             <class>es1819.stroam.persistence.entities.SubscriberEntity</class>
             <class>es1819.stroam.persistence.entities.SubscriberChannelEntity</class>
+            <class>es1819.stroam.persistence.views.ProducersChannelsPathsEntity</class>
+            <class>es1819.stroam.persistence.views.SubscribersChannelsPathsEntity</class>
 
             <properties>
                 <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/nottheservicedb"/>
                 <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
                 <property name="hibernate.connection.username" value="root"/>
                 <property name="hibernate.connection.password" value="12345"/>
-                <property name="hibernate.archive.autodetection" value="class"/>
+                <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
                 <property name="hibernate.show_sql" value="true"/>
                 <property name="hibernate.format_sql" value="true"/>
                 <property name="hbm2ddl.auto" value="update"/>
+                <!--<property name="hibernate.archive.autodetection" value="class"/>-->
             </properties>
         </persistence-unit>
 </persistence>

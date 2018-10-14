@@ -24,6 +24,13 @@ public class Communication implements MqttCallback {
         return this;
     }
 
+    public boolean isConnected() {
+        if(client == null)
+            return false;
+
+        return client.isConnected();
+    }
+
     public void connect() throws Exception {
         if(client != null && client.isConnected())
             return;

@@ -1,0 +1,7 @@
+Hibernate:
+Para as views usar @Immutable abaixo de @Entity para resolver problema  No identifier specified for entity: ...
+
+
+
+Embedded - pode dar jeito para as tabelas intermedias
+https://stackoverflow.com/questions/44454367/hibernate-view-mapping

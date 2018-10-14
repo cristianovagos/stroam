@@ -9,6 +9,8 @@ public class SubscriberEntity {
     private int id;
     private String externalId;
     private String name;
+    private String emailAddress;
+    private String phoneNumber;
 
     @Id
     @Column(name = "Id")
@@ -40,6 +42,26 @@ public class SubscriberEntity {
         this.name = name;
     }
 
+    @Basic
+    @Column(name = "EmailAddress")
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    @Basic
+    @Column(name = "PhoneNumber")
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -47,12 +69,14 @@ public class SubscriberEntity {
         SubscriberEntity that = (SubscriberEntity) o;
         return id == that.id &&
                 Objects.equals(externalId, that.externalId) &&
-                Objects.equals(name, that.name);
+                Objects.equals(name, that.name) &&
+                Objects.equals(emailAddress, that.emailAddress) &&
+                Objects.equals(phoneNumber, that.phoneNumber);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, externalId, name);
+        return Objects.hash(id, externalId, name, emailAddress, phoneNumber);
     }
 }

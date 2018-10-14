@@ -2,8 +2,11 @@ package es1819.stroam.server;
 
 import es1819.stroam.commons.communication.Communication;
 import es1819.stroam.commons.communication.CommunicationCallback;
+import es1819.stroam.persistence.utilities.PersistenceUtilities;
+import es1819.stroam.persistence.views.ProducersChannelsPathsEntity;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.Semaphore;
 
@@ -27,6 +30,28 @@ public class Server implements Runnable, CommunicationCallback {
         if(keepRunning)
             return;
 
+        if(!communication.isConnected()) {
+            try {
+                communication.connect();
+            } catch (Exception communicationConnectException) { //TODO: colocar stacktrace no log
+                System.out.println("Connection failed. Cause:\n"
+                        + communicationConnectException.getMessage());
+                System.out.println("Server start aborted!");
+                return; //abort the server start
+            }
+        }
+
+        //before server start procedures
+        try {
+            subscribeDatabaseChannels();
+        } catch (Exception databaseChannelsSubscriptionException) { //TODO: colocar stacktrace no log
+            System.out.println("Channel subscription failed. Cause:\n"
+                    + databaseChannelsSubscriptionException.getMessage());
+            System.out.println("Server start aborted!");
+            return; //abort the server start
+        }
+
+        //start the server
         keepRunning = true;
         new Thread(this).start();
     }
@@ -36,7 +61,8 @@ public class Server implements Runnable, CommunicationCallback {
             return;
 
         keepRunning = false;
-        threadRunController.release();
+        communication.disconnect();
+        threadRunController.release(); //release the thread to finish it
     }
 
     public void run() {
@@ -51,7 +77,7 @@ public class Server implements Runnable, CommunicationCallback {
         }
     }
 
-    public void messageArrived(String topic, byte[] messageBytes) {
+    public void messageArrived(String topic, byte[] messageBytes) { //this method should only enqueue received messages
         try { receivedMessagesQueueAccessControllerMutex.acquire(); } catch (InterruptedException ignored) {}
         receivedMessagesQueue.offer(new MessageTopicBytes(topic, messageBytes));
         receivedMessagesQueueAccessControllerMutex.release();
@@ -65,6 +91,36 @@ public class Server implements Runnable, CommunicationCallback {
 
     public void connectionLost(Throwable throwable) {
 
+    }
+
+    private void subscribeDatabaseChannels() throws Exception {
+        List<ProducersChannelsPathsEntity> producersChannelsPathsEntities =
+            PersistenceUtilities.getEntityManagerInstance()
+                .createQuery("SELECT pcpv FROM ProducersChannelsPathsEntity AS pcpv " +
+                                "WHERE pcpv.isProducerPrefix = 1",
+                        ProducersChannelsPathsEntity.class).getResultList();
+        if(producersChannelsPathsEntities == null) {
+            System.err.println("No producers channels to subscribe!");
+            return;
+        }
+
+        for (ProducersChannelsPathsEntity producerChannelPathEntity : producersChannelsPathsEntities) {
+            if(producerChannelPathEntity.getIsProducerPrefix() == 1) //if is producer prefix channel then subscribe the subscriber operations channels
+                subscribeSubscribersOperationsChannels(producerChannelPathEntity.getPath()); //because all channels with this prefix are subscribed
+        }
+    }
+
+    private void subscribeSubscribersOperationsChannels(String producerChannelPath) throws Exception{
+        communication.subscribe(producerChannelPath
+                + Constants.SUBSCRIBER_REGISTRATION_CHANNEL_SUFFIX); //Producer channel to subscriber registration
+        communication.subscribe(producerChannelPath
+                + Constants.SUBSCRIBER_UNREGISTRATION_CHANNEL_SUFFIX); //Producer channel to subscriber unregistration
+        communication.subscribe(producerChannelPath
+                + Constants.SUBSCRIBER_SUBSCRIPTION_CHANNEL_SUFFIX); //Producer channel to subscriber subscription
+        communication.subscribe(producerChannelPath
+                + Constants.SUBSCRIBER_UNSUBSCRIPTION_CHANNEL_SUFFIX); //Producer channel to subscriber unsubscription
+        communication.subscribe(producerChannelPath
+                + Constants.ALL_CHANNELS_SUFFIX); //All producer channels
     }
 
     private MessageTopicBytes getQueuedReceivedMessage() {

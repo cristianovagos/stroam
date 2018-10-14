@@ -1,34 +1,45 @@
-package es1819.stroam.persistence.entities;
+package es1819.stroam.persistence.views;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Producers_Channels", schema = "nottheservicedb", catalog = "")
-@IdClass(ProducerChannelEntityPK.class)
-public class ProducerChannelEntity {
+@Table(name = "ProducersChannelsPaths_View", schema = "nottheservicedb", catalog = "")
+public class ProducersChannelsPathsEntity implements Serializable {
     private int producerId;
     private int channelId;
+    private String path;
     private byte isProducerPrefix;
 
-    @Id
     @Column(name = "ProducerId")
+    @Id
     public int getProducerId() {
         return producerId;
     }
 
-    public void setProducerId(int producerId) {
+    protected void setProducerId(int producerId) {
         this.producerId = producerId;
     }
 
-    @Id
     @Column(name = "ChannelId")
+    @Id
     public int getChannelId() {
         return channelId;
     }
 
-    public void setChannelId(int channelId) {
+    protected void setChannelId(int channelId) {
         this.channelId = channelId;
+    }
+
+    @Basic
+    @Column(name = "Path")
+    public String getPath() {
+        return path;
+    }
+
+    protected void setPath(String path) {
+        this.path = path;
     }
 
     @Basic
@@ -37,7 +48,7 @@ public class ProducerChannelEntity {
         return isProducerPrefix;
     }
 
-    public void setIsProducerPrefix(byte isProducerPrefix) {
+    protected void setIsProducerPrefix(byte isProducerPrefix) {
         this.isProducerPrefix = isProducerPrefix;
     }
 
@@ -45,15 +56,16 @@ public class ProducerChannelEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProducerChannelEntity that = (ProducerChannelEntity) o;
+        ProducersChannelsPathsEntity that = (ProducersChannelsPathsEntity) o;
         return producerId == that.producerId &&
                 channelId == that.channelId &&
-                isProducerPrefix == that.isProducerPrefix;
+                isProducerPrefix == that.isProducerPrefix &&
+                Objects.equals(path, that.path);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(producerId, channelId, isProducerPrefix);
+        return Objects.hash(producerId, channelId, path, isProducerPrefix);
     }
 }

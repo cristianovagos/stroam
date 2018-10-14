@@ -5,7 +5,7 @@ NotTheService is a notification service based in MQTT protocol.
 This service aims to process and forward the various notifications to all its users with great simplicity accross the diferent services and by email.
 
 ## API Specification
-The service will be available on port 1884 in the form **ws://&lt;serverAddress&gt;:1884"** where MQTT messages should be forwarded.
+The service will be available on port 1884 in the form **"ws://&lt;serverAddress&gt;:1884"** where MQTT messages should be forwarded.
 
 Due to the uncoupling of producers and subscribers created by the publish/subscribe protocol in order to know and distinguish producers from subscribers, some requirements must be fulfilled to guarantee the sending and receiving of notifications.
 
