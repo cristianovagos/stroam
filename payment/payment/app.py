@@ -187,6 +187,24 @@ def create_checkout():
                     CANCEL_URL:
                       type: string
                       description: URL to where the client in redirect if the payment is cancelled
+                    CURRENCY:
+                      type: string
+                      description: Three characthers currency code. Default value is 'EUR'. [https://www.xe.com/iso4217.php]
+                      default : EUR
+                    ITEM_n_NAME:
+                      type: string
+                      description: Checkout item's name. Default value is "Item". This parameter is required if you fill any other "ITEM_n" parameter with the same 'n'. ['n' is the sequencial number of the item and it can be between 0 and 9 (up to 10 items)]
+                      default : Item
+                    ITEM_n_PRICE:
+                      type : double
+                      description: Checkout item's price. Default value is the one given in 'AMOUNT'. This parameter is required if you fill any other "ITEM_n" parameter with the same 'n'. ['n' is the sequencial number of the item and it can be between 0 and 9 (up to 10 items)]
+                    ITEM_n_QUANTITY:
+                      type : integer
+                      description: Checkout item's quantity. Default value is 1. This parameter is not required at any situation. ['n' is the sequencial number of the item and it can be between 0 and 9 (up to 10 items)]
+                      default : 1
+                    ITEM_n_URL:
+                      type : string
+                      description: Checkout item's URL to your domain. This parameter is not required at any situation. ['n' is the sequencial number of the item and it can be between 0 and 9 (up to 10 items)]
                   required:
                     - AMOUNT
                     - MERCHANT
@@ -213,7 +231,7 @@ def create_checkout():
     # request.form looks ugly and takes too much space...
     param = request.form
     keys = [k for k in param.keys()]
-    required_keys = ['AMOUNT', 'MERCHANT', 'RETURN_URL', 'CANCEL_URL']
+    required_keys = ['AMOUNT', 'RETURN_URL', 'CANCEL_URL', 'MERCHANT']
 
     # Checking for required parameters
     if not param or not check_keys(required_keys, keys):
@@ -241,7 +259,7 @@ def create_checkout():
     try:
         validation = db.insert('CHECKOUT', \
             ('id', 'amount', 'return_url', 'cancel_url', 'merchant'), \
-            tuple( [token] + [param[k] for k in keys] ) )
+            tuple( [token] + [param[k] for k in required_keys] ) )
     except Exception as e:
         return jsonify({'ERROR': 'An error ocurred on the Database.'}), 500
 
