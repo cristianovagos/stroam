@@ -1,4 +1,4 @@
-{% extends 'base/layout.html' %}
+{% extends 'base/layout-nocart.html' %}
 
 {% block content %}
     <section>
@@ -50,9 +50,14 @@
                                 </tr>
                                 <tr>
                                     <td class="text-right" colspan="3">
-                                        <a class="btn btn-success btn-lg" href="#">
-                                            <span class="fas fa-check"></span> Confirm & Pay
-                                        </a>
+                                        <form action="" method="post">
+                                            {% csrf_token %}
+                                            <button class="btn btn-success btn-lg" type="submit">
+                                                <span class="fas fa-check"></span> Confirm & Pay
+                                            </button>
+                                            <input type="hidden" id="buyerID" name="buyerID" value="{{ buyerID }}">
+                                            <input type="hidden" id="checkoutToken" name="checkoutToken" value="{{ checkoutToken }}">
+                                        </form>
                                     </td>
                                 </tr>
                             </tbody>

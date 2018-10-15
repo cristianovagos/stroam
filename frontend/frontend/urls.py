@@ -25,4 +25,10 @@ urlpatterns = [
     path('movie/<int:id>', views.singleMovie, name='movie-single'),
     path('cart/', views.shoppingCart, name='shopping-cart'),
     path('checkout/', views.checkout, name='checkout'),
+    path('checkout/create', views.checkoutCreate, name='checkoutCreate'),
+    path('checkout/success', views.paymentCompleted, name='paymentCompleted'),
+    path('checkout/error', views.paymentError, name='paymentError'),
+    path('deleteAll', views.deleteAll, name='deleteAll'),
 ]
+
+# DELETE ALL IS ONLY FOR DEBUGGING PURPOSES, IT DELETES ALL DATA FROM FRONTEND DATABASE + SESSION DATA
