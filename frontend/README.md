@@ -10,14 +10,19 @@ This section will be updated as soon as development goes on.
 * Single movie/series page with info from Catalog (seasons info, episodes, etc)
 * Shopping Cart and Checkout pages and logic (add and remove products, user prompts, etc)
 * Added Django Channels support to go async
-* Added PostgreSQL database support, to store purchases information, etc
+* Added PostgreSQL database support
+* Models created (_Purchase_ - purchases information and _PurchaseInformation_ - N-to-M connection table into Catalog IDs) for database usage
+* Payment service (StroamPay) integrated (_view payment folder for more info_)
+* Added basic GET+POST protection of hardcoded URLs (p.e. accessing certain pages out of cycle)
 
 ## TODO
 This section will (_also_) be updated as soon as development goes on.
-* Add async notification support (_needs Notification service_)
-* Add play feature (_needs user database + Streaming CDN service_) to play movies
+* Add purchases page (purchase history, etc), let user resume payments, etc (_to be discussed_)
+* Add user authentication (Sign-in/Register, store user data, etc)
+* Add notification support (_needs Notification service_)
+* Add play feature (_from Streaming CDN service_) to play movies/series
 * _More_ error handling (_to be found during tests_)
-* Migrate into Docker containers (in the end...)
+* Migrate into Docker containers for ease of deployment
 
 ### How to run (locally)
 
@@ -42,6 +47,7 @@ $ python manage.py migrate
 ```
 
 * Run Catalog service (check its README)
+* Run Payment service (check its README)
 
 * Start Django server
 ```

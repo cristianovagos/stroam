@@ -39,11 +39,12 @@
                     </h6>
                     <p style="margin-top: 15px; margin-bottom: 30px; min-width: 300px">{{ movie.description }}</p>
 
-                    <!-- TODO mostrar play só se user comprou o filme / série -->
-                    <button type="button" class="btn btn-danger">
-                        <span class="fas fa-play"></span>
-                        Play
-                    </button>
+                    {% if purchased %}
+                        <button type="button" class="btn btn-danger">
+                            <span class="fas fa-play"></span>
+                            Play
+                        </button>
+                    {% endif %}
 
                     {% if movie.type == "movie" %}
                         <form action="" method="post">

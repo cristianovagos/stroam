@@ -1,0 +1,18 @@
+{% extends 'base/layout.html' %}
+
+{% block content %}
+    <section>
+        <div class="container-fluid" style="margin-top: 25px; margin-bottom: 30px">
+            <div class="row justify-content-center">
+                <div class="col-sm-10 col-md-10" style="padding-top: 200px; padding-bottom: 200px;">
+                    <h3 class="text-center">
+                        <i class="fas fa-check-circle fa-3x text-danger"></i><br><br>
+                        All stuff is deleted!<br><br>
+                        <a href="{% url 'homepage' %}" class="btn-lg btn-danger">Go to Homepage</a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
