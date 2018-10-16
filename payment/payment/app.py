@@ -60,7 +60,7 @@ def login():
 
     # request.form looks ugly and takes too much space...
     param = request.form
-    keys = [k for k in param.keys()]
+    keys = param.keys()
     required_keys = ['email', 'pass']
 
     # Checking for required parameters
@@ -243,7 +243,7 @@ def create_checkout():
     '''
     # request.form looks ugly and takes too much space...
     param = request.json
-    keys = [k for k in param.keys()]
+    keys = param.keys()
     expected_keys = ['AMOUNT', 'RETURN_URL', 'CANCEL_URL', 'MERCHANT', 'CURRENCY', 'ITEMS']
 
     # Checking for required parameters
@@ -298,7 +298,7 @@ def pay():
 
     # request.args looks ugly and takes too much space...
     args = request.args
-    keys = [k for k in args.keys()]
+    keys = args.keys()
     required_keys = ['checkout_token']
 
     # Checking for required arguments
@@ -333,7 +333,7 @@ def proccess_payment():
 
     # request.args looks ugly and takes too much space...
     args = request.args
-    keys = [k for k in args.keys()]
+    keys = args.keys()
     required_keys = ['checkout']
 
     # Checking for required arguments
