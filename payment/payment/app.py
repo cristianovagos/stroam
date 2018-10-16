@@ -160,6 +160,14 @@ def execute_checkout():
     # Sturb api just for testing
     return jsonify({'SUCCESS': True}), 200
 
+@app.route('/CreateCheckout', methods=['PUT'])
+def update_checkout():
+    pass
+
+@app.route('/CreateCheckout', methods=['DELETE'])
+def delete_checkout():
+    pass
+
 @app.route('/CreateCheckout', methods=['POST'])
 def create_checkout():
     ''' CreateCheckout
@@ -171,12 +179,12 @@ def create_checkout():
         requestBody:
             required: true
             content:
-              application/x-www-form-urlencoded:
+              application/json:
                 schema:
                   type: object
                   properties:
                     AMOUNT:
-                      type: double
+                      type: number
                       description: Amount to be paid by the client
                     MERCHANT:
                       type: string
@@ -191,20 +199,25 @@ def create_checkout():
                       type: string
                       description: Three characthers currency code. Default value is 'EUR'. [https://www.xe.com/iso4217.php]
                       default : EUR
-                    ITEM_n_NAME:
-                      type: string
-                      description: Checkout item's name. Default value is "Item". This parameter is required if you fill any other "ITEM_n" parameter with the same 'n'. ['n' is the sequencial number of the item and it can be between 0 and 9 (up to 10 items)]
-                      default : Item
-                    ITEM_n_PRICE:
-                      type : double
-                      description: Checkout item's price. Default value is the one given in 'AMOUNT'. This parameter is required if you fill any other "ITEM_n" parameter with the same 'n'. ['n' is the sequencial number of the item and it can be between 0 and 9 (up to 10 items)]
-                    ITEM_n_QUANTITY:
-                      type : integer
-                      description: Checkout item's quantity. Default value is 1. This parameter is not required at any situation. ['n' is the sequencial number of the item and it can be between 0 and 9 (up to 10 items)]
-                      default : 1
-                    ITEM_n_URL:
-                      type : string
-                      description: Checkout item's URL to your domain. This parameter is not required at any situation. ['n' is the sequencial number of the item and it can be between 0 and 9 (up to 10 items)]
+                    ITEMS:
+                      type: array
+                      items:
+                            type : object
+                            properties:
+                                NAME:
+                                    type : string
+                                    description: Checkout item's name. Default value is "Item". This parameter is required if you fill any other "ITEM_n" parameter with the same 'n'. ['n' is the sequencial number of the item and it can be between 0 and 9 (up to 10 items)]
+                                    default : Item
+                                PRICE:
+                                    type : number
+                                    description: Checkout item's price. Default value is the one given in 'AMOUNT'. This parameter is required if you fill any other "ITEM_n" parameter with the same 'n'. ['n' is the sequencial number of the item and it can be between 0 and 9 (up to 10 items)]
+                                QUANTITY:
+                                    type : integer
+                                    description: Checkout item's quantity. Default value is 1. This parameter is not required at any situation. ['n' is the sequencial number of the item and it can be between 0 and 9 (up to 10 items)]
+                                    default : 1
+                                URL:
+                                    type : string
+                                    description: Checkout item's URL to your domain. This parameter is not required at any situation. ['n' is the sequencial number of the item and it can be between 0 and 9 (up to 10 items)]
                   required:
                     - AMOUNT
                     - MERCHANT
@@ -229,7 +242,7 @@ def create_checkout():
                             type: string
     '''
     # request.form looks ugly and takes too much space...
-    param = request.form
+    param = request.json
     keys = [k for k in param.keys()]
     required_keys = ['AMOUNT', 'RETURN_URL', 'CANCEL_URL', 'MERCHANT']
 
@@ -255,12 +268,25 @@ def create_checkout():
         if not db.exists('CHECKOUT', 'id', token):
             break
 
+    # Columns to add on Database
+    columns = ('id', 'amount', 'return_url', 'cancel_url', 'merchant')
+    keys_to_db = required_keys
+
+    # Checking for optional parameters
+    if 'CURRENCY' in keys:
+        columns = (*columns, "currency")
+        keys_to_db += ['CURRENCY']
+
     # Inserting new checkout to database
     try:
+        # Adding items to checkout if given by the merchant
+        if 'ITEMS' in keys and not add_items(param['ITEMS'], token):
+            raise Exception('Error adding items')
         validation = db.insert('CHECKOUT', \
-            ('id', 'amount', 'return_url', 'cancel_url', 'merchant'), \
-            tuple( [token] + [param[k] for k in required_keys] ) )
+            columns, \
+            tuple( [token] + [param[k] for k in keys_to_db] ) )
     except Exception as e:
+        print(e)
         return jsonify({'ERROR': 'An error ocurred on the Database.'}), 500
 
     # Everything went well, returning token for new checkout

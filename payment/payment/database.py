@@ -65,7 +65,7 @@ def exists(table, columns, values):
         '= ? AND '.join(columns),
         '= ?'
     )
-    
+
     result = cur.execute(query, values).fetchone()[0]
     cur.close()
 

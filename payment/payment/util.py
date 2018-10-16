@@ -1,4 +1,5 @@
 from urllib.parse import urlparse
+import database as db
 
 def check_keys(required_keys, keys):
     '''
@@ -40,3 +41,28 @@ def error_message(error):
     }
 
     return errors.get(error)
+
+def add_items(items, checkout):
+    '''
+        Add items to checkout 
+    '''
+    for item in items:
+        keys_to_db = ['NAME', 'PRICE']
+        columns = ('checkout', 'name', 'price')
+        keys = item.keys()
+        if not check_keys(keys_to_db, keys):
+            return False
+        if 'QUANTITY' in keys:
+            keys_to_db += 'QUANTITY'
+            columns = (*columns, 'quantity')
+        if 'URL' in keys:
+            keys_to_db += 'URL'
+            columns = (*columns, 'url')
+        try:
+            db.insert('ITEM', \
+                columns, \
+                tuple( [checkout] + [item[k] for k in keys_to_db] ) )
+        except Exception as e:
+            print(e)
+            return False
+    return True
