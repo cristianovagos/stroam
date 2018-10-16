@@ -309,6 +309,7 @@ def pay():
 
     # Getting row from database of the checkout
     checkout = db.get('CHECKOUT', 'id', args['checkout_token']);
+    items = db.get_all('ITEM', 'checkout', args['checkout_token']);
 
     # Checking if checkout is valid
     if not checkout:
@@ -322,7 +323,9 @@ def pay():
     if request.args.get('error'):
         error = request.args.get('error')
 
-    return render_template('pay.html', amount = str(checkout['AMOUNT']) + " €",
+    return render_template('pay.html', amount = str(checkout['amount']),
+                                       items = items,
+                                       currency = str(checkout['currency']),
                                         login_form = login_form, error = error ), 200
 
 @app.route('/proccess_payment', methods=['POST'])

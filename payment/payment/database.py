@@ -88,3 +88,21 @@ def get(table, column, value):
     cur.close()
 
     return result
+
+def get_all(table, column, value):
+    '''
+        Returns Rows from database
+    '''
+
+    cur = get_db().cursor()
+
+    query = 'SELECT * FROM %s WHERE %s=\"%s\"' % (
+        table,
+        column,
+        value
+    )
+
+    result = cur.execute(query).fetchall()
+    cur.close()
+
+    return result

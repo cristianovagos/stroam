@@ -20,15 +20,24 @@
                     <table class="order-table">
                       <tr>
                         <th>Description</th>
-                        <th>Amount</th>
+                        <th style="text-align:right">Amount</th>
                       </tr>
+                      {% if items != [] %}
+                        {% for item in items %}
+                            <tr>
+                              <td>{{item.name}} <b> x {{item.quantity}} </b> </td>
+                              <td style="text-align:right">{{item.price}} {{currency}}</td>
+                            </tr>
+                        {% endfor %}
+                      {% else %}
                       <tr>
                         <td>Item</td>
-                        <td>{{amount}}</td>
+                        <td style="text-align:right">{{amount}}</td>
                       </tr>
+                      {% endif %}
                       <tr>
                         <td>Total:</td>
-                        <td>{{amount}}</td>
+                        <td style="text-align:right">{{amount}} {{currency}}</td>
                       </tr>
                     </table>
 
