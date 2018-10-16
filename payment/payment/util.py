@@ -38,13 +38,20 @@ def error_message(error):
     errors = {
         "wrong_pass" : "Wrong e-mail or password, please try again.",
         "login_fails" : "Login failed, please try again...",
+        "invalid_checkout" : "Checkout not valid, please contact the responsible merchant.",
+        "invalid_request" : "Invalid format or parameters missing.",
+        "invalid_url" : "RETURN or CANCEL URI with invalid format.",
+        "invalid_amount" : "AMOUNT not valid.",
+        "invalid_merchant" : "MERCHANT doesn\'t exist.",
+        "db_error" : "An error ocurred on the Database."
+
     }
 
     return errors.get(error)
 
 def add_items(items, checkout):
     '''
-        Add items to checkout 
+        Add items to checkout
     '''
     for item in items:
         keys_to_db = ['NAME', 'PRICE']

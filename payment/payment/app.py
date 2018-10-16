@@ -31,9 +31,9 @@ def index():
     ''' Index page, simply returns a login form for now '''
     # Checking if it came from a error redirect
     if request.args.get('error'):
-        return render_template('index.html', error = request.args.get('error')), 400
+        return render_template('index.html', error = error_message(request.args.get('error'))), 400
 
-    if session.get('user_id'):
+    if 'user_id' in session and db.exists('CLIENT', 'id', session['user_id']):
         return 'i know you are logged in, i just don\'t have a page yet'
 
     return render_template('index.html'), 200
@@ -244,23 +244,23 @@ def create_checkout():
     # request.form looks ugly and takes too much space...
     param = request.json
     keys = [k for k in param.keys()]
-    required_keys = ['AMOUNT', 'RETURN_URL', 'CANCEL_URL', 'MERCHANT']
+    expected_keys = ['AMOUNT', 'RETURN_URL', 'CANCEL_URL', 'MERCHANT', 'CURRENCY', 'ITEMS']
 
     # Checking for required parameters
-    if not param or not check_keys(required_keys, keys):
-        return jsonify({'ERROR': 'Invalid format or parameters missing.'}), 400
+    if not param or not check_keys(expected_keys[:-2], keys):
+        return jsonify({'ERROR': error_message('invalid_request')}), 400
 
     # Cheking if URI are valid
     if not uri_validator(param['RETURN_URL']) or not uri_validator(param['CANCEL_URL']):
-        return jsonify({'ERROR': 'RETURN or CANCEL URI with invalid format.'}), 400
+        return jsonify({'ERROR': error_message('invalid_url')}), 400
 
     # Checking if amount is a valid number
     if not is_number(param['AMOUNT']):
-        return jsonify({'ERROR': 'AMOUNT not valid.'}), 400
+        return jsonify({'ERROR': error_message('invalid_amount')}), 400
 
     # Checking if merchant exists
     if not db.exists('MERCHANT', 'id', param['MERCHANT']):
-        return jsonify({'ERROR': 'MERCHANT doesn\'t exist.'}), 400
+        return jsonify({'ERROR': error_message('invalid_merchant')}), 400
 
     # Generating token and checking if it doesn't exist already
     while True:
@@ -268,26 +268,24 @@ def create_checkout():
         if not db.exists('CHECKOUT', 'id', token):
             break
 
-    # Columns to add on Database
-    columns = ('id', 'amount', 'return_url', 'cancel_url', 'merchant')
-    keys_to_db = required_keys
+    # Sorting keys according to db insertion order
+    sorted(keys, key=lambda x: expected_keys.index(x))
 
     # Checking for optional parameters
-    if 'CURRENCY' in keys:
-        columns = (*columns, "currency")
-        keys_to_db += ['CURRENCY']
+    if not 'CURRENCY' in keys:
+        param['CURRENCY'] = None
 
     # Inserting new checkout to database
     try:
         # Adding items to checkout if given by the merchant
         if 'ITEMS' in keys and not add_items(param['ITEMS'], token):
             raise Exception('Error adding items')
-        validation = db.insert('CHECKOUT', \
-            columns, \
-            tuple( [token] + [param[k] for k in keys_to_db] ) )
+        db.insert('CHECKOUT', \
+            ('id', 'amount', 'return_url', 'cancel_url', 'merchant', 'currency'), \
+            tuple( [token] + [param[k] for k in expected_keys[:-1]] ) )
     except Exception as e:
         print(e)
-        return jsonify({'ERROR': 'An error ocurred on the Database.'}), 500
+        return jsonify({'ERROR': error_message('db_error')}), 500
 
     # Everything went well, returning token for new checkout
     return jsonify({'CHECKOUT_TOKEN': token}), 201
@@ -305,7 +303,7 @@ def pay():
 
     # Checking for required arguments
     if not args or not check_keys(required_keys, keys):
-        return redirect(url_for('index', error = "Checkout not valid, please contact the responsible merchant."))
+        return redirect(url_for('index', error = "invalid_checkout"))
 
     # Getting row from database of the checkout
     checkout = db.get('CHECKOUT', 'id', args['checkout_token']);
@@ -313,20 +311,19 @@ def pay():
 
     # Checking if checkout is valid
     if not checkout:
-        return redirect(url_for('index', error = "Checkout not valid, please contact the responsible merchant."))
+        return redirect(url_for('index', error = "invalid_checkout"))
 
-    login_form = True
-    if session.get('user_id'):
-        login_form = False
+    # Checking if user is already logged in
+    login_form = True if 'user_id' in session and db.exists('CLIENT', 'id', session['user_id']) else False
 
-    error = False
-    if request.args.get('error'):
-        error = request.args.get('error')
+    # Checking if there is error message to be shown
+    error = False if request.args.get('error') else error_message(request.args.get('error'))
 
     return render_template('pay.html', amount = str(checkout['amount']),
                                        items = items,
-                                       currency = str(checkout['currency']),
-                                        login_form = login_form, error = error ), 200
+                                       currency = checkout['currency'] if  checkout['currency'] else 'EUR',
+                                       login_form = login_form,
+                                       error = error_message(error) ), 200
 
 @app.route('/proccess_payment', methods=['POST'])
 def proccess_payment():
@@ -341,14 +338,14 @@ def proccess_payment():
 
     # Checking for required arguments
     if not args or not check_keys(required_keys, keys):
-        return redirect(url_for('index', error = "Checkout not valid, please contact the responsible merchant."))
+        return redirect(url_for('index', error = "invalid_checkout"))
 
     # Getting row from database of the checkout
     checkout = db.get('CHECKOUT', 'id', args['checkout']);
 
     # Checking if checkout is valid
     if not checkout:
-        return redirect(url_for('index', error = "Checkout not valid, please contact the responsible merchant."))
+        return redirect(url_for('index', error = "invalid_checkout"))
 
     # TODO: Store Credit Card and mark checkout as paid
 
