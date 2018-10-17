@@ -53,7 +53,7 @@ CREATE TABLE CHECKOUT (
   return_url  TEXT NOT NULL,
   cancel_url  TEXT NOT NULL,
   merchant    TEXT NOT NULL,
-  currency    TEXT,
+  currency    TEXT DEFAULT "EUR",
   paid_with   INT,
   paid_by     TEXT,
   status      TEXT DEFAULT "CREATED",

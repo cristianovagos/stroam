@@ -101,11 +101,62 @@ def get_checkout():
                 content:
                     application/json:
                       schema:
+                        type: object
                         properties:
-                          NAME:
-                            type: string
-                          BUYER_ID:
-                            type: string
+                          CHECKOUT:
+                            type: object
+                            properties:
+                                ID:
+                                    type : string
+                                    description : Checkout's ID.
+                                AMOUNT:
+                                    type : number
+                                    description : Total amount of checkout.
+                                STATUS:
+                                    type : string
+                                    description : Current status of checkout.
+                                CURRENCY:
+                                    type : string
+                                    description : Currency used on checkout.
+                          BUYER:
+                            type: object
+                            properties:
+                                ID:
+                                    type : string
+                                    description : Buyer ID.
+                                NAME:
+                                    type : string
+                                    description : Buyer Name.
+                                NIF:
+                                    type : number
+                                    description : Buyer NIF.
+                          MERCHANT:
+                             type: object
+                             properties:
+                                ID:
+                                    type : string
+                                    description : Merchant ID.
+                                NAME:
+                                    type : string
+                                    description : Merchant Name.
+                          ITEMS:
+                              type: array
+                              items:
+                                  type: object
+                                  properties:
+                                     NAME:
+                                        type : string
+                                        description : Item name.
+                                     PRICE:
+                                        type : number
+                                        description : Item price.
+                                     QUANTITY:
+                                        type : number
+                                        description : Item quantity.
+                                     URL:
+                                        type : string
+                                        description : Item url to merchant website.
+
             400:
                 description: A JSON containing a ERROR that indentifies the problem
                 content:
@@ -115,8 +166,48 @@ def get_checkout():
                           ERROR:
                             type: string
     '''
-    # Sturb api just for testing
-    return jsonify({'NAME': 'ZE MANEL', 'ID' : 'BUYERID123'}), 200
+
+    # request.args looks ugly and takes too much space...
+    args = request.args
+    keys = args.keys()
+    required_keys = ['checkout_token']
+
+    # Checking for required arguments
+    if not args or not check_keys(required_keys, keys):
+        return jsonify({'ERROR': error_message('invalid_request')}), 400
+
+    # Getting row from database of the checkout
+    checkout = db.get('CHECKOUT', 'id', args['checkout_token']);
+
+    # Checking if checkout existed in database
+    if not checkout:
+        return jsonify({'ERROR': error_message('invalid_checkout')}), 400
+
+    # Get buyer, items and merchant information from database
+    buyer = db.get('CLIENT', 'id', checkout['paid_by'])
+    items = db.get_all('ITEM', 'checkout', checkout['id'])
+    merchant = db.get('MERCHANT', 'id', checkout['merchant'])
+    items = [ dict(i) for i in items]
+
+    # Ignore this, simply making every key on dictionary uppercase because it looks good
+    for i in items:
+        i.pop('checkout')
+        for k in list(i):
+            i[k.upper()] = i.pop(k)
+
+    # Building information
+    info = {
+            'CHECKOUT' : {'ID': checkout['id'], 'STATUS' : checkout['status'],
+                            'AMOUNT' : checkout['amount'],
+                            'CURRENCY' : checkout['currency']},
+            'MERCHANT' : {'ID': merchant['id'], 'NAME': merchant['name']},
+            'BUYER'    : {'ID' : buyer['id'], 'NAME' : buyer['name'],
+                            'NIF': buyer['nif']},
+            'ITEMS'    : items
+    }
+
+    # Returning information
+    return jsonify(info), 200
 
 @app.route('/ExecuteCheckout', methods=['GET'])
 def execute_checkout():
