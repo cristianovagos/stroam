@@ -118,6 +118,9 @@ def get_checkout():
                                 CURRENCY:
                                     type : string
                                     description : Currency used on checkout.
+                                PAID_WITH:
+                                    type : string
+                                    description : Partial part of credit card used for the purchase.
                           BUYER:
                             type: object
                             properties:
@@ -195,11 +198,15 @@ def get_checkout():
         for k in list(i):
             i[k.upper()] = i.pop(k)
 
+    # Hiding credit card info
+    credit_card = '*' * 12 + str(checkout['paid_with'])[-4:]
+
     # Building information
     info = {
             'CHECKOUT' : {'ID': checkout['id'], 'STATUS' : checkout['status'],
                             'AMOUNT' : checkout['amount'],
-                            'CURRENCY' : checkout['currency']},
+                            'CURRENCY' : checkout['currency'],
+                            'PAID_WITH': credit_card},
             'MERCHANT' : {'ID': merchant['id'], 'NAME': merchant['name']},
             'BUYER'    : {'ID' : buyer['id'], 'NAME' : buyer['name'],
                             'NIF': buyer['nif']},
@@ -248,7 +255,35 @@ def execute_checkout():
                           ERROR:
                             type: string
     '''
-    # Sturb api just for testing
+
+    # request.args looks ugly and takes too much space...
+    args = request.args
+    keys = args.keys()
+    required_keys = ['checkout_token', 'buyer_id']
+
+    # Checking for required arguments
+    if not args or not check_keys(required_keys, keys):
+        return jsonify({'SUCCESS': False, 'ERROR': error_message('invalid_request')}), 400
+
+    # Getting row from database of the checkout
+    checkout = db.get('CHECKOUT', 'id', args['checkout_token'])
+
+    if not checkout:
+        return jsonify({'SUCCESS': False, 'ERROR': error_message('invalid_checkout')}), 400
+
+    # Checking if checkout is ready to be executed
+    if checkout['status'] != 'READY':
+        return jsonify({'SUCCESS': False, 'ERROR': error_message('checkout_not_ready')}), 400
+
+    try:
+        db.update('CHECKOUT', ['status'],
+                                ['PAID'],
+                                'id', args['checkout_token'])
+    except Exception as e:
+        print(e)
+        return jsonify({'SUCCESS': False, 'ERROR': error_message('db_error')}), 400
+
+    # Everything went well, informing the merchant
     return jsonify({'SUCCESS': True}), 200
 
 @app.route('/CreateCheckout', methods=['PUT'])

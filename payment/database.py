@@ -62,7 +62,7 @@ def update(table, fields, values, column, value):
         column,
         value
     )
-    
+
     cur.execute(query, values)
     get_db().commit()
 

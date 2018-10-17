@@ -44,7 +44,8 @@ def error_message(error):
         "invalid_amount" : "AMOUNT not valid.",
         "invalid_merchant" : "MERCHANT doesn\'t exist.",
         "db_error" : "An error ocurred on the Database.",
-        "not_logged" : "You must be logged in for this operation."
+        "not_logged" : "You must be logged in for this operation.",
+        "checkout_not_ready" : "Checkout wasn't set ready by the buyer yet."
 
     }
 
@@ -82,8 +83,8 @@ def add_credit_to_user(credit_card, user_id):
 
     if not db.exists('CREDIT_CARD', ['user_id', 'cc_number'], [user_id, credit_card['card-number']]):
         try:
-            db.insert('CREDIT_CARD', ('cc_number', 'csv', 'expiration', 'owner_name', 'user_id'),
-                       (credit_card['card-number'], credit_card['cvc'], credit_card['exp'], credit_card['card-owner'], user_id))
+            db.insert('CREDIT_CARD', ['cc_number', 'csv', 'expiration', 'owner_name', 'user_id'],
+                       [credit_card['card-number'], credit_card['cvc'], credit_card['exp'], credit_card['card-owner'], user_id])
         except Exception as e:
             print(e)
             return False
@@ -102,8 +103,8 @@ def prepare_checkout(checkout_number, card_number, user_id):
         return False
 
     try:
-        db.update('CHECKOUT', ('paid_with', 'paid_by', 'status'),
-                                    (card_number, user_id, 'READY'),
+        db.update('CHECKOUT', ['paid_with', 'paid_by', 'status'],
+                                    [card_number, user_id, 'READY'],
                                     'id', checkout_number)
     except Exception as e:
         print(e)
