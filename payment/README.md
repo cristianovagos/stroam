@@ -1,4 +1,4 @@
-![alt text](http://code.ua.pt/projects/es1819-stroam/repository/revisions/master/raw/payment/payment/static/images/logo.png)
+![alt text](http://code.ua.pt/projects/es1819-stroam/repository/revisions/master/raw/payment/static/images/logo.png)
 
 ## About
 StrongPay is a payment gateway service based on PayPal. It's composed of a front-end interface and an API running on a flask framework.  
