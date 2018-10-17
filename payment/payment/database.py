@@ -28,7 +28,7 @@ def close_db(e=None):
 ## Database CRUD       ##
 #########################
 
-def insert(table, fields=(), values=()):
+def insert(table, fields, values):
     '''
         Inserts a row in a table on database
     '''
@@ -40,6 +40,29 @@ def insert(table, fields=(), values=()):
         ', '.join(['?'] * len(values))
     )
 
+    cur.execute(query, values)
+    get_db().commit()
+
+    id = cur.lastrowid
+    cur.close()
+
+    return id
+
+def update(table, fields, values, column, value):
+    '''
+        Updates row on Database
+    '''
+
+    cur = get_db().cursor()
+
+    query = 'UPDATE %s SET %s %s WHERE %s = \'%s\'' % (
+        table,
+        '= ?,'.join(fields),
+        '= ?',
+        column,
+        value
+    )
+    
     cur.execute(query, values)
     get_db().commit()
 

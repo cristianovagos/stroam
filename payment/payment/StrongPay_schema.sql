@@ -27,11 +27,12 @@ CREATE TABLE CLIENT(
 );
 
 CREATE TABLE CREDIT_CARD(
-  cc_number   INT PRIMARY KEY,
+  cc_number   INT NOT NULL,
   csv         INT NOT NULL,
   expiration  TEXT NOT NULL,
   owner_name  TEXT NOT NULL,
   user_id     TEXT NOT NULL,
+  PRIMARY KEY (cc_number, user_id),
   FOREIGN KEY (user_id) REFERENCES USER(id)
 );
 

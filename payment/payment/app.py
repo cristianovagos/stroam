@@ -314,10 +314,10 @@ def pay():
         return redirect(url_for('index', error = "invalid_checkout"))
 
     # Checking if user is already logged in
-    login_form = True if 'user_id' in session and db.exists('CLIENT', 'id', session['user_id']) else False
+    login_form = False if 'user_id' in session and db.exists('CLIENT', 'id', session['user_id']) else True
 
     # Checking if there is error message to be shown
-    error = False if request.args.get('error') else error_message(request.args.get('error'))
+    error = False if not request.args.get('error') else request.args.get('error')
 
     return render_template('pay.html', amount = str(checkout['amount']),
                                        items = items,
@@ -340,17 +340,35 @@ def proccess_payment():
     if not args or not check_keys(required_keys, keys):
         return redirect(url_for('index', error = "invalid_checkout"))
 
-    # Getting row from database of the checkout
-    checkout = db.get('CHECKOUT', 'id', args['checkout']);
+    # Making sure user is logged in
+    if not 'user_id' in session or not db.exists('CLIENT', 'id', session['user_id']):
+        return redirect(url_for('pay', error = "not_logged", checkout = args['checkout']))
+
 
     # Checking if checkout is valid
-    if not checkout:
+    if not db.exists('CHECKOUT', 'id', args['checkout']):
         return redirect(url_for('index', error = "invalid_checkout"))
 
-    # TODO: Store Credit Card and mark checkout as paid
+    param = request.form.to_dict()
+    keys = param.keys()
+    required_keys = ['card-number', 'exp', 'cvc', 'card-owner']
+
+    # Checking for required parameters
+    if not param or not check_keys(required_keys, keys):
+        return redirect(url_for('pay', checkout_token = args['checkout'], error = "invalid_request"))
+
+    # Create a relation of the credit card with the user
+    if not add_credit_to_user(param, session['user_id']):
+        return redirect(url_for('pay', checkout_token = args['checkout'], error = "db_error" ))
+
+    # Save information about payment in the checkout
+    return_url = prepare_checkout(args['checkout'], param['card-number'], session['user_id'])
+
+    if not return_url:
+        return redirect(url_for('pay', checkout_token = args['checkout'], error = "db_error"))
 
     # Redirect to the URL given by the merchant
-    return redirect(checkout["RETURN_URL"] + "?checkout_token=" + args['checkout'] )
+    return redirect(return_url + "?checkout_token=" + args['checkout'] )
 
 ### Generating openapi json file for swagger
 with app.test_request_context():

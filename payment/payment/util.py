@@ -43,7 +43,8 @@ def error_message(error):
         "invalid_url" : "RETURN or CANCEL URI with invalid format.",
         "invalid_amount" : "AMOUNT not valid.",
         "invalid_merchant" : "MERCHANT doesn\'t exist.",
-        "db_error" : "An error ocurred on the Database."
+        "db_error" : "An error ocurred on the Database.",
+        "not_logged" : "You must be logged in for this operation."
 
     }
 
@@ -73,3 +74,39 @@ def add_items(items, checkout):
             print(e)
             return False
     return True
+
+def add_credit_to_user(credit_card, user_id):
+    '''
+        Adds credit card to list of cards owner by the user
+    '''
+
+    if not db.exists('CREDIT_CARD', ['user_id', 'cc_number'], [user_id, credit_card['card-number']]):
+        try:
+            db.insert('CREDIT_CARD', ('cc_number', 'csv', 'expiration', 'owner_name', 'user_id'),
+                       (credit_card['card-number'], credit_card['cvc'], credit_card['exp'], credit_card['card-owner'], user_id))
+        except Exception as e:
+            print(e)
+            return False
+
+    return True
+
+def prepare_checkout(checkout_number, card_number, user_id):
+    '''
+        Prepare checkout by adding the buyer and credit card to be used
+    '''
+
+    # Getting row from database of the checkout
+    checkout = db.get('CHECKOUT', 'id', checkout_number)
+
+    if checkout['status'] != 'CREATED':
+        return False
+
+    try:
+        db.update('CHECKOUT', ('paid_with', 'paid_by', 'status'),
+                                    (card_number, user_id, 'READY'),
+                                    'id', checkout_number)
+    except Exception as e:
+        print(e)
+        return False
+
+    return checkout['RETURN_URL']
