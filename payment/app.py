@@ -273,7 +273,7 @@ def execute_checkout():
 
     # Checking if checkout is ready to be executed
     if checkout['status'] != 'READY':
-        return jsonify({'SUCCESS': False, 'ERROR': error_message('checkout_not_ready')}), 400
+        return jsonify({'SUCCESS': False, 'ERROR': error_message('checkout_not_ready')}), 200
 
     try:
         db.update('CHECKOUT', ['status'],
@@ -281,7 +281,7 @@ def execute_checkout():
                                 'id', args['checkout_token'])
     except Exception as e:
         print(e)
-        return jsonify({'SUCCESS': False, 'ERROR': error_message('db_error')}), 400
+        return jsonify({'SUCCESS': False, 'ERROR': error_message('db_error')}), 200
 
     # Everything went well, informing the merchant
     return jsonify({'SUCCESS': True}), 200
@@ -401,11 +401,12 @@ def create_checkout():
     if not 'CURRENCY' in keys:
         param['CURRENCY'] = None
 
+    # Adding items to checkout if given by the merchant
+    if 'ITEMS' in keys and not add_items(param['ITEMS'], token, param['AMOUNT']):
+        return jsonify({'ERROR': error_message('add_items')}), 400
+
     # Inserting new checkout to database
     try:
-        # Adding items to checkout if given by the merchant
-        if 'ITEMS' in keys and not add_items(param['ITEMS'], token):
-            raise Exception('Error adding items')
         db.insert('CHECKOUT', \
             ('id', 'amount', 'return_url', 'cancel_url', 'merchant', 'currency'), \
             tuple( [token] + [param[k] for k in expected_keys[:-1]] ) )
@@ -445,7 +446,7 @@ def pay():
     # Checking if there is error message to be shown
     error = False if not request.args.get('error') else request.args.get('error')
 
-    return render_template('pay.html', amount = str(checkout['amount']),
+    return render_template('pay.html', amount = "{:.2f}".format(checkout['amount']),
                                        items = items,
                                        currency = checkout['currency'] if  checkout['currency'] else 'EUR',
                                        login_form = login_form,

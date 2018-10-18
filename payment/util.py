@@ -45,16 +45,25 @@ def error_message(error):
         "invalid_merchant" : "MERCHANT doesn\'t exist.",
         "db_error" : "An error ocurred on the Database.",
         "not_logged" : "You must be logged in for this operation.",
-        "checkout_not_ready" : "Checkout wasn't set ready by the buyer yet."
-
+        "checkout_not_ready" : "Checkout wasn't set ready by the buyer yet.",
+        "add_items" : "Error adding the items, please check their format"
     }
 
     return errors.get(error)
 
-def add_items(items, checkout):
+def add_items(items, checkout, amount):
     '''
         Add items to checkout
     '''
+
+    # Checking if total amount matches the sum of all items
+    total = 0
+    for item in items:
+        total += item['PRICE']
+    if total != amount:
+        return False
+
+    # Adding items to database
     for item in items:
         keys_to_db = ['NAME', 'PRICE']
         columns = ('checkout', 'name', 'price')
@@ -80,7 +89,7 @@ def add_credit_to_user(credit_card, user_id):
     '''
         Adds credit card to list of cards owner by the user
     '''
-
+    # If credit_card is already related to user ignore
     if not db.exists('CREDIT_CARD', ['user_id', 'cc_number'], [user_id, credit_card['card-number']]):
         try:
             db.insert('CREDIT_CARD', ['cc_number', 'csv', 'expiration', 'owner_name', 'user_id'],

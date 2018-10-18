@@ -26,7 +26,7 @@
                         {% for item in items %}
                             <tr>
                               <td>{{item.name}} <b> x {{item.quantity}} </b> </td>
-                              <td style="text-align:right">{{item.price}} {{currency}}</td>
+                              <td style="text-align:right">{{"{:.2f}".format(item.price)}} {{currency}}</td>
                             </tr>
                         {% endfor %}
                       {% else %}
