@@ -3,8 +3,9 @@ package es1819.stroam.server;
 import es1819.stroam.commons.communication.Communication;
 import es1819.stroam.commons.communication.CommunicationCallback;
 import es1819.stroam.persistence.utilities.PersistenceUtilities;
-import es1819.stroam.persistence.views.ProducersChannelsPathsEntity;
+import es1819.stroam.server.utilities.GeneralUtilities;
 
+import javax.persistence.EntityManager;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -14,7 +15,7 @@ public class Server implements Runnable, CommunicationCallback {
 
     private boolean keepRunning;
     private Communication communication;
-    private Queue<MessageTopicBytes> receivedMessagesQueue = new LinkedList<MessageTopicBytes>();
+    private Queue<MessageTopicBytes> receivedMessagesQueue = new LinkedList<>();
     private Semaphore receivedMessagesQueueAccessControllerMutex = new Semaphore(1);
     private Semaphore threadRunController = new Semaphore(0);
 
@@ -26,34 +27,39 @@ public class Server implements Runnable, CommunicationCallback {
         communication.setCallback(this);
     }
 
-    public void start() {
+    public boolean start() {
         if(keepRunning)
-            return;
+            return false;
 
         if(!communication.isConnected()) {
             try {
                 communication.connect();
-            } catch (Exception communicationConnectException) { //TODO: colocar stacktrace no log
-                System.out.println("Connection failed. Cause:\n"
-                        + communicationConnectException.getMessage());
+            } catch (Exception communicationConnectException) {
+                communicationConnectException.printStackTrace(); //TODO: colocar stacktrace no log
+                System.out.println("Connection failed. Cause: "
+                        + communicationConnectException.getMessage() + "\n"
+                        + Strings.SEE_LOG_REGISTERY);
                 System.out.println("Server start aborted!");
-                return; //abort the server start
+                return false; //abort the server start
             }
         }
 
         //before server start procedures
         try {
             subscribeDatabaseChannels();
-        } catch (Exception databaseChannelsSubscriptionException) { //TODO: colocar stacktrace no log
-            System.out.println("Channel subscription failed. Cause:\n"
-                    + databaseChannelsSubscriptionException.getMessage());
+        } catch (Exception subscribeDatabaseChannelsException) {
+            subscribeDatabaseChannelsException.printStackTrace();//TODO: colocar stacktrace no log
+            System.out.println("Server start failed. Cause: "
+                    + subscribeDatabaseChannelsException.getMessage() + "\n"
+                    + Strings.SEE_LOG_REGISTERY);
             System.out.println("Server start aborted!");
-            return; //abort the server start
+            return false; //abort the server start
         }
 
         //start the server
         keepRunning = true;
         new Thread(this).start();
+        return true;
     }
 
     public void stop() {
@@ -94,33 +100,56 @@ public class Server implements Runnable, CommunicationCallback {
     }
 
     private void subscribeDatabaseChannels() throws Exception {
-        List<ProducersChannelsPathsEntity> producersChannelsPathsEntities =
-            PersistenceUtilities.getEntityManagerInstance()
-                .createQuery("SELECT pcpv FROM ProducersChannelsPathsEntity AS pcpv " +
-                                "WHERE pcpv.isProducerPrefix = 1",
-                        ProducersChannelsPathsEntity.class).getResultList();
-        if(producersChannelsPathsEntities == null) {
-            System.err.println("No producers channels to subscribe!");
+        //Subscribe the channel to register new services /notTheService/register
+        subscribeChannelAndLog(Constants.SERVICE_CHANNEL_PREFIX + Constants.REGISTER_CHANNEL_SUFFIX);
+
+        EntityManager entityManager = PersistenceUtilities.getEntityManagerInstance();
+        if(entityManager == null) {
+            throw new NullPointerException("Entity Manager reference is null");
+        }
+
+        //Subscribe the services channels /notTheService/<serviceId>/...
+        List<String> serviceIdEntries = entityManager
+                .createQuery("SELECT s.id FROM ServiceEntity AS s WHERE s.active = 1", String.class)
+                .getResultList();
+        if(serviceIdEntries == null || serviceIdEntries.isEmpty()) {
+            System.err.println("No registered services");
             return;
         }
 
-        for (ProducersChannelsPathsEntity producerChannelPathEntity : producersChannelsPathsEntities) {
-            if(producerChannelPathEntity.getIsProducerPrefix() == 1) //if is producer prefix channel then subscribe the subscriber operations channels
-                subscribeSubscribersOperationsChannels(producerChannelPathEntity.getPath()); //because all channels with this prefix are subscribed
+        for (String serviceIdEntry : serviceIdEntries) {
+            String serviceChannelBase = GeneralUtilities.createString(
+                    Constants.SERVICE_CHANNEL_PREFIX, "/", serviceIdEntry);
+            subscribeChannelAndLog(serviceChannelBase + Constants.REGISTER_CHANNEL_SUFFIX); // .../register
+            subscribeChannelAndLog(serviceChannelBase + Constants.UNREGISTER_CHANNEL_SUFFIX);// .../unregister
+        }
+
+        //Subscribe the all the services users channels /notTheService/<serviceId>/<userId>/...
+        List<Object[]> serviceIdUserIdEntries = PersistenceUtilities.getEntityManagerInstance()
+                .createQuery("SELECT s.id AS ServiceId, u.id AS UserId FROM UserEntity AS u "
+                        + "INNER JOIN ServiceUserEntity AS s_u ON u.id = s_u.userId "
+                        + "INNER JOIN ServiceEntity AS s ON s_u.serviceId = s.id "
+                        + "WHERE s.active = 1 AND u.active = 1", Object[].class).getResultList();
+        if (serviceIdUserIdEntries == null || serviceIdUserIdEntries.isEmpty()) {
+            System.err.println("No registered users");
+            return;
+        }
+
+        for (Object[] serviceIdUserIdEntry : serviceIdUserIdEntries) {
+            String userChannelBase = GeneralUtilities.createString(
+                    Constants.SERVICE_CHANNEL_PREFIX, "/", (String) serviceIdUserIdEntry[0],
+                    "/", (String) serviceIdUserIdEntry[1]);
+
+            for (int i = 0; i < Constants.ALL_USERS_CHANNELS_SUFFIX_ARRAY.length; i++) {
+                subscribeChannelAndLog(userChannelBase
+                        + Constants.ALL_USERS_CHANNELS_SUFFIX_ARRAY[i]); // .../<all user suffixes>
+            }
         }
     }
 
-    private void subscribeSubscribersOperationsChannels(String producerChannelPath) throws Exception{
-        communication.subscribe(producerChannelPath
-                + Constants.SUBSCRIBER_REGISTRATION_CHANNEL_SUFFIX); //Producer channel to subscriber registration
-        communication.subscribe(producerChannelPath
-                + Constants.SUBSCRIBER_UNREGISTRATION_CHANNEL_SUFFIX); //Producer channel to subscriber unregistration
-        communication.subscribe(producerChannelPath
-                + Constants.SUBSCRIBER_SUBSCRIPTION_CHANNEL_SUFFIX); //Producer channel to subscriber subscription
-        communication.subscribe(producerChannelPath
-                + Constants.SUBSCRIBER_UNSUBSCRIPTION_CHANNEL_SUFFIX); //Producer channel to subscriber unsubscription
-        communication.subscribe(producerChannelPath
-                + Constants.ALL_CHANNELS_SUFFIX); //All producer channels
+    private void subscribeChannelAndLog(String channel) throws Exception {
+        communication.subscribe(channel); //TODO: colocar canal subscrito log
+        System.out.println("Available: " + channel); //TODO: debug
     }
 
     private MessageTopicBytes getQueuedReceivedMessage() {

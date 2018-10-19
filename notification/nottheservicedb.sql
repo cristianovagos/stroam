@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysqlserver
--- Generation Time: 14-Out-2018 às 05:05
+-- Generation Time: 19-Out-2018 às 01:38
 -- Versão do servidor: 8.0.12
 -- versão do PHP: 7.2.10
 
@@ -25,77 +25,42 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `Channels`
+-- Estrutura da tabela `Logs`
 --
 
-CREATE TABLE `Channels` (
+CREATE TABLE `Logs` (
   `Id` int(11) NOT NULL,
-  `Path` varchar(1000) NOT NULL
+  `Timestamp` timestamp NOT NULL,
+  `Message` varchar(500) DEFAULT NULL,
+  `StackTrace` varchar(5000) NOT NULL,
+  `SeverityId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Extraindo dados da tabela `Channels`
---
-
-INSERT INTO `Channels` (`Id`, `Path`) VALUES
-(1, '/stroam'),
-(2, '/teste'),
-(3, '/stroam/frontend'),
-(4, '/teste/producerTest'),
-(5, '/stroam/frontend/notification'),
-(6, '/teste/producerTest/notify');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `Producers`
+-- Estrutura da tabela `LogSeverities`
 --
 
-CREATE TABLE `Producers` (
+CREATE TABLE `LogSeverities` (
   `Id` int(11) NOT NULL,
-  `Name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
+  `Level` int(11) NOT NULL,
+  `Description` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Extraindo dados da tabela `Producers`
---
-
-INSERT INTO `Producers` (`Id`, `Name`) VALUES
-(1, 'Frontend'),
-(2, 'ProdutorTeste');
 
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `ProducersChannelsPaths_View`
--- (See below for the actual view)
---
-CREATE TABLE `ProducersChannelsPaths_View` (
-`ProducerId` int(11)
-,`ChannelId` int(11)
-,`Path` varchar(1000)
-,`IsProducerPrefix` tinyint(1)
-);
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Producers_Channels`
+-- Estrutura da tabela `QueuedMessages`
 --
 
-CREATE TABLE `Producers_Channels` (
-  `ProducerId` int(11) NOT NULL,
-  `ChannelId` int(11) NOT NULL,
-  `IsProducerPrefix` tinyint(1) NOT NULL
+CREATE TABLE `QueuedMessages` (
+  `Id` int(11) NOT NULL,
+  `UserId` varchar(36) NOT NULL,
+  `Payload` longblob NOT NULL,
+  `Timestamp` timestamp NOT NULL,
+  `Processed` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Extraindo dados da tabela `Producers_Channels`
---
-
-INSERT INTO `Producers_Channels` (`ProducerId`, `ChannelId`, `IsProducerPrefix`) VALUES
-(1, 3, 1),
-(2, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -104,217 +69,128 @@ INSERT INTO `Producers_Channels` (`ProducerId`, `ChannelId`, `IsProducerPrefix`)
 --
 
 CREATE TABLE `Services` (
-  `Id` int(11) NOT NULL,
-  `Name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `ChannelPrefixId` int(11) NOT NULL
+  `Id` varchar(36) NOT NULL,
+  `Name` varchar(200) DEFAULT NULL,
+  `ChannelPrefix` varchar(200) NOT NULL,
+  `Active` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Extraindo dados da tabela `Services`
---
-
-INSERT INTO `Services` (`Id`, `Name`, `ChannelPrefixId`) VALUES
-(1, 'Stroam', 1),
-(2, 'Teste', 2);
-
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `Services_Producers`
+-- Estrutura da tabela `Services_Users`
 --
 
-CREATE TABLE `Services_Producers` (
-  `ServiceId` int(11) NOT NULL,
-  `ProducerId` int(11) NOT NULL
+CREATE TABLE `Services_Users` (
+  `ServiceId` varchar(36) NOT NULL,
+  `UserId` varchar(36) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Extraindo dados da tabela `Services_Producers`
---
-
-INSERT INTO `Services_Producers` (`ServiceId`, `ProducerId`) VALUES
-(1, 1),
-(2, 2);
-
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `Subscribers`
+-- Estrutura da tabela `Users`
 --
 
-CREATE TABLE `Subscribers` (
-  `Id` int(11) NOT NULL,
-  `ExternalId` varchar(200) NOT NULL,
-  `Name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `EmailAddress` varchar(50) DEFAULT NULL,
-  `PhoneNumber` varchar(50) DEFAULT NULL
+CREATE TABLE `Users` (
+  `Id` varchar(36) NOT NULL,
+  `ExternalId` varchar(500) NOT NULL,
+  `Name` varchar(200) DEFAULT NULL,
+  `EmailAddress` varchar(200) DEFAULT NULL,
+  `PhoneNumber` varchar(200) DEFAULT NULL,
+  `PushNotification` tinyint(1) NOT NULL DEFAULT '1',
+  `EmailNotification` tinyint(1) NOT NULL DEFAULT '0',
+  `PhoneNotification` tinyint(1) NOT NULL DEFAULT '0',
+  `Active` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Extraindo dados da tabela `Subscribers`
---
-
-INSERT INTO `Subscribers` (`Id`, `ExternalId`, `Name`, `EmailAddress`, `PhoneNumber`) VALUES
-(1, '123456', 'Subscriber_123456', 'subscriber_123456@teste.com', '00351912345678'),
-(2, '159357', 'Subscriber_159357', 'subscriber_159357@teste.com', '00351911597520');
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `SubscribersChannelsPaths_View`
--- (See below for the actual view)
---
-CREATE TABLE `SubscribersChannelsPaths_View` (
-`SubscriberId` int(11)
-,`ChannelId` int(11)
-,`Path` varchar(1000)
-);
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Subscribers_Channels`
---
-
-CREATE TABLE `Subscribers_Channels` (
-  `SubscriberId` int(11) NOT NULL,
-  `ChannelId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Extraindo dados da tabela `Subscribers_Channels`
---
-
-INSERT INTO `Subscribers_Channels` (`SubscriberId`, `ChannelId`) VALUES
-(1, 5),
-(2, 5);
-
--- --------------------------------------------------------
-
---
--- Structure for view `ProducersChannelsPaths_View`
---
-DROP TABLE IF EXISTS `ProducersChannelsPaths_View`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `ProducersChannelsPaths_View` (`ProducerId`, `ChannelId`, `Path`, `IsProducerPrefix`) AS   select `p`.`Id` AS `ProducerId`,`c`.`Id` AS `ChannelId`,`c`.`Path` AS `Path`,`p_c`.`IsProducerPrefix` AS `IsProducerPrefix` from ((`Channels` `c` join `Producers_Channels` `p_c` on((`c`.`Id` = `p_c`.`ChannelId`))) join `Producers` `p` on((`p_c`.`ProducerId` = `p`.`Id`)))  ;
-
--- --------------------------------------------------------
-
---
--- Structure for view `SubscribersChannelsPaths_View`
---
-DROP TABLE IF EXISTS `SubscribersChannelsPaths_View`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `SubscribersChannelsPaths_View` (`SubscriberId`, `ChannelId`, `Path`) AS   select `s`.`Id` AS `SubscriberId`,`c`.`Id` AS `ChannelId`,`c`.`Path` AS `Path` from ((`Channels` `c` join `Subscribers_Channels` `s_c` on((`c`.`Id` = `s_c`.`ChannelId`))) join `Subscribers` `s` on((`s_c`.`SubscriberId` = `s`.`Id`)))  ;
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `Channels`
+-- Indexes for table `Logs`
 --
-ALTER TABLE `Channels`
+ALTER TABLE `Logs`
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `SeverityId` (`SeverityId`);
+
+--
+-- Indexes for table `LogSeverities`
+--
+ALTER TABLE `LogSeverities`
   ADD PRIMARY KEY (`Id`);
 
 --
--- Indexes for table `Producers`
+-- Indexes for table `QueuedMessages`
 --
-ALTER TABLE `Producers`
-  ADD PRIMARY KEY (`Id`);
-
---
--- Indexes for table `Producers_Channels`
---
-ALTER TABLE `Producers_Channels`
-  ADD PRIMARY KEY (`ProducerId`,`ChannelId`),
-  ADD KEY `ChannelId` (`ChannelId`);
+ALTER TABLE `QueuedMessages`
+  ADD PRIMARY KEY (`Id`,`UserId`),
+  ADD KEY `UserId` (`UserId`);
 
 --
 -- Indexes for table `Services`
 --
 ALTER TABLE `Services`
-  ADD PRIMARY KEY (`Id`),
-  ADD KEY `ChannelPrefixId` (`ChannelPrefixId`);
-
---
--- Indexes for table `Services_Producers`
---
-ALTER TABLE `Services_Producers`
-  ADD PRIMARY KEY (`ServiceId`,`ProducerId`),
-  ADD KEY `ProducerId` (`ProducerId`);
-
---
--- Indexes for table `Subscribers`
---
-ALTER TABLE `Subscribers`
   ADD PRIMARY KEY (`Id`);
 
 --
--- Indexes for table `Subscribers_Channels`
+-- Indexes for table `Services_Users`
 --
-ALTER TABLE `Subscribers_Channels`
-  ADD PRIMARY KEY (`SubscriberId`,`ChannelId`),
-  ADD KEY `ChannelId` (`ChannelId`);
+ALTER TABLE `Services_Users`
+  ADD PRIMARY KEY (`ServiceId`,`UserId`),
+  ADD KEY `UserId` (`UserId`);
+
+--
+-- Indexes for table `Users`
+--
+ALTER TABLE `Users`
+  ADD PRIMARY KEY (`Id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `Channels`
+-- AUTO_INCREMENT for table `Logs`
 --
-ALTER TABLE `Channels`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `Logs`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `Producers`
+-- AUTO_INCREMENT for table `LogSeverities`
 --
-ALTER TABLE `Producers`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `LogSeverities`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `Services`
+-- AUTO_INCREMENT for table `QueuedMessages`
 --
-ALTER TABLE `Services`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `Subscribers`
---
-ALTER TABLE `Subscribers`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `QueuedMessages`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Limitadores para a tabela `Producers_Channels`
+-- Limitadores para a tabela `Logs`
 --
-ALTER TABLE `Producers_Channels`
-  ADD CONSTRAINT `Producers_Channels_ibfk_1` FOREIGN KEY (`ChannelId`) REFERENCES `Channels` (`id`),
-  ADD CONSTRAINT `Producers_Channels_ibfk_2` FOREIGN KEY (`ProducerId`) REFERENCES `Producers` (`id`);
+ALTER TABLE `Logs`
+  ADD CONSTRAINT `Logs_ibfk_1` FOREIGN KEY (`SeverityId`) REFERENCES `LogSeverities` (`id`);
 
 --
--- Limitadores para a tabela `Services`
+-- Limitadores para a tabela `QueuedMessages`
 --
-ALTER TABLE `Services`
-  ADD CONSTRAINT `Services_ibfk_1` FOREIGN KEY (`ChannelPrefixId`) REFERENCES `Channels` (`id`);
+ALTER TABLE `QueuedMessages`
+  ADD CONSTRAINT `QueuedMessages_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Users` (`id`);
 
 --
--- Limitadores para a tabela `Services_Producers`
+-- Limitadores para a tabela `Services_Users`
 --
-ALTER TABLE `Services_Producers`
-  ADD CONSTRAINT `Services_Producers_ibfk_1` FOREIGN KEY (`ServiceId`) REFERENCES `Services` (`id`),
-  ADD CONSTRAINT `Services_Producers_ibfk_2` FOREIGN KEY (`ProducerId`) REFERENCES `Producers` (`id`);
-
---
--- Limitadores para a tabela `Subscribers_Channels`
---
-ALTER TABLE `Subscribers_Channels`
-  ADD CONSTRAINT `Subscribers_Channels_ibfk_1` FOREIGN KEY (`SubscriberId`) REFERENCES `Subscribers` (`id`),
-  ADD CONSTRAINT `Subscribers_Channels_ibfk_2` FOREIGN KEY (`ChannelId`) REFERENCES `Channels` (`id`);
+ALTER TABLE `Services_Users`
+  ADD CONSTRAINT `Services_Users_ibfk_1` FOREIGN KEY (`ServiceId`) REFERENCES `Services` (`id`),
+  ADD CONSTRAINT `Services_Users_ibfk_2` FOREIGN KEY (`UserId`) REFERENCES `Users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
