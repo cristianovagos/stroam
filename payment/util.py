@@ -71,10 +71,10 @@ def add_items(items, checkout, amount):
         if not check_keys(keys_to_db, keys):
             return False
         if 'QUANTITY' in keys:
-            keys_to_db += 'QUANTITY'
+            keys_to_db.append('QUANTITY')
             columns = (*columns, 'quantity')
         if 'URL' in keys:
-            keys_to_db += 'URL'
+            keys_to_db.append('URL')
             columns = (*columns, 'url')
         try:
             db.insert('ITEM', \
