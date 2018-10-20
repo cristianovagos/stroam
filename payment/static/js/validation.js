@@ -1,3 +1,5 @@
+var error_div = document.getElementById("form-error");
+
 
 // If user is not logged in the validation will be on the login form
 if(document.getElementsByClassName("login-form")[0]){
@@ -20,52 +22,109 @@ if(document.getElementsByClassName("login-form")[0]){
 }
 // If user is logged in the validation will be on the payment details
 else {
-  document.getElementsByClassName("payment-form")[0].onsubmit = function(){
-      // Getting the inputs to validate
+
+  document.getElementById("proccess").onclick = function(){
+      error_div.style.display = "none";
+      // Getting the inputs to validate - Content 1
       var card_number = document.getElementsByName("card-number")[0];
       var expiration = document.getElementsByName("exp")[0];
       var cvc = document.getElementsByName("cvc")[0];
       var card_owner = document.getElementsByName("card-owner")[0];
+
+      // Getting the inputs to validate - Content 2
+      var first_name = document.getElementsByName("first_name")[0];
+      var last_name = document.getElementsByName("last_name")[0];
+      var country = document.getElementsByName("country")[0];
+      var post_code = document.getElementsByName("post_code")[0];
+      var phone = document.getElementsByName("phone")[0];
 
       // Hidding eventual old warnings
       hideWarning(card_number);
       hideWarning(expiration);
       hideWarning(cvc);
       hideWarning(card_owner);
+      hideWarning(first_name);
+      hideWarning(last_name);
+      hideWarning(country);
+      hideWarning(post_code);
+      hideWarning(phone);
 
       // Validation
       var valid = true;
-      if (!validateContent(card_number.value) || !valid_credit_card(card_number.value)) { showWarning(card_number); valid = false }
-      if (!validateExpDate(expiration.value)) { showWarning(expiration); valid = false }
-      if (!validateContent(cvc.value)) { showWarning(cvc); valid = false }
-      if (!validateContent(card_owner.value)) { showWarning(card_owner); valid = false }
-
-      // Button changes according to output for feedback
-      if(valid){
-        document.getElementById("loading").style.display = "block";
-        document.getElementById("proccess").innerHTML = "Processing, please wait"
-        document.getElementById("proccess").style.background = "#002f86"
-        document.getElementById("proccess").disabled = true;
+      var error = "";
+      if (!validateContent(card_number.value) || !valid_credit_card(card_number.value)) {
+        showWarning(card_number);
+        valid = false;
+        error = "Invalid Credit Card Number";
+        showContent1();
       }
-      else
-      {
-        document.getElementById("proccess").innerHTML = "Information not valid, try again"
-        document.getElementById("proccess").style.background = "#D8000C"
+      else if (!validateExpDate(expiration.value)) {
+        showWarning(expiration);
+        valid = false;
+        error = "Expiration date not valid";
+        showContent1();
+      }
+      else if (!validateContent(cvc.value)) {
+        showWarning(cvc);
+        valid = false;
+        error = "Invalid CVC";
+        showContent1();
+      }
+      else if (!validateContent(card_owner.value)) {
+        showWarning(card_owner);
+        valid = false;
+        error = "Invalid Card Owner name";
+        showContent1();
+      }
+      else if (!validateContent(first_name.value)) {
+        showWarning(first_name);
+        valid = false;
+        error = "Invalid First Name";
+        showContent2();
+      }
+      else if (!validateContent(last_name.value)) {
+        showWarning(last_name);
+        valid = false;
+        error = "Invalid Last Name";
+        showContent2();
+      }
+      else if (!validateContent(country.value)) {
+        showWarning(country);
+        valid = false;
+        error = "Invalid Country";
+        showContent2();
+      }
+      else if (!validateContent(post_code.value)) {
+        showWarning(post_code);
+        valid = false;
+        error = "Invalid Post Code";
+        showContent2();
+      }
+      else if (!validateContent(phone.value)) {
+        showWarning(phone);
+        valid = false;
+        error = "Invalid Phone Number";
+        showContent2();
+      }
+
+      if (error != ""){
+        error_div.style.display = "block";
+        document.getElementById("span-error").innerHTML = error;
       }
 
       // Returning result of validation
       return valid;
   };
+
 }
 
-function showWarning(input) {
-    var inputDiv = input.parentElement;
-    inputDiv.classList.add("alert");
+// Next/Previous button actions
+document.getElementById("next").onclick = function(){
+    showContent2();
 };
 
-function hideWarning(input) {
-    var inputDiv = input.parentElement;
-    inputDiv.classList.remove("alert");
+document.getElementById("back").onclick = function(){
+    showContent1();
 };
 
 function validateExpDate(exp) {
@@ -97,6 +156,30 @@ function validateEmail(email) {
 function validateContent(content){
     return content != "";
 };
+
+
+function showContent1(){
+  document.getElementById("content-2").style.display = "none";
+  document.getElementById("content-1").style.display = "block";
+}
+
+function showContent2(){
+  document.getElementById("content-1").style.display = "none";
+  document.getElementById("content-2").style.display = "block";
+}
+
+function showWarning(input) {
+    var inputDiv = input.parentElement;
+    inputDiv.classList.add("alert");
+};
+
+function hideWarning(input) {
+    var inputDiv = input.parentElement;
+    inputDiv.classList.remove("alert");
+};
+
+
+
 
 // THIS CODE IS NOT MINE
 // SOURCE: https://gist.github.com/DiegoSalazar/4075533

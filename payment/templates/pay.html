@@ -69,47 +69,101 @@
                         <div class="create-account">
                             <a href="#" >Create your Account ⭬</a>
                         </div>
-                  </form>
+
 
                   {% else %}
                     <form class="payment-form" method='POST' action="{{ url_for('proccess_payment', checkout = request.args.get('checkout_token') ) }}">
                       <img src="{{ url_for('static',filename='images/logo.png') }}" alt="StrongPay"/>
-                      <span class="payment-title"> Payment Details</span>
-                      <img src="{{ url_for('static',filename='images/credit.png') }}" alt="StrongPay"/>
 
-                      <div class="payment-input">
-                          <input  type="text" name="card-number" placeholder="Card Number" maxlength="15"/>
-                          <span> <i class="fa fa-credit-card" aria-hidden="true"></i> </span>
+                      <div id="content-1">
+                        <span class="payment-title"> Payment Details</span>
+                        <img src="{{ url_for('static',filename='images/credit.png') }}" alt="StrongPay"/>
+
+                        <div class="payment-input">
+                            <input  type="number" name="card-number" placeholder="Card Number" maxlength="16"/>
+                            <span> <i class="fa fa-credit-card" aria-hidden="true"></i> </span>
+                        </div>
+
+                        <div id="half" class="payment-input">
+                            <input type="text" name="exp" placeholder="MM/YY" maxlength="5"/>
+                            <span> <i class="fa fa-calendar" aria-hidden="true"></i> </span>
+                        </div>
+
+                        <div id="half" class="payment-input">
+                            <input type="number" name="cvc" placeholder="CVC" maxlength="3" />
+                            <span> <i class="fa fa-lock" aria-hidden="true"></i> </span>
+                        </div>
+
+                        <div class="payment-input">
+                            <input type="text" name="card-owner" placeholder="Card Owner Name" />
+                            <span> <i class="fa fa-user" aria-hidden="true"></i> </span>
+                        </div>
+
+                        <div class="payment-button">
+                            <button type="button" id="next">Next</button>
+                        </div>
                       </div>
 
-                      <div id="half" class="payment-input">
-                          <input type="text" name="exp" placeholder="MM/YY" maxlength="5"/>
-                          <span> <i class="fa fa-calendar" aria-hidden="true"></i> </span>
-                      </div>
 
-                      <div id="half" class="payment-input">
-                          <input type="text" name="cvc" placeholder="CVC" maxlength="3" />
-                          <span> <i class="fa fa-lock" aria-hidden="true"></i> </span>
-                      </div>
+                      <div id="content-2" style="display: None;">
+                        <span class="payment-title">Your Billing Address</span>
 
-                      <div class="payment-input">
-                          <input type="text" name="card-owner" placeholder="Card Owner Name" />
-                          <span> <i class="fa fa-user" aria-hidden="true"></i> </span>
-                      </div>
+                        <div class="payment-input">
+                            <input type="text" name="first_name" placeholder="First Name"/>
+                            <span> <i class="fa fa-user" aria-hidden="true"></i> </span>
+                        </div>
 
-                      <div class="payment-button">
-                          <button id="proccess">Proccess payment</button>
-                          <img id="loading" src="{{ url_for('static',filename='images/loading.gif') }}" alt="StrongPay"/>
-                      </div>
+                        <div class="payment-input">
+                            <input type="text" name="last_name" placeholder="Last Name" />
+                            <span> <i class="fa fa-user" aria-hidden="true"></i> </span>
+                        </div>
 
-                    </form>
+                        <div id="half" class="payment-input">
+                            <input type="text" name="country" placeholder="Country" />
+                            <span> <i class="fa fa-flag" aria-hidden="true"></i> </span>
+                        </div>
+
+                        <div id="half" class="payment-input">
+                            <input type="text" name="city" placeholder="Town / City" />
+                            <span> <i class="fa fa-map-marker" aria-hidden="true"></i> </span>
+                        </div>
+
+                        <div class="payment-input">
+                            <input type="text" name="address" placeholder="Address" />
+                            <span> <i class="fa fa-home" aria-hidden="true"></i> </span>
+                        </div>
+
+                        <div id="half" class="payment-input">
+                            <input type="text" name="post_code" placeholder="Post Code" />
+                            <span> <i class="fa fa-map-pin" aria-hidden="true"></i> </span>
+                        </div>
+
+                        <div id="half" class="payment-input">
+                            <input type="number" name="phone" placeholder="Phone" />
+                            <span> <i class="fa fa-phone" aria-hidden="true"></i> </span>
+                        </div>
+
+                        <div id="half" class="payment-button">
+                            <button type="button" id="back">Back</button>
+                        </div>
+
+                        <div id="half" class="payment-button">
+                            <button id="proccess">Pay Now</button>
+                            <img id="loading" src="{{ url_for('static',filename='images/loading.gif') }}" alt="StrongPay"/>
+                        </div>
+                      </div>
                   {% endif %}
 
+                  <div class="error" id="form-error" style="display:none">
+                     <i class="fa fa-times-circle"></i>
+                     <span id="span-error"></span>
+                  </div>
+                </form>
 
                 {% if error %}
                 <div class="error">
                    <i class="fa fa-times-circle"></i>
-                   {{error}}
+                    {{error}}
                 </div>
                 {% endif %}
 
