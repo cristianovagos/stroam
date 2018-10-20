@@ -31,7 +31,7 @@ public class EpisodeController {
     @Autowired
     ProductionRepository productionRepository;
 
-    @RequestMapping(value = "/catalog/{prodID}/season/{seasonNum}/episode", method = RequestMethod.GET)
+    @RequestMapping(value = "/v1/catalog/{prodID}/season/{seasonNum}/episode", method = RequestMethod.GET)
     public List<Episode> getAllEpisodesFromProductionSeason(@PathVariable("prodID") Long productionID,
                                                             @PathVariable("seasonNum") int seasonNum) {
         Optional<SeriesSeason> season = seasonRepository.findByProductionIdAndSeason(productionID, seasonNum);
@@ -41,7 +41,7 @@ public class EpisodeController {
         return season.get().getEpisodes();
     }
 
-    @RequestMapping(value = "/catalog/{prodID}/season/{seasonNum}/episode", method = RequestMethod.POST)
+    @RequestMapping(value = "/v1/catalog/{prodID}/season/{seasonNum}/episode", method = RequestMethod.POST)
     public ResponseEntity<Object> addEpisodeToSeasonFromProduction(@PathVariable("prodID") Long productionID,
                                                                    @PathVariable("seasonNum") int seasonNum,
                                                                    @RequestBody Episode episode) {
@@ -62,7 +62,7 @@ public class EpisodeController {
         return ResponseEntity.created(location).build();
     }
 
-    @RequestMapping(value = "/catalog/{prodID}/season/{seasonNum}/episode/{episodeNum}", method = RequestMethod.GET)
+    @RequestMapping(value = "/v1/catalog/{prodID}/season/{seasonNum}/episode/{episodeNum}", method = RequestMethod.GET)
     public Episode getEpisodeByNumFromSeasonAndProductionID(@PathVariable("prodID") Long productionID,
                                                             @PathVariable("seasonNum") int seasonNum,
                                                             @PathVariable("episodeNum") int episodeNum) {
@@ -76,7 +76,7 @@ public class EpisodeController {
         return episode.get();
     }
 
-    @RequestMapping(value = "/catalog/{prodID}/season/{seasonNum}/episode/{episodeNum}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/v1/catalog/{prodID}/season/{seasonNum}/episode/{episodeNum}", method = RequestMethod.PUT)
     public ResponseEntity<Object> updateEpisodeByNumFromSeasonAndProductionID(@PathVariable("prodID") Long productionID,
                                                                               @PathVariable("seasonNum") int seasonNum,
                                                                               @PathVariable("episodeNum") int episodeNum,
@@ -94,7 +94,7 @@ public class EpisodeController {
         return ResponseEntity.noContent().build();
     }
 
-    @RequestMapping(value = "/catalog/{prodID}/season/{seasonNum}/episode/{episodeNum}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/v1/catalog/{prodID}/season/{seasonNum}/episode/{episodeNum}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteEpisodeByNumFromSeasonAndProductionID(@PathVariable("prodID") Long productionID,
                                                             @PathVariable("seasonNum") int seasonNum,
                                                             @PathVariable("episodeNum") int episodeNum) {

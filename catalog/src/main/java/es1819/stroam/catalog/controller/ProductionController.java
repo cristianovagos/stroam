@@ -25,10 +25,10 @@ public class ProductionController {
     @Autowired
     private ProductionRepository productionRepository;
 
-    @RequestMapping(value = "/catalog", method = GET)
+    @RequestMapping(value = "/v1/catalog", method = GET)
     public List<Production> getAllCatalog() { return productionRepository.findAll(); }
 
-    @RequestMapping(value = "/catalog", method = POST)
+    @RequestMapping(value = "/v1/catalog", method = POST)
     public ResponseEntity<Object> addCatalog(@RequestBody Production production) {
         Production newProd = productionRepository.save(production);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -36,7 +36,7 @@ public class ProductionController {
         return ResponseEntity.created(location).build();
     }
 
-    @RequestMapping(value = "/catalog/{id}", method = GET)
+    @RequestMapping(value = "/v1/catalog/{id}", method = GET)
     public Production getCatalogByID(@PathVariable Long id) {
         Optional<Production> production = productionRepository.findById(id);
         if(!production.isPresent())
@@ -44,7 +44,7 @@ public class ProductionController {
         return production.get();
     }
 
-    @RequestMapping(value = "/catalog/{id}", method = PUT)
+    @RequestMapping(value = "/v1/catalog/{id}", method = PUT)
     public ResponseEntity<Object> updateCatalogByID(@RequestBody Production prod, @PathVariable Long id) {
         Optional<Production> production = productionRepository.findById(id);
         if(!production.isPresent())
@@ -54,7 +54,7 @@ public class ProductionController {
         return ResponseEntity.noContent().build();
     }
 
-    @RequestMapping(value = "/catalog/{id}", method = DELETE)
+    @RequestMapping(value = "/v1/catalog/{id}", method = DELETE)
     public ResponseEntity<Object> removeCatalogByID(@PathVariable Long id) {
         productionRepository.deleteById(id);
         return ResponseEntity.ok().build();

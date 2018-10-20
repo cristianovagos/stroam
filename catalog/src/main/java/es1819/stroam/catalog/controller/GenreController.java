@@ -30,10 +30,10 @@ public class GenreController {
     @Autowired
     private GenreRepository genreRepository;
 
-    @RequestMapping(value = "/catalog/genre", method = GET)
+    @RequestMapping(value = "/v1/catalog/genre", method = GET)
     public List<Genre> getAllGenres() { return genreRepository.findAll(); }
 
-    @RequestMapping(value = "/catalog/genre", method = POST)
+    @RequestMapping(value = "/v1/catalog/genre", method = POST)
     public ResponseEntity<Object> addGenre(@RequestBody Genre genre) {
         Genre newGenre = genreRepository.save(genre);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -41,13 +41,13 @@ public class GenreController {
         return ResponseEntity.created(location).build();
     }
 
-    @RequestMapping(value = "/catalog/genre/{id}", method = DELETE)
+    @RequestMapping(value = "/v1/catalog/genre/{id}", method = DELETE)
     public ResponseEntity<Object> removeGenreByID(@PathVariable Long id) {
         genreRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "/catalog/genre/{id}", method = GET)
+    @RequestMapping(value = "/v1/catalog/genre/{id}", method = GET)
     public Genre getGenreByID(@PathVariable("id") Long id) {
         Optional<Genre> genre = genreRepository.findById(id);
         if(!genre.isPresent())
@@ -55,7 +55,7 @@ public class GenreController {
         return genre.get();
     }
 
-    @RequestMapping(value = "/catalog/genre/{id}", method = PUT)
+    @RequestMapping(value = "/v1/catalog/genre/{id}", method = PUT)
     public ResponseEntity<Object> updateGenreByID(@PathVariable Long id, @RequestBody Genre genre) {
         Optional<Genre> genre1 = genreRepository.findById(id);
         if(!genre1.isPresent())

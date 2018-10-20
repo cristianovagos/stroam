@@ -2,6 +2,7 @@ package es1819.stroam.catalog.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -12,26 +13,27 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Collections;
 
+import static springfox.documentation.builders.PathSelectors.regex;
+
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
     @Bean
-    public Docket api() {
+    public Docket apiV1() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("es1819.stroam.catalog.controller"))
-                .paths(PathSelectors.any())
+                    .apis(RequestHandlerSelectors.basePackage("es1819.stroam.catalog.controller"))
+                    .paths(regex("/api/v1.*"))
                 .build()
-                .apiInfo(apiInfo());
+                .apiInfo(getApiInfo());
     }
 
-    private ApiInfo apiInfo() {
-        return new ApiInfo(
-                "STROAM Catalog REST API",
-                "REST API for the STROAM Catalog, which has Movie/TV Series information",
-                "API TOS",
-                "Terms of service",
-                new Contact("Cristiano Vagos", "https://github.com/cristianovagos", "cristianovagos@ua.pt"),
-                "License of API", "API License URL", Collections.emptyList());
+    private ApiInfo getApiInfo() {
+        return new ApiInfoBuilder()
+                .version("1")
+                .title("STROAM Catalog REST API")
+                .description("REST API for the STROAM Catalog, which has Movie/TV Series information")
+                .contact(new Contact("Cristiano Vagos", "https://github.com/cristianovagos", "cristianovagos@ua.pt"))
+                .build();
     }
 }
