@@ -190,6 +190,7 @@ def get_checkout():
     buyer = db.get('CLIENT', 'id', checkout['paid_by'])
     items = db.get_all('ITEM', 'checkout', checkout['id'])
     merchant = db.get('MERCHANT', 'id', checkout['merchant'])
+    billing_address = db.get('BILLING_ADDRESS', 'id', checkout['billing_address'])
     items = [ dict(i) for i in items]
 
     # Ignore this, simply making every key on dictionary uppercase because it looks good
@@ -218,6 +219,15 @@ def get_checkout():
         credit_card = '*' * 12 + str(checkout['paid_with'])[-4:]
         info['CHECKOUT']['PAID_WITH'] = credit_card
 
+    # Checking if there is billing address information to add
+    if billing_address:
+        info['BILLING_ADDRESS'] = { 'FIRST NAME': billing_address['first_name'],
+                                    'LAST NAME': billing_address['last_name'],
+                                    'COUNTRY' : billing_address['country'],
+                                    'CITY' : billing_address['city'],
+                                    'ADDRESS' : billing_address['address'],
+                                    'POST-CODE' : billing_address['post_code'],
+                                    'PHONE' : billing_address['phone']}
 
     # Returning information
     return jsonify(info), 200
