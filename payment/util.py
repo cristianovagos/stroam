@@ -100,7 +100,28 @@ def add_credit_to_user(credit_card, user_id):
 
     return True
 
-def prepare_checkout(checkout_number, card_number, user_id):
+def add_address_to_user(address, user_id):
+    '''
+        Adds billing address to user
+    '''
+
+    # Checking if such BILLING_ADDRESS already exists
+    if not db.exists('BILLING_ADDRESS', \
+    ['first_name', 'last_name', 'country', 'city', 'address', 'post_code', 'phone', 'user_id'],\
+    [address['first_name'], address['last_name'], address['country'], \
+    address['city'], address['address'], address['post_code'], address['phone'], user_id]):
+            try:
+                return db.insert('BILLING_ADDRESS',\
+                 ['first_name', 'last_name', 'country', 'city', 'address', 'post_code', 'phone', 'user_id'], \
+                 [address['first_name'], address['last_name'], address['country'], \
+                 address['city'], address['address'], address['post_code'], address['phone'], user_id])
+            except Exception as e:
+                print(e)
+                return False
+
+    return True
+
+def prepare_checkout(checkout_number, card_number, billing_id, user_id):
     '''
         Prepare checkout by adding the buyer and credit card to be used
     '''
@@ -112,8 +133,8 @@ def prepare_checkout(checkout_number, card_number, user_id):
         return False
 
     try:
-        db.update('CHECKOUT', ['paid_with', 'paid_by', 'status'],
-                                    [card_number, user_id, 'READY'],
+        db.update('CHECKOUT', ['paid_with', 'paid_by', 'status', 'billing_address'],
+                                    [card_number, user_id, 'READY', billing_id],
                                     'id', checkout_number)
     except Exception as e:
         print(e)

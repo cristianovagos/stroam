@@ -488,8 +488,8 @@ def proccess_payment():
 
     param = request.form.to_dict()
     keys = param.keys()
-    required_keys = ['card-number', 'exp', 'cvc', 'card-owner']
-    print(keys)
+    required_keys = ['card-number', 'exp', 'cvc', 'card-owner', 'first_name', \
+                    'last_name', 'country', 'city', 'address', 'post_code', 'phone']
 
     # Checking for required parameters
     if not param or not check_keys(required_keys, keys):
@@ -499,8 +499,13 @@ def proccess_payment():
     if not add_credit_to_user(param, session['user_id']):
         return redirect(url_for('pay', checkout_token = args['checkout'], error = "db_error" ))
 
+    # Create a relation of the billing address with the user
+    billing_id = add_address_to_user(param, session['user_id'])
+    if not billing_id:
+        return redirect(url_for('pay', checkout_token = args['checkout'], error = "db_error" ))
+
     # Save information about payment in the checkout
-    return_url = prepare_checkout(args['checkout'], param['card-number'], session['user_id'])
+    return_url = prepare_checkout(args['checkout'], param['card-number'], billing_id, session['user_id'])
 
     if not return_url:
         return redirect(url_for('pay', checkout_token = args['checkout'], error = "db_error"))

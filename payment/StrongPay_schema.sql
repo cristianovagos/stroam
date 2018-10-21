@@ -37,12 +37,15 @@ CREATE TABLE CREDIT_CARD(
 );
 
 CREATE TABLE BILLING_ADDRESS(
-  name          TEXT NOT NULL,
-  street_name   TEXT NOT NULL,
-  street_number INT NOT NULL,
-  state_district TEXT NOT NULL,
+  id             INTEGER PRIMARY KEY AUTOINCREMENT,
+  first_name     TEXT NOT NULL,
+  last_name      TEXT NOT NULL,
   country        TEXT NOT NULL,
-  user_id        TEXT PRIMARY KEY,
+  city           TEXT NOT NULL,
+  address        TEXT NOT NULL,
+  post_code      TEXT NOT NULL,
+  phone          INT NOT NULL,
+  user_id        TEXT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES USER(id)
 );
 
@@ -57,9 +60,11 @@ CREATE TABLE CHECKOUT (
   paid_with   INT,
   paid_by     TEXT,
   status      TEXT DEFAULT "CREATED",
+  billing_address INT,
   FOREIGN KEY (merchant) REFERENCES MERCHANT(id),
   FOREIGN KEY (paid_with) REFERENCES CREDIT_CARD(cc_number),
-  FOREIGN KEY (paid_by) REFERENCES CLIENT(id)
+  FOREIGN KEY (paid_by) REFERENCES CLIENT(id),
+  FOREIGN KEY (billing_address) REFERENCES BILLING_ADDRESS(id)
 );
 
 CREATE TABLE ITEM (
