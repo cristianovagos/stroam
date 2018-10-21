@@ -198,20 +198,26 @@ def get_checkout():
         for k in list(i):
             i[k.upper()] = i.pop(k)
 
-    # Hiding credit card info
-    credit_card = '*' * 12 + str(checkout['paid_with'])[-4:]
-
     # Building information
     info = {
             'CHECKOUT' : {'ID': checkout['id'], 'STATUS' : checkout['status'],
                             'AMOUNT' : checkout['amount'],
-                            'CURRENCY' : checkout['currency'],
-                            'PAID_WITH': credit_card},
+                            'CURRENCY' : checkout['currency']},
             'MERCHANT' : {'ID': merchant['id'], 'NAME': merchant['name']},
-            'BUYER'    : {'ID' : buyer['id'], 'NAME' : buyer['name'],
-                            'NIF': buyer['nif']},
             'ITEMS'    : items
     }
+
+    # Check if there is a BUYER to add
+    if buyer:
+        info['BUYER'] = {'ID' : buyer['id'], 'NAME' : buyer['name'],
+                        'NIF': buyer['nif']};
+
+    # Checking if there is credit card information to add
+    if checkout['paid_with']:
+        # Hiding credit card info
+        credit_card = '*' * 12 + str(checkout['paid_with'])[-4:]
+        info['CHECKOUT']['PAID_WITH'] = credit_card
+
 
     # Returning information
     return jsonify(info), 200
@@ -479,6 +485,7 @@ def proccess_payment():
     param = request.form.to_dict()
     keys = param.keys()
     required_keys = ['card-number', 'exp', 'cvc', 'card-owner']
+    print(keys)
 
     # Checking for required parameters
     if not param or not check_keys(required_keys, keys):
