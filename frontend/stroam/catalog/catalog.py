@@ -30,7 +30,7 @@ def getAllCatalog():
     prodsList = []
 
     try:
-        url = urlopen(BASE_CATALOG_URL + "/catalog/")
+        url = urlopen(BASE_CATALOG_URL + "/v1/catalog/")
     except Exception:
         return None
 
@@ -60,7 +60,7 @@ def getSingleCatalog(id):
     assert isinstance(id, int)
 
     try:
-        url = urlopen(BASE_CATALOG_URL + "/catalog/" + str(id))
+        url = urlopen(BASE_CATALOG_URL + "/v1/catalog/" + str(id))
     except Exception:
         return None
 
@@ -94,7 +94,7 @@ def getSeriesSeason(id, seasonNum):
     assert isinstance(id, int)
 
     try:
-        url = urlopen(BASE_CATALOG_URL + "/catalog/" + str(id) + "/season/" + str(seasonNum))
+        url = urlopen(BASE_CATALOG_URL + "/v1/catalog/" + str(id) + "/season/" + str(seasonNum))
     except Exception:
         return None
 

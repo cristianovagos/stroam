@@ -15,28 +15,28 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for product in products.items %}
+                                {% for product in products %}
                                     <tr>
                                         <td scope="row">
                                             <div class="media">
                                                 <a class="img-thumbnail">
-                                                    <img src="{{ product.1.product.poster }}"
-                                                         style="width: 65px; height: 65px;">
+{#                                                    <img src="{{ product.1.product.poster }}"#}
+{#                                                         style="width: 65px; height: 65px;">#}
                                                 </a>
                                                 <div class="media-body" style="margin-left: 10px">
                                                     <h6>
-                                                        <a href="{% url 'movie-single' id=product.1.product.id %}">
-                                                            {{ product.1.product.title }}
+                                                        <a href="{{ product.URL }}">
+                                                            {{ product.NAME }}
                                                         </a>
                                                     </h6>
-                                                    {% if product.1.product.type == "series" %}
-                                                        <p>Season {{ product.1.season }}</p>
-                                                    {% endif %}
+{#                                                    {% if product.1.product.type == "series" %}#}
+{#                                                        <p>Season {{ product.1.season }}</p>#}
+{#                                                    {% endif %}#}
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            <strong>{{ product.1.product.price }}€</strong>
+                                            <strong>{{ product.PRICE }}€</strong>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -55,7 +55,7 @@
                                             <button class="btn btn-success btn-lg" type="submit">
                                                 <span class="fas fa-check"></span> Confirm & Pay
                                             </button>
-                                            <input type="hidden" id="buyerID" name="buyerID" value="{{ buyerID }}">
+                                            <input type="hidden" id="buyerID" name="buyerID" value="{{ buyerID.ID }}">
                                             <input type="hidden" id="checkoutToken" name="checkoutToken" value="{{ checkoutToken }}">
                                         </form>
                                     </td>

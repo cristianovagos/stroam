@@ -39,6 +39,10 @@ a:hover {
   color: red;
 }
 
+section {
+  min-height: 75vh;
+}
+
 .container {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -69,6 +73,7 @@ a:hover {
 .breadcrumb {
     background: #c6c8ca;
     color: red;
+    border-radius: 0;
 }
 
 .breadcrumb .active {
@@ -201,6 +206,10 @@ a:hover {
 .info-section span {
   font-weight: 700;
   font-size: 11px;
+}
+
+.dropdown-menu {
+  font-size: 14px;
 }
 
 @media screen and (max-width: 500px) {

@@ -26,8 +26,10 @@ urlpatterns = [
     path('cart/', views.shoppingCart, name='shopping-cart'),
     path('checkout/', views.checkout, name='checkout'),
     path('checkout/create', views.checkoutCreate, name='checkoutCreate'),
+    path('pay/<slug:checkout_token>', views.pay, name='pay'),
     path('checkout/success', views.paymentCompleted, name='paymentCompleted'),
     path('checkout/error', views.paymentError, name='paymentError'),
+    path('userpanel/', views.userPanel, name='user-panel'),
     path('deleteAll', views.deleteAll, name='deleteAll'),
 ]
 

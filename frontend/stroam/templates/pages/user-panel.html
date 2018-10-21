@@ -1,0 +1,118 @@
+{% extends 'base/layout.html' %}
+
+{% block content %}
+    {% load staticfiles %}
+    <section>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">User Panel</li>
+            </ol>
+        </nav>
+        <div class="container-fluid" style="margin-top: 25px; margin-bottom: 30px">
+            <div class="row">
+                <div class="col-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <img src="{% static 'images/user.png' %}" class="rounded mx-auto d-block img-thumbnail"
+                                style="margin-bottom: 15px">
+                            <h5 class="card-title">{{ user }}</h5>
+                            <p class="card-text"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-10">
+                    <div class="card">
+                        {% if data.items|length == 0 %}
+                            <div class="card-body">
+                                <h4 class="card-title text-center">
+                                    Looks like you have no orders yet...<br><br>
+                                    <a href="{% url 'homepage' %}" class="btn-lg btn-danger">Shop now</a>
+                                </h4>
+                            </div>
+                        {% else %}
+                            <div class="card-body">
+                                <h5 class="card-title">Your orders:</h5>
+                                <div class="float-right" style="margin-bottom: 10px">
+                                    <a class="btn btn-secondary btn-filter" data-target="all" style="color: white; font-size: 14px">All</a>
+                                    <a class="btn btn-secondary btn-filter" data-target="1" style="color: white; font-size: 14px">Awaiting payment</a>
+                                    <a class="btn btn-secondary btn-filter" data-target="2" style="color: white; font-size: 14px">Error</a>
+                                    <a class="btn btn-secondary btn-filter" data-target="3" style="color: white; font-size: 14px">Cancelled</a>
+                                    <a class="btn btn-secondary btn-filter" data-target="4" style="color: white; font-size: 14px">Completed</a>
+                                </div>
+                                <table class="table">
+                                    <thead>
+                                        <tr class="d-flex">
+                                            <th scope="col" class="col-1">Order No.</th>
+                                            <th scope="col" class="col-5">Items</th>
+                                            <th scope="col" class="col-2">Ordered on</th>
+                                            <th scope="col" class="col-2">Paid on</th>
+                                            <th scope="col" class="col-2"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for order in data.items %}
+                                            <tr class="d-flex" data-status="{{ order.1.payment_status }}">
+                                                <th scope="row" class="col-1">{{ order.0 }}</th>
+                                                <td class="col-5">
+                                                    <div>
+                                                        {% for items in order.1.products.items %}
+                                                            <a href="{% url 'movie-single' id=items.1.production.id %}">
+                                                                {% if not items.1.season %}
+                                                                    <p>{{ items.1.production.title }}</p>
+                                                                {% else %}
+                                                                    <p>{{ items.1.production.title }} - Season {{ items.1.season }}</p>
+                                                                {% endif %}
+                                                            </a>
+                                                        {% endfor %}
+                                                    </div>
+                                                </td>
+                                                <td class="col-2">{{ order.1.date_created|date:"d/m/Y H:i:s" }}</td>
+                                                <td class="col-2">
+                                                    {% if order.1.date_payment %}
+                                                        {{ order.1.date_payment|date:"d/m/Y H:i:s" }}
+                                                    {% elif order.1.payment_status == 3 %}
+                                                        Order cancelled
+                                                    {% else %}
+                                                        Not paid
+                                                    {% endif %}
+                                                </td>
+                                                <td class="col-2 text-right">
+                                                    {% if order.1.payment_status < 3 %}
+                                                        <a class="btn btn-danger col-8" style="margin: 2px; color: white; font-size: 14px"
+                                                            href="{% url 'pay' checkout_token=order.1.token_payment %}">Pay Now</a><br>
+                                                        <a class="btn btn-danger col-8" data-toggle="modal" data-target="#cancelModal" data-orderid="{{ order.0 }}"
+                                                           style="margin: 2px; color: white; font-size: 14px">Cancel order</a>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                {% csrf_token %}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cancelModalLabel">Cancel order</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to cancel this order?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,8 +1,6 @@
 from random import shuffle
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpRequest, HttpResponse, Http404
-from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
 
 from .catalog import catalog
 from .payment import payment
@@ -70,6 +68,8 @@ def singleMovie(request, id):
                                            purchase_id__payment_status=Purchase.PAYMENT_COMPLETED)
     moviePurchased = p.count() > 0
 
+    print(p)
+
     movie = catalog.getSingleCatalog(id)
     if movie is not None:
         movieTitle = movie.title
@@ -132,7 +132,7 @@ def shoppingCart(request):
                 if 'seasonID' in prodList[product] and prodList[product]['seasonID'] is not None:
                     products[p.id]['seasonID'] = prodList[product]['seasonID']
             else:
-                request.session['productList'] = {}
+                deleteProductListFromSession(request)
                 numCartProducts = 0
 
     tparams = {
@@ -144,69 +144,70 @@ def shoppingCart(request):
     return render(request, 'pages/shopping-cart.html', tparams)
 
 def checkoutCreate(request):
-    checkURLOrigin(request, request.build_absolute_uri(reverse('shopping-cart')))
+    # checkURLOrigin(request, request.build_absolute_uri(reverse('shopping-cart')))
 
-    products = {}
+    products = []
     price = 0
     if 'productList' in request.session:
-        numCartProducts = len(request.session.get('productList'))
         prodList = request.session.get('productList')
         for product in prodList:
             p = catalog.getSingleCatalog(int(product))
             if p:
-                price += p.price
-                products[p.id] = {}
-                products[p.id]['product'] = p
+                season = ""
                 if 'season' in prodList[product] and prodList[product]['season'] is not None:
-                    products[p.id]['season'] = prodList[product]['season']
-                if 'seasonID' in prodList[product] and prodList[product]['seasonID'] is not None:
-                    products[p.id]['seasonID'] = prodList[product]['seasonID']
-            else:
-                request.session['productList'] = {}
-
-    print(products)
-    print(price)
-    print(numCartProducts)
-    return payment.createCheckout(list(prodList.keys()), price, request.build_absolute_uri(reverse('checkout')), request.build_absolute_uri(reverse('paymentError')))
+                    season = " - Season " + str(prodList[product]['season'])
+                products.append({
+                    "name": p.title + season,
+                    "price": p.price,
+                    "quantity": 1,
+                    "url": request.build_absolute_uri(reverse('movie-single', kwargs={'id':p.id})),
+                    "season": prodList[product].get('season', None),
+                    "id": p.id
+                })
+                price += p.price
+            deleteProductListFromSession(request)
+    return payment.createCheckout(list(prodList.keys()), price, request.build_absolute_uri(reverse('checkout')),
+                                  request.build_absolute_uri(reverse('paymentError')), products)
 
 def checkout(request):
     title = 'Checkout - Confirm Payment'
-    checkURLOrigin(request, payment.PAYMENT_SERVICE_URL)
+    # checkURLOrigin(request, payment.PAYMENT_SERVICE_URL)
 
     if request.method == 'POST':
         checkoutToken = request.POST.get('checkoutToken', None)
         buyerID = request.POST.get('buyerID', None)
         if checkoutToken is not None and buyerID is not None:
-            print('Executing checkout...')
-            print(payment.executeCheckout(checkoutToken, buyerID))
-
             p = Purchase.objects.all().filter(token_payment=checkoutToken).first()
             if payment.executeCheckout(checkoutToken, buyerID):
-                print('Redirecting to Payment Completed page')
                 p.onCompletedPayment()
                 return redirect('paymentCompleted')
-            print('Redirecting to Payment Error page')
             p.onPaymentError()
             return redirect('paymentError')
 
     checkoutToken = request.GET.get('checkout_token', None)
     if checkoutToken is not None:
-        p = Purchase.objects.all().filter(token_payment=checkoutToken).first()
-        p.awaitPayment()
-
         data = payment.getCheckoutDetails(checkoutToken)
-        buyerID = data.get('ID', None)
+        error = data.get('ERROR', None)
+
+        if error is None:
+            totalPrice = data.get('CHECKOUT', 0)['AMOUNT']
+            products = data.get('ITEMS', [])
+            buyerID = data.get('BUYER', {})
+        else:
+            raise Http404('Bad Request: \n\n' + str(error))
 
     tparams = {
         'title': MAIN_TITLE + title,
         'checkoutToken': checkoutToken,
-        'buyerID': buyerID
+        'buyerID': buyerID,
+        'products': products,
+        'totalPrice': totalPrice
     }
     return render(request, 'pages/checkout.html', tparams)
 
 def paymentCompleted(request):
     title = 'Payment Completed'
-    checkURLOrigin(request, payment.PAYMENT_SERVICE_URL)
+    # checkURLOrigin(request, payment.PAYMENT_SERVICE_URL)
     deleteProductListFromSession(request)
 
     tparams = {
@@ -226,6 +227,47 @@ def paymentError(request):
         'title': MAIN_TITLE + title,
     }
     return render(request, 'pages/payment-error.html', tparams)
+
+def userPanel(request):
+    title = 'User Panel'
+    numCartProducts = 0
+
+    if 'productList' in request.session:
+        numCartProducts = len(request.session.get('productList'))
+
+    if request.method == 'POST':
+        p = Purchase.objects.get(id=request.POST['orderID'])
+        p.onOrderCancelled()
+        return HttpResponse('')
+
+    data = {}
+    allPurchases = Purchase.objects.filter(user_id=1)
+    for purchase in allPurchases:
+        productions = Purchase_Production.objects.filter(purchase_id=purchase.id)
+        data[purchase.id] = {}
+        data[purchase.id]['payment_status'] = purchase.payment_status
+        data[purchase.id]['token_payment'] = purchase.token_payment
+        data[purchase.id]['date_created'] = purchase.date_created
+        data[purchase.id]['date_payment'] = purchase.date_payment
+        data[purchase.id]['products'] = {}
+        for production in productions:
+            product = catalog.getSingleCatalog(production.production_id)
+            data[purchase.id]['products'][production.id] = {}
+            data[purchase.id]['products'][production.id]['production'] = product
+            if product.type == 'series':
+                data[purchase.id]['products'][production.id]['season'] = production.season_num
+            else:
+                data[purchase.id]['products'][production.id]['season'] = None
+
+    tparams = {
+        'title': MAIN_TITLE + title,
+        'data': data,
+        'numCart': numCartProducts
+    }
+    return render(request, 'pages/user-panel.html', tparams)
+
+def pay(request, checkout_token):
+    return redirect(payment.PAYMENT_SERVICE_URL + "/pay?checkout_token=" + checkout_token)
 
 # FOR DEBUGGING PURPOSES! THIS WILL DELETE ALL STUFF (SESSIONS + FRONTEND DATABASE DATA)
 def deleteAll(request):
