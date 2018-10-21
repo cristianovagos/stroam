@@ -446,6 +446,10 @@ def pay():
     if not checkout:
         return redirect(url_for('index', error = "invalid_checkout"))
 
+    # Checking if checkout was already paid
+    if checkout['status'] != "CREATED":
+        return redirect(checkout['return_url'] + "?checkout_token=" + args['checkout_token'] )
+
     # Checking if user is already logged in
     login_form = False if 'user_id' in session and db.exists('CLIENT', 'id', session['user_id']) else True
 
