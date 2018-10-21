@@ -8,9 +8,8 @@ from ..models import *
 
 PAYMENT_SERVICE_URL = "http://localhost:5000"
 
-def createCheckout(productList, price, returnURL, cancelURL, items, currency="EUR", merchant="tokensample123"):
+def createCheckout(price, returnURL, cancelURL, items, currency="EUR", merchant="tokensample123"):
     jsonItems = []
-    auxSeasons = {}
     for item in items:
         jsonItems.append({
             "NAME": item['name'],
@@ -18,7 +17,6 @@ def createCheckout(productList, price, returnURL, cancelURL, items, currency="EU
             "QUANTITY": item['quantity'],
             "URL": item['url']
         })
-        auxSeasons[int(item['id'])] = item.get('season', None)
     jsonObj = {
       "AMOUNT": price,
       "RETURN_URL": returnURL,
@@ -39,10 +37,10 @@ def createCheckout(productList, price, returnURL, cancelURL, items, currency="EU
         checkoutToken = responseObj["CHECKOUT_TOKEN"]
         p = Purchase(user_id=1, token_payment=checkoutToken)
         p.save()
-        for product in productList:
-            purchaseInfo = Purchase_Production(production_id=product)
+        for product in items:
+            purchaseInfo = Purchase_Production(production_id=int(product['id']))
             purchaseInfo.save()
-            purchaseInfo.season_num = auxSeasons.get(int(product))
+            purchaseInfo.season_num = int(product['season'])
             purchaseInfo.purchase_id.add(p)
             purchaseInfo.save()
         return redirect(PAYMENT_SERVICE_URL + "/pay?checkout_token=" + checkoutToken)

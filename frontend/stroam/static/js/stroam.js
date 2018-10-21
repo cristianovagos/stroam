@@ -7,13 +7,14 @@ $(document).ready(function () {
        trigger.click(function () {
            var modal = $(this).data("target"),
                productID = $(this).data("productid"),
+               seasonID = $(this).data('seasonid'),
                csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
            $(modal + ' button.btn.btn-danger').click(function () {
                $.post('/cart/', {
                    csrfmiddlewaretoken: csrfToken,
-                   productID: productID
+                   productID: productID,
+                   seasonID: seasonID
                }, function () {
-                   console.log("refreshing");
                    location.reload();
                });
            });

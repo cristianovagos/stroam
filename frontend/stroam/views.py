@@ -68,11 +68,13 @@ def singleMovie(request, id):
                                            purchase_id__payment_status=Purchase.PAYMENT_COMPLETED)
     moviePurchased = p.count() > 0
 
-    print(p)
-
     movie = catalog.getSingleCatalog(id)
+    seasonsPurchased = []
     if movie is not None:
         movieTitle = movie.title
+
+        if movie.type == 'series' and moviePurchased:
+            seasonsPurchased = list(p.all().values_list('season_num', flat=True).distinct())
 
     if request.method == 'POST':
         auxDict = {}
@@ -80,19 +82,28 @@ def singleMovie(request, id):
             auxDict = request.session.get('productList')
 
         if request.POST.get('seasonID', False) and request.POST.get('seasonNum', False):
-            auxDict[int(request.POST['productID'])] = {
-                'season': int(request.POST['seasonNum']),
-                'seasonID': int(request.POST['seasonID'])}
+            if request.POST['productID'] in auxDict:
+                auxDict[request.POST['productID']].append({
+                    'season': int(request.POST['seasonNum']),
+                    'seasonID': int(request.POST['seasonID'])})
+            else:
+                auxDict[int(request.POST['productID'])] = []
+                auxDict[int(request.POST['productID'])].append({
+                    'season': int(request.POST['seasonNum']),
+                    'seasonID': int(request.POST['seasonID'])})
         else:
-            auxDict[int(request.POST['productID'])] = {'season': None}
+            auxDict[int(request.POST['productID'])] = []
+            auxDict[int(request.POST['productID'])].append({'season': None})
         request.session['productList'] = auxDict
+        numCartProducts += 1
 
         tparams = {
             'title': MAIN_TITLE + movieTitle,
             'movie': movie,
             'addedToCart': True,
             'numCart': numCartProducts,
-            'purchased': moviePurchased
+            'purchased': moviePurchased,
+            'seasonsPurchased': seasonsPurchased
         }
         return render(request, 'base/single-movie.html', tparams)
 
@@ -101,7 +112,8 @@ def singleMovie(request, id):
         'movie': movie,
         'addedToCart': False,
         'numCart': numCartProducts,
-        'purchased': moviePurchased
+        'purchased': moviePurchased,
+        'seasonsPurchased': seasonsPurchased
     }
     return render(request, 'base/single-movie.html', tparams)
 
@@ -112,6 +124,13 @@ def shoppingCart(request):
     if request.method == 'POST':
         if 'productList' in request.session:
             auxDict = request.session.get('productList')
+            if request.POST.get('seasonID', False):
+                prod = auxDict.get(request.POST['productID'], None)
+                auxList = [p for p in prod if p['seasonID'] != int(request.POST['seasonID'])]
+                if len(auxList) > 0:
+                    auxDict[request.POST['productID']] = auxList
+                    request.session['productList'] = auxDict
+                    return HttpResponse('')
             auxDict.pop(request.POST['productID'], None)
             request.session['productList'] = auxDict
             return HttpResponse('')
@@ -119,18 +138,23 @@ def shoppingCart(request):
     products = {}
     price = 0
     if 'productList' in request.session:
-        numCartProducts = len(request.session.get('productList'))
         prodList = request.session.get('productList')
         for product in prodList:
             p = catalog.getSingleCatalog(int(product))
             if p:
-                price += p.price
+                if p.type == 'movie':
+                    numCartProducts += 1
+                    price += p.price
                 products[p.id] = {}
-                products[p.id]['product'] = p
-                if 'season' in prodList[product] and prodList[product]['season'] is not None:
-                    products[p.id]['season'] = prodList[product]['season']
-                if 'seasonID' in prodList[product] and prodList[product]['seasonID'] is not None:
-                    products[p.id]['seasonID'] = prodList[product]['seasonID']
+                auxObj = {}
+                auxObj['product'] = p
+                auxObj['seasons'] = []
+                for obj in prodList[product]:
+                    auxObj['seasons'].append(obj)
+                    if obj['season'] is not None:
+                        price += p.price
+                        numCartProducts += 1
+                products[p.id] = auxObj
             else:
                 deleteProductListFromSession(request)
                 numCartProducts = 0
@@ -154,19 +178,22 @@ def checkoutCreate(request):
             p = catalog.getSingleCatalog(int(product))
             if p:
                 season = ""
-                if 'season' in prodList[product] and prodList[product]['season'] is not None:
-                    season = " - Season " + str(prodList[product]['season'])
-                products.append({
-                    "name": p.title + season,
-                    "price": p.price,
-                    "quantity": 1,
-                    "url": request.build_absolute_uri(reverse('movie-single', kwargs={'id':p.id})),
-                    "season": prodList[product].get('season', None),
-                    "id": p.id
-                })
-                price += p.price
+                seasonAnchor = ""
+                for obj in prodList[product]:
+                    if 'season' in obj and obj['season'] is not None:
+                        season = " - Season " + str(obj['season'])
+                        seasonAnchor = "#season" + str(obj['season'])
+                    products.append({
+                        "name": p.title + season,
+                        "price": p.price,
+                        "quantity": 1,
+                        "url": request.build_absolute_uri(reverse('movie-single', kwargs={'id':p.id})) + seasonAnchor,
+                        "season": obj.get('season', None),
+                        "id": p.id
+                    })
+                    price += p.price
             deleteProductListFromSession(request)
-    return payment.createCheckout(list(prodList.keys()), price, request.build_absolute_uri(reverse('checkout')),
+    return payment.createCheckout(price, request.build_absolute_uri(reverse('checkout')),
                                   request.build_absolute_uri(reverse('paymentError')), products)
 
 def checkout(request):
@@ -217,7 +244,7 @@ def paymentCompleted(request):
 
 def paymentError(request):
     title = 'Payment Canceled'
-    checkURLOrigin(request, payment.PAYMENT_SERVICE_URL)
+    # checkURLOrigin(request, payment.PAYMENT_SERVICE_URL)
     deleteProductListFromSession(request)
 
     print("checkoutError")

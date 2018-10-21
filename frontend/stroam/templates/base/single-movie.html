@@ -63,7 +63,7 @@
                         <h5 class="text-center" style="padding-bottom: 20px">Seasons available:</h5>
                         <ul class="list-group">
                             {% for season in movie.seasonList %}
-                                <li class="list-group-item">
+                                <li class="list-group-item" id="season{{ season.seasonNum }}">
                                     <div class="row toggle" id="dropdown-detail-{{ forloop.counter }}" data-toggle="detail-{{ forloop.counter }}" style="padding: 5px">
                                         <div class="w-50">
                                             Season {{ season.seasonNum }}
@@ -81,7 +81,9 @@
                                         <div class="w-50 text-right">
                                             <form action="" method="post">
                                                 {% csrf_token %}
-                                                <button class="btn btn-danger fas fa-cart-plus" type="submit" id="addcart" name="productID" value="{{ movie.id }}" style="color: white"></button>
+                                                {% if season.seasonNum not in seasonsPurchased %}
+                                                    <button class="btn btn-danger fas fa-cart-plus" type="submit" id="addcart" name="productID" value="{{ movie.id }}" style="color: white"></button>
+                                                {% endif %}
                                                 <input type="hidden" id="seasonID" name="seasonID" value="{{ season.id }}">
                                                 <input type="hidden" id="seasonNum" name="seasonNum" value="{{ season.seasonNum }}">
                                                 <a class="btn btn-secondary fa fa-chevron-down" style="color: white"></a>

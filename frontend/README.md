@@ -14,10 +14,10 @@ This section will be updated as soon as development goes on.
 * Models created (_Purchase_ - purchases information and _PurchaseInformation_ - N-to-M connection table into Catalog IDs) for database usage
 * Payment service (StroamPay) integrated (_view payment folder for more info_)
 * Added basic GET+POST protection of hardcoded URLs (p.e. accessing certain pages out of cycle)
+* Added a user panel, on which one can see their orders (history, etc), and let resume payments and cancel orders
 
 ## TODO
 This section will (_also_) be updated as soon as development goes on.
-* Add purchases page (purchase history, etc), let user resume payments, etc (_to be discussed_)
 * Add user authentication (Sign-in/Register, store user data, etc)
 * Add notification support (_needs Notification service_)
 * Add play feature (_from Streaming CDN service_) to play movies/series

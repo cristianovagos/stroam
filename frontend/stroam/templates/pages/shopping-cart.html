@@ -8,7 +8,7 @@
                     <div class="col-sm-10 col-md-10">
                         <h4>
                             Your shopping cart
-                            <span style="font-size: 13px">({{ products|length }} items)</span>
+                            <span style="font-size: 13px">({{ numCart }} items)</span>
                         </h4>
                         <div class="table-responsive">
                             <table class="table table-hover" style="margin-top: 30px;">
@@ -23,34 +23,65 @@
                                 </thead>
                                 <tbody>
                                     {% for product in products.items %}
-                                        <tr>
-                                            <td scope="row">
-                                                <div class="media">
-                                                    <a class="img-thumbnail">
-                                                        <img src="{{ product.1.product.poster }}"
-                                                             style="width: 65px; height: 65px;">
-                                                    </a>
-                                                    <div class="media-body" style="margin-left: 10px">
-                                                        <h6>
-                                                            <a href="{% url 'movie-single' id=product.1.product.id %}">
-                                                                {{ product.1.product.title }}
+                                        {% if product.1.seasons|length > 1 %}
+                                            {% for productSeason in product.1.seasons %}
+                                                <tr>
+                                                    <td scope="row">
+                                                        <div class="media">
+                                                            <a class="img-thumbnail">
+                                                                <img src="{{ product.1.product.poster }}"
+                                                                     style="width: 65px; height: 65px;">
                                                             </a>
-                                                        </h6>
-                                                        {% if product.1.product.type == "series" %}
-                                                            <p>Season {{ product.1.season }}</p>
-                                                        {% endif %}
+                                                            <div class="media-body" style="margin-left: 10px">
+                                                                <h6>
+                                                                    <a href="{% url 'movie-single' id=product.1.product.id %}#season{{ productSeason.season }}">
+                                                                        {{ product.1.product.title }}
+                                                                    </a>
+                                                                </h6>
+                                                                {% if product.1.product.type == "series" %}
+                                                                    <p>Season {{ productSeason.season }}</p>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <strong>{{ product.1.product.price }}€</strong>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-danger" data-toggle="modal" data-target="#removeModal"
+                                                                data-productid="{{ product.1.product.id }}" data-seasonid="{{ productSeason.seasonID }}">
+                                                            <span class="fas fa-times-circle"></span> Remove
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% else %}
+                                            <tr>
+                                                <td scope="row">
+                                                    <div class="media">
+                                                        <a class="img-thumbnail">
+                                                            <img src="{{ product.1.product.poster }}"
+                                                                 style="width: 65px; height: 65px;">
+                                                        </a>
+                                                        <div class="media-body" style="margin-left: 10px">
+                                                            <h6>
+                                                                <a href="{% url 'movie-single' id=product.1.product.id %}">
+                                                                    {{ product.1.product.title }}
+                                                                </a>
+                                                            </h6>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td class="text-center">
-                                                <strong>{{ product.1.product.price }}€</strong>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-danger" data-toggle="modal" data-target="#removeModal" data-productid="{{ product.1.product.id }}">
-                                                    <span class="fas fa-times-circle"></span> Remove
-                                                </button>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                                <td class="text-center">
+                                                    <strong>{{ product.1.product.price }}€</strong>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-danger" data-toggle="modal" data-target="#removeModal" data-productid="{{ product.1.product.id }}">
+                                                        <span class="fas fa-times-circle"></span> Remove
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
                                     {% endfor %}
                                     <tr>
                                         <td></td>
