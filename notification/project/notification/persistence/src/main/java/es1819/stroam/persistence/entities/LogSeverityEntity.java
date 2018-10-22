@@ -7,8 +7,8 @@ import java.util.Objects;
 @Table(name = "LogSeverities", schema = "nottheservicedb", catalog = "")
 public class LogSeverityEntity {
     private int id;
-    private int level;
-    private Integer description;
+    private String name;
+    private String description;
 
     @Id
     @Column(name = "Id")
@@ -21,22 +21,22 @@ public class LogSeverityEntity {
     }
 
     @Basic
-    @Column(name = "Level")
-    public int getLevel() {
-        return level;
+    @Column(name = "Name")
+    public String getName() {
+        return name;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Basic
     @Column(name = "Description")
-    public Integer getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(Integer description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -46,13 +46,13 @@ public class LogSeverityEntity {
         if (o == null || getClass() != o.getClass()) return false;
         LogSeverityEntity that = (LogSeverityEntity) o;
         return id == that.id &&
-                level == that.level &&
+                Objects.equals(name, that.name) &&
                 Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, level, description);
+        return Objects.hash(id, name, description);
     }
 }

@@ -5,7 +5,7 @@ import javax.persistence.Persistence;
 
 public class PersistenceUtilities {
 
-    public static EntityManager getEntityManagerInstance() {
+    public static synchronized EntityManager getEntityManagerInstance() {
         return Persistence
                 .createEntityManagerFactory("NotTheServicePersistenceUnit")
                 .createEntityManager();

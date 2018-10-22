@@ -1117,15 +1117,15 @@
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="284" parent="277" name="Level">
+    <column id="284" parent="277" name="Name">
       <Position>2</Position>
-      <DataType>int(11)|0s</DataType>
+      <DataType>varchar(200)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
     <column id="285" parent="277" name="Description">
       <Position>3</Position>
-      <DataType>int(11)|0s</DataType>
+      <DataType>varchar(500)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
     <key id="286" parent="277" name="PRIMARY">
@@ -1185,9 +1185,9 @@
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="296" parent="279" name="UserId">
+    <column id="296" parent="279" name="Channel">
       <Position>2</Position>
-      <DataType>varchar(36)|0s</DataType>
+      <DataType>varchar(500)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
@@ -1207,143 +1207,133 @@
       <Position>5</Position>
       <DataType>tinyint(1)|0s</DataType>
       <NotNull>1</NotNull>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="300" parent="279" name="UserId">
-      <ColNames>UserId</ColNames>
-      <Type>btree</Type>
-    </index>
-    <key id="301" parent="279" name="PRIMARY">
+    <key id="300" parent="279" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>Id
-UserId</ColNames>
+      <ColNames>Id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="302" parent="279" name="QueuedMessages_ibfk_1">
-      <ColNames>UserId</ColNames>
-      <RefSchemaName>nottheservicedb</RefSchemaName>
-      <RefTableName>Users</RefTableName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
-    <column id="303" parent="280" name="Id">
+    <column id="301" parent="280" name="Id">
       <Position>1</Position>
       <DataType>varchar(36)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="304" parent="280" name="Name">
+    <column id="302" parent="280" name="Name">
       <Position>2</Position>
       <DataType>varchar(200)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="305" parent="280" name="ChannelPrefix">
+    <column id="303" parent="280" name="ChannelPrefix">
       <Position>3</Position>
       <DataType>varchar(200)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="306" parent="280" name="Active">
+    <column id="304" parent="280" name="Active">
       <Position>4</Position>
       <DataType>tinyint(1)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;1&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="307" parent="280" name="PRIMARY">
+    <key id="305" parent="280" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>Id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="308" parent="281" name="ServiceId">
+    <column id="306" parent="281" name="ServiceId">
       <Position>1</Position>
       <DataType>varchar(36)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="309" parent="281" name="UserId">
+    <column id="307" parent="281" name="UserId">
       <Position>2</Position>
       <DataType>varchar(36)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="310" parent="281" name="UserId">
+    <index id="308" parent="281" name="UserId">
       <ColNames>UserId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="311" parent="281" name="PRIMARY">
+    <key id="309" parent="281" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>ServiceId
 UserId</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="312" parent="281" name="Services_Users_ibfk_1">
+    <foreign-key id="310" parent="281" name="Services_Users_ibfk_1">
       <ColNames>ServiceId</ColNames>
       <RefSchemaName>nottheservicedb</RefSchemaName>
       <RefTableName>Services</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="313" parent="281" name="Services_Users_ibfk_2">
+    <foreign-key id="311" parent="281" name="Services_Users_ibfk_2">
       <ColNames>UserId</ColNames>
       <RefSchemaName>nottheservicedb</RefSchemaName>
       <RefTableName>Users</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="314" parent="282" name="Id">
+    <column id="312" parent="282" name="Id">
       <Position>1</Position>
       <DataType>varchar(36)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="315" parent="282" name="ExternalId">
+    <column id="313" parent="282" name="ExternalId">
       <Position>2</Position>
       <DataType>varchar(500)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="316" parent="282" name="Name">
+    <column id="314" parent="282" name="Name">
       <Position>3</Position>
       <DataType>varchar(200)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="317" parent="282" name="EmailAddress">
+    <column id="315" parent="282" name="EmailAddress">
       <Position>4</Position>
       <DataType>varchar(200)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="318" parent="282" name="PhoneNumber">
+    <column id="316" parent="282" name="PhoneNumber">
       <Position>5</Position>
       <DataType>varchar(200)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="319" parent="282" name="PushNotification">
+    <column id="317" parent="282" name="PushNotification">
       <Position>6</Position>
       <DataType>tinyint(1)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;1&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="320" parent="282" name="EmailNotification">
+    <column id="318" parent="282" name="EmailNotification">
       <Position>7</Position>
       <DataType>tinyint(1)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="321" parent="282" name="PhoneNotification">
+    <column id="319" parent="282" name="PhoneNotification">
       <Position>8</Position>
       <DataType>tinyint(1)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="322" parent="282" name="Active">
+    <column id="320" parent="282" name="Active">
       <Position>9</Position>
       <DataType>tinyint(1)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="323" parent="282" name="PRIMARY">
+    <key id="321" parent="282" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>Id</ColNames>
       <Primary>1</Primary>

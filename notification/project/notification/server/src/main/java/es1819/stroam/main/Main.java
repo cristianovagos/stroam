@@ -10,16 +10,17 @@ import java.io.PrintStream;
 public class Main {
 
     static {
-        /*try {
+        try {
             PrintStream errFilePrintStream = new PrintStream(
                     new FileOutputStream("./systemErr.txt", true));
             System.setErr(errFilePrintStream);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     public static void main(String[] args) {
+
         System.out.println("    _   _       _  _____ _          ____                  _          \n" +
                 "   | \\ | | ___ | ||_   _| |__   ___/ ___|  ___ _ ____   _(_) ___ ___ \n" +
                 "   |  \\| |/ _ \\| __|| | | '_ \\ / _ \\___ \\ / _ | '__\\ \\ / | |/ __/ _ \\\n" +

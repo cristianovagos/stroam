@@ -3,6 +3,8 @@ package es1819.stroam.server;
 import es1819.stroam.commons.communication.Communication;
 import es1819.stroam.commons.communication.CommunicationCallback;
 import es1819.stroam.persistence.utilities.PersistenceUtilities;
+import es1819.stroam.server.constants.Constants;
+import es1819.stroam.server.constants.Strings;
 import es1819.stroam.server.utilities.GeneralUtilities;
 
 import javax.persistence.EntityManager;
@@ -15,7 +17,7 @@ public class Server implements Runnable, CommunicationCallback {
 
     private boolean keepRunning;
     private Communication communication;
-    private Queue<MessageTopicBytes> receivedMessagesQueue = new LinkedList<>();
+    private Queue<MessageChannelPayload> receivedMessagesQueue = new LinkedList<MessageChannelPayload>();
     private Semaphore receivedMessagesQueueAccessControllerMutex = new Semaphore(1);
     private Semaphore threadRunController = new Semaphore(0);
 
@@ -27,10 +29,11 @@ public class Server implements Runnable, CommunicationCallback {
         communication.setCallback(this);
     }
 
-    public boolean start() {
+    public boolean start() { //TODO: resolver problema se dado start e stop de imeditato
         if(keepRunning)
             return false;
 
+        System.out.println(Strings.BROKER_CONNECTION_ESTABLISHMENT_STARTED);
         if(!communication.isConnected()) {
             try {
                 communication.connect();
@@ -42,9 +45,10 @@ public class Server implements Runnable, CommunicationCallback {
                 System.out.println("Server start aborted!");
                 return false; //abort the server start
             }
-        }
+        } System.out.println(Strings.BROKER_CONNECTION_ESTABLISHMENT_SUCCEEDED);
 
         //before server start procedures
+        System.out.println(Strings.CHANNEL_SUBSCRIPTION_STARTED);
         try {
             subscribeDatabaseChannels();
         } catch (Exception subscribeDatabaseChannelsException) {
@@ -54,7 +58,7 @@ public class Server implements Runnable, CommunicationCallback {
                     + Strings.SEE_LOG_REGISTERY);
             System.out.println("Server start aborted!");
             return false; //abort the server start
-        }
+        } System.out.println(Strings.CHANNEL_SUBSCRIPTION_SUCCEEDED);
 
         //start the server
         keepRunning = true;
@@ -62,13 +66,14 @@ public class Server implements Runnable, CommunicationCallback {
         return true;
     }
 
-    public void stop() {
+    public boolean stop() { //TODO: resolver problema se dado start e stop de imeditato
         if(!keepRunning)
-            return;
+            return false;
 
         keepRunning = false;
         communication.disconnect();
         threadRunController.release(); //release the thread to finish it
+        return true;
     }
 
     public void run() {
@@ -78,14 +83,21 @@ public class Server implements Runnable, CommunicationCallback {
             if(!keepRunning)
                 break;
 
-            MessageTopicBytes receivedMessage = getQueuedReceivedMessage();
-            System.out.println(receivedMessage.getTopic() + ":\n" + new String(receivedMessage.getBytes())); //TODO: debug
+            MessageChannelPayload receivedMessage = getQueuedReceivedMessage();
+            if(receivedMessage == null) {
+                //TODO: logar warning que mensagem nula foi recebida
+                continue;
+            }
+
+            String[] receivedMessageChannelParts = receivedMessage.getChannelParts();
+
+            System.out.println(receivedMessage.getChannel() + ":\n" + new String(receivedMessage.getBytes())); //TODO: debug
         }
     }
 
-    public void messageArrived(String topic, byte[] messageBytes) { //this method should only enqueue received messages
+    public void messageArrived(String channel, byte[] messageBytes) { //this method should only enqueue received messages
         try { receivedMessagesQueueAccessControllerMutex.acquire(); } catch (InterruptedException ignored) {}
-        receivedMessagesQueue.offer(new MessageTopicBytes(topic, messageBytes));
+        receivedMessagesQueue.offer(new MessageChannelPayload(channel, messageBytes));
         receivedMessagesQueueAccessControllerMutex.release();
 
         threadRunController.release();
@@ -99,13 +111,13 @@ public class Server implements Runnable, CommunicationCallback {
 
     }
 
-    private void subscribeDatabaseChannels() throws Exception {
+    private void subscribeDatabaseChannels() throws Exception { //TODO: optimizar
         //Subscribe the channel to register new services /notTheService/register
-        subscribeChannelAndLog(Constants.SERVICE_CHANNEL_PREFIX + Constants.REGISTER_CHANNEL_SUFFIX);
+        subscribeChannelAndLog(Constants.CHANNEL_SERVICE_PREFIX + Constants.CHANNEL_REGISTER_SUFFIX);
 
         EntityManager entityManager = PersistenceUtilities.getEntityManagerInstance();
         if(entityManager == null) {
-            throw new NullPointerException("Entity Manager reference is null");
+            throw new NullPointerException("entityManager reference is null");
         }
 
         //Subscribe the services channels /notTheService/<serviceId>/...
@@ -119,9 +131,9 @@ public class Server implements Runnable, CommunicationCallback {
 
         for (String serviceIdEntry : serviceIdEntries) {
             String serviceChannelBase = GeneralUtilities.createString(
-                    Constants.SERVICE_CHANNEL_PREFIX, "/", serviceIdEntry);
-            subscribeChannelAndLog(serviceChannelBase + Constants.REGISTER_CHANNEL_SUFFIX); // .../register
-            subscribeChannelAndLog(serviceChannelBase + Constants.UNREGISTER_CHANNEL_SUFFIX);// .../unregister
+                    Constants.CHANNEL_SERVICE_PREFIX, Constants.CHANNEL_SEPARATOR, serviceIdEntry);
+            subscribeChannelAndLog(serviceChannelBase + Constants.CHANNEL_REGISTER_SUFFIX); // .../register
+            subscribeChannelAndLog(serviceChannelBase + Constants.CHANNEL_UNREGISTER_SUFFIX);// .../unregister
         }
 
         //Subscribe the all the services users channels /notTheService/<serviceId>/<userId>/...
@@ -137,12 +149,12 @@ public class Server implements Runnable, CommunicationCallback {
 
         for (Object[] serviceIdUserIdEntry : serviceIdUserIdEntries) {
             String userChannelBase = GeneralUtilities.createString(
-                    Constants.SERVICE_CHANNEL_PREFIX, "/", (String) serviceIdUserIdEntry[0],
-                    "/", (String) serviceIdUserIdEntry[1]);
+                    Constants.CHANNEL_SERVICE_PREFIX, Constants.CHANNEL_SEPARATOR,
+                    (String) serviceIdUserIdEntry[0], Constants.CHANNEL_SEPARATOR, (String) serviceIdUserIdEntry[1]);
 
-            for (int i = 0; i < Constants.ALL_USERS_CHANNELS_SUFFIX_ARRAY.length; i++) {
+            for (int i = 0; i < Constants.CHANNEL_ALL_USERS_SUFFIX_ARRAY.length; i++) {
                 subscribeChannelAndLog(userChannelBase
-                        + Constants.ALL_USERS_CHANNELS_SUFFIX_ARRAY[i]); // .../<all user suffixes>
+                        + Constants.CHANNEL_ALL_USERS_SUFFIX_ARRAY[i]); // .../<all user suffixes>
             }
         }
     }
@@ -152,28 +164,10 @@ public class Server implements Runnable, CommunicationCallback {
         System.out.println("Available: " + channel); //TODO: debug
     }
 
-    private MessageTopicBytes getQueuedReceivedMessage() {
+    private MessageChannelPayload getQueuedReceivedMessage() {
         try { receivedMessagesQueueAccessControllerMutex.acquire(); } catch (InterruptedException ignored) {}
-        MessageTopicBytes receivedMessage = receivedMessagesQueue.poll();
+        MessageChannelPayload receivedMessage = receivedMessagesQueue.poll();
         receivedMessagesQueueAccessControllerMutex.release();
         return receivedMessage;
-    }
-
-    private class MessageTopicBytes {
-        private String topic;
-        private byte[] bytes;
-
-        MessageTopicBytes(String topic, byte[] bytes) {
-            this.topic = topic;
-            this.bytes = bytes;
-        }
-
-        String getTopic() {
-            return topic;
-        }
-
-        byte[] getBytes() {
-            return bytes;
-        }
     }
 }

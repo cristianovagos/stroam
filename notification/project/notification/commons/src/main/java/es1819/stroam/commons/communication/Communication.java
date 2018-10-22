@@ -49,24 +49,24 @@ public class Communication implements MqttCallback {
         try { client.disconnect(); } catch (MqttException ignored) {}
     }
 
-    public void subscribe(String topic) throws Exception {
-        if(client != null && topic != null && !topic.isEmpty())
-            client.subscribe(topic);
+    public void subscribe(String channel) throws Exception {
+        if(client != null && channel != null && !channel.isEmpty())
+            client.subscribe(channel);
 
     }
 
-    public void unsubscribe(String topic) throws Exception {
-        if(client != null && topic != null && !topic.isEmpty())
-            client.unsubscribe(topic);
+    public void unsubscribe(String channel) throws Exception {
+        if(client != null && channel != null && !channel.isEmpty())
+            client.unsubscribe(channel);
     }
 
-    private boolean send(String topic, byte[] messageBytes) throws Exception {
+    private boolean send(String channel, byte[] messageBytes) throws Exception {
         if(client == null || !client.isConnected() && messageBytes == null || messageBytes.length > 0)
             return false;
 
         MqttMessage mqttMessage = new MqttMessage();
         mqttMessage.setPayload(messageBytes);
-        client.publish(topic, mqttMessage);
+        client.publish(channel, mqttMessage);
         return true;
     }
 
@@ -75,13 +75,13 @@ public class Communication implements MqttCallback {
             callback.connectionLost(throwable);
     }
 
-    public void messageArrived(String topic, MqttMessage mqttMessage) {
+    public void messageArrived(String channel, MqttMessage mqttMessage) {
         if(mqttMessage == null)
             return;
 
         byte[] messageBytes = mqttMessage.getPayload();
         if(messageBytes.length > 0)
-            callback.messageArrived(topic, messageBytes);
+            callback.messageArrived(channel, messageBytes);
     }
 
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {

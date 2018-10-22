@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysqlserver
--- Generation Time: 19-Out-2018 às 01:38
+-- Generation Time: 22-Out-2018 às 17:17
 -- Versão do servidor: 8.0.12
 -- versão do PHP: 7.2.10
 
@@ -44,8 +44,8 @@ CREATE TABLE `Logs` (
 
 CREATE TABLE `LogSeverities` (
   `Id` int(11) NOT NULL,
-  `Level` int(11) NOT NULL,
-  `Description` int(11) DEFAULT NULL
+  `Name` varchar(200) NOT NULL,
+  `Description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -56,10 +56,10 @@ CREATE TABLE `LogSeverities` (
 
 CREATE TABLE `QueuedMessages` (
   `Id` int(11) NOT NULL,
-  `UserId` varchar(36) NOT NULL,
+  `Channel` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Payload` longblob NOT NULL,
   `Timestamp` timestamp NOT NULL,
-  `Processed` tinyint(1) NOT NULL
+  `Processed` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -125,8 +125,7 @@ ALTER TABLE `LogSeverities`
 -- Indexes for table `QueuedMessages`
 --
 ALTER TABLE `QueuedMessages`
-  ADD PRIMARY KEY (`Id`,`UserId`),
-  ADD KEY `UserId` (`UserId`);
+  ADD PRIMARY KEY (`Id`) USING BTREE;
 
 --
 -- Indexes for table `Services`
@@ -178,12 +177,6 @@ ALTER TABLE `QueuedMessages`
 --
 ALTER TABLE `Logs`
   ADD CONSTRAINT `Logs_ibfk_1` FOREIGN KEY (`SeverityId`) REFERENCES `LogSeverities` (`id`);
-
---
--- Limitadores para a tabela `QueuedMessages`
---
-ALTER TABLE `QueuedMessages`
-  ADD CONSTRAINT `QueuedMessages_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Users` (`id`);
 
 --
 -- Limitadores para a tabela `Services_Users`

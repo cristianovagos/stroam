@@ -7,10 +7,9 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "QueuedMessages", schema = "nottheservicedb", catalog = "")
-@IdClass(QueuedMessageEntityPK.class)
 public class QueuedMessageEntity {
     private int id;
-    private String userId;
+    private String channel;
     private byte[] payload;
     private Timestamp timestamp;
     private byte processed;
@@ -25,14 +24,14 @@ public class QueuedMessageEntity {
         this.id = id;
     }
 
-    @Id
-    @Column(name = "UserId")
-    public String getUserId() {
-        return userId;
+    @Basic
+    @Column(name = "Channel")
+    public String getChannel() {
+        return channel;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 
     @Basic
@@ -72,7 +71,7 @@ public class QueuedMessageEntity {
         QueuedMessageEntity that = (QueuedMessageEntity) o;
         return id == that.id &&
                 processed == that.processed &&
-                Objects.equals(userId, that.userId) &&
+                Objects.equals(channel, that.channel) &&
                 Arrays.equals(payload, that.payload) &&
                 Objects.equals(timestamp, that.timestamp);
     }
@@ -80,7 +79,7 @@ public class QueuedMessageEntity {
     @Override
     public int hashCode() {
 
-        int result = Objects.hash(id, userId, timestamp, processed);
+        int result = Objects.hash(id, channel, timestamp, processed);
         result = 31 * result + Arrays.hashCode(payload);
         return result;
     }
