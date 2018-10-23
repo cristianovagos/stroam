@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysqlserver
--- Generation Time: 22-Out-2018 às 17:17
+-- Generation Time: 22-Out-2018 às 22:59
 -- Versão do servidor: 8.0.12
 -- versão do PHP: 7.2.10
 
@@ -71,7 +71,6 @@ CREATE TABLE `QueuedMessages` (
 CREATE TABLE `Services` (
   `Id` varchar(36) NOT NULL,
   `Name` varchar(200) DEFAULT NULL,
-  `ChannelPrefix` varchar(200) NOT NULL,
   `Active` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

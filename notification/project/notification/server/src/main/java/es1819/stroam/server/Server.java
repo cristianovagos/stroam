@@ -5,6 +5,8 @@ import es1819.stroam.commons.communication.CommunicationCallback;
 import es1819.stroam.persistence.utilities.PersistenceUtilities;
 import es1819.stroam.server.constants.Constants;
 import es1819.stroam.server.constants.Strings;
+import es1819.stroam.server.handlers.RegistrationUpdateHandler;
+import es1819.stroam.server.messages.Message;
 import es1819.stroam.server.utilities.GeneralUtilities;
 
 import javax.persistence.EntityManager;
@@ -17,13 +19,15 @@ public class Server implements Runnable, CommunicationCallback {
 
     private boolean keepRunning;
     private Communication communication;
-    private Queue<MessageChannelPayload> receivedMessagesQueue = new LinkedList<MessageChannelPayload>();
+    private RegistrationUpdateHandler userRegistrationUpdateHandler;
+    private Thread serverThread;
+    private Queue<Message> receivedMessagesQueue = new LinkedList<>();
     private Semaphore receivedMessagesQueueAccessControllerMutex = new Semaphore(1);
     private Semaphore threadRunController = new Semaphore(0);
 
     public Server(Communication communication) { //TODO: ver se mantem Handler messageHandler) {
         if(communication == null)
-            throw new IllegalArgumentException("communication cannot be null");
+            throw new IllegalArgumentException("Communication cannot be null");
 
         this.communication = communication;
         communication.setCallback(this);
@@ -47,7 +51,7 @@ public class Server implements Runnable, CommunicationCallback {
             }
         } System.out.println(Strings.BROKER_CONNECTION_ESTABLISHMENT_SUCCEEDED);
 
-        //before server start procedures
+        //Before server start procedures
         System.out.println(Strings.CHANNEL_SUBSCRIPTION_STARTED);
         try {
             subscribeDatabaseChannels();
@@ -60,18 +64,32 @@ public class Server implements Runnable, CommunicationCallback {
             return false; //abort the server start
         } System.out.println(Strings.CHANNEL_SUBSCRIPTION_SUCCEEDED);
 
-        //start the server
+        //Start the server threads and resources
+        userRegistrationUpdateHandler = new RegistrationUpdateHandler();
+        userRegistrationUpdateHandler.start();
+
+        //Start the server
         keepRunning = true;
-        new Thread(this).start();
+        (serverThread = new Thread(this)).start();
         return true;
     }
 
     public boolean stop() { //TODO: resolver problema se dado start e stop de imeditato
-        if(!keepRunning)
+        if(!keepRunning)    //TODO: testar bem e verificar se todas as threads sao correctamente terminadas mesmo em caso de interrupção
             return false;
 
-        keepRunning = false;
+        //Stop all server threads and resources
+        userRegistrationUpdateHandler.stop();
+
+        /*try { serverThread.join(); } catch (InterruptedException ignored) {}
+        finally {
+            communication.disconnect();
+            keepRunning = false;
+        }*/
+
         communication.disconnect();
+
+        keepRunning = false;
         threadRunController.release(); //release the thread to finish it
         return true;
     }
@@ -83,23 +101,37 @@ public class Server implements Runnable, CommunicationCallback {
             if(!keepRunning)
                 break;
 
-            MessageChannelPayload receivedMessage = getQueuedReceivedMessage();
+            Message receivedMessage = getQueuedReceivedMessage();
             if(receivedMessage == null) {
-                //TODO: logar warning que mensagem nula foi recebida
+                //TODO: logar warning que mensagem nula foi recebida ou ouve uma tentativa de retirar um elemento da fila quanto esta estava vazia
                 continue;
             }
 
-            String[] receivedMessageChannelParts = receivedMessage.getChannelParts();
-
-            System.out.println(receivedMessage.getChannel() + ":\n" + new String(receivedMessage.getBytes())); //TODO: debug
+            switch (receivedMessage.getType()) {
+                case SERVICE_USER_REGISTRATION:
+                case SERVICE_USER_UNREGISTRATION:
+                case SERVICE_USER_UPDATE:
+                    userRegistrationUpdateHandler.handleMessage(receivedMessage);
+                    break;
+                case USER_PUSH:
+                case USER_EMAIL:
+                case USER_PHONE:
+                    //TODO: colocar na thread de processamento de notificações
+                    break;
+            }
         }
     }
 
-    public void messageArrived(String channel, byte[] messageBytes) { //this method should only enqueue received messages
-        try { receivedMessagesQueueAccessControllerMutex.acquire(); } catch (InterruptedException ignored) {}
-        receivedMessagesQueue.offer(new MessageChannelPayload(channel, messageBytes));
-        receivedMessagesQueueAccessControllerMutex.release();
+    public void messageArrived(String channel, byte[] payload) { //This method should only enqueue received messages
+        try {
+            receivedMessagesQueueAccessControllerMutex.acquire();
+            receivedMessagesQueue.offer(Message.parse(channel, payload));
+        } catch (IllegalArgumentException messageParseException) { //Generated by Message.parse
+            //TODO: Logar como WARNING que uma mensagem invalida for ignorada e registar stacktrace de messageParseException
+            receivedMessagesQueueAccessControllerMutex.release();
+        } catch (InterruptedException ignored) {} //Generated by receivedMessagesQueueAccessControllerMutex
 
+        receivedMessagesQueueAccessControllerMutex.release();
         threadRunController.release();
     }
 
@@ -113,7 +145,9 @@ public class Server implements Runnable, CommunicationCallback {
 
     private void subscribeDatabaseChannels() throws Exception { //TODO: optimizar
         //Subscribe the channel to register new services /notTheService/register
-        subscribeChannelAndLog(Constants.CHANNEL_SERVICE_PREFIX + Constants.CHANNEL_REGISTER_SUFFIX);
+        subscribeChannelAndLog(GeneralUtilities.createString(
+                Constants.CHANNEL_SEPARATOR, Constants.CHANNEL_SERVICE_PREFIX,
+                Constants.CHANNEL_SEPARATOR, Constants.CHANNEL_REGISTER_SUFFIX));
 
         EntityManager entityManager = PersistenceUtilities.getEntityManagerInstance();
         if(entityManager == null) {
@@ -130,8 +164,9 @@ public class Server implements Runnable, CommunicationCallback {
         }
 
         for (String serviceIdEntry : serviceIdEntries) {
-            String serviceChannelBase = GeneralUtilities.createString(
-                    Constants.CHANNEL_SERVICE_PREFIX, Constants.CHANNEL_SEPARATOR, serviceIdEntry);
+            String serviceChannelBase = GeneralUtilities.createString(Constants.CHANNEL_SEPARATOR,
+                    Constants.CHANNEL_SERVICE_PREFIX, Constants.CHANNEL_SEPARATOR, serviceIdEntry,
+                    Constants.CHANNEL_SEPARATOR);
             subscribeChannelAndLog(serviceChannelBase + Constants.CHANNEL_REGISTER_SUFFIX); // .../register
             subscribeChannelAndLog(serviceChannelBase + Constants.CHANNEL_UNREGISTER_SUFFIX);// .../unregister
         }
@@ -148,9 +183,10 @@ public class Server implements Runnable, CommunicationCallback {
         }
 
         for (Object[] serviceIdUserIdEntry : serviceIdUserIdEntries) {
-            String userChannelBase = GeneralUtilities.createString(
+            String userChannelBase = GeneralUtilities.createString(Constants.CHANNEL_SEPARATOR,
                     Constants.CHANNEL_SERVICE_PREFIX, Constants.CHANNEL_SEPARATOR,
-                    (String) serviceIdUserIdEntry[0], Constants.CHANNEL_SEPARATOR, (String) serviceIdUserIdEntry[1]);
+                    (String) serviceIdUserIdEntry[0], Constants.CHANNEL_SEPARATOR, (String) serviceIdUserIdEntry[1],
+                    Constants.CHANNEL_SEPARATOR);
 
             for (int i = 0; i < Constants.CHANNEL_ALL_USERS_SUFFIX_ARRAY.length; i++) {
                 subscribeChannelAndLog(userChannelBase
@@ -164,9 +200,9 @@ public class Server implements Runnable, CommunicationCallback {
         System.out.println("Available: " + channel); //TODO: debug
     }
 
-    private MessageChannelPayload getQueuedReceivedMessage() {
+    private Message getQueuedReceivedMessage() {
         try { receivedMessagesQueueAccessControllerMutex.acquire(); } catch (InterruptedException ignored) {}
-        MessageChannelPayload receivedMessage = receivedMessagesQueue.poll();
+        Message receivedMessage = receivedMessagesQueue.poll();
         receivedMessagesQueueAccessControllerMutex.release();
         return receivedMessage;
     }

@@ -1,6 +1,7 @@
 package es1819.stroam.server;
 
 import es1819.stroam.server.constants.Constants;
+import es1819.stroam.server.messages.Message;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -26,7 +27,7 @@ public class ManagedMessageQueue {
 
     private int queueSizeLimit;
     private int queuedObjectsCount;
-    private Queue<MessageChannelPayload> messageChannelPayloadQueue = new LinkedList<>();
+    private Queue<Message> messageQueue = new LinkedList<>();
     private Semaphore queueAccessControllerMutex = new Semaphore(1);
 
     public ManagedMessageQueue(int queueSizeLimit) {
@@ -36,16 +37,16 @@ public class ManagedMessageQueue {
         this.queueSizeLimit = queueSizeLimit;
     }
 
-    public void put(MessageChannelPayload messageChannelPayload) {
+    public void put(Message message) {
         try { queueAccessControllerMutex.acquire(); } catch (InterruptedException ignored) {}
-        messageChannelPayloadQueue.offer(messageChannelPayload);
+        messageQueue.offer(message);
         queuedObjectsCount++;
         queueAccessControllerMutex.release();
     }
 
-    public MessageChannelPayload get() {
+    public Message get() {
         try { queueAccessControllerMutex.acquire(); } catch (InterruptedException ignored) {}
-        MessageChannelPayload result = messageChannelPayloadQueue.poll();
+        Message result = messageQueue.poll();
         queuedObjectsCount--;
         queueAccessControllerMutex.release();
         return result;
@@ -60,7 +61,7 @@ if(queuedObjectsCount == queueSizeLimit) {
 
     QueuedMessageEntity queuedMessageEntity = new QueuedMessageEntity();
     queuedMessageEntity.setChannel(messageChannelPayload.getChannel());
-    queuedMessageEntity.setPayload(messageChannelPayload.getBytes());
+    queuedMessageEntity.setPayload(messageChannelPayload.getPayload());
     queuedMessageEntity.setTimestamp(new Timestamp(System.currentTimeMillis()));
 
     entityManager.getTransaction().begin();

@@ -1,7 +1,5 @@
 package es1819.stroam.persistence.entities;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -10,12 +8,9 @@ import java.util.Objects;
 public class ServiceEntity {
     private String id;
     private String name;
-    private String channelPrefix;
     private byte active;
 
     @Id
-    @GeneratedValue(generator = "hibernate-uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
     @Column(name = "Id")
     public String getId() {
         return id;
@@ -36,16 +31,6 @@ public class ServiceEntity {
     }
 
     @Basic
-    @Column(name = "ChannelPrefix")
-    public String getChannelPrefix() {
-        return channelPrefix;
-    }
-
-    public void setChannelPrefix(String channelPrefix) {
-        this.channelPrefix = channelPrefix;
-    }
-
-    @Basic
     @Column(name = "Active")
     public byte getActive() {
         return active;
@@ -62,13 +47,12 @@ public class ServiceEntity {
         ServiceEntity that = (ServiceEntity) o;
         return active == that.active &&
                 Objects.equals(id, that.id) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(channelPrefix, that.channelPrefix);
+                Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, channelPrefix, active);
+        return Objects.hash(id, name, active);
     }
 }

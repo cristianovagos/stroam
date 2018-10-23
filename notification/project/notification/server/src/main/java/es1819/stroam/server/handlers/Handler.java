@@ -1,9 +1,9 @@
 package es1819.stroam.server.handlers;
 
-import es1819.stroam.server.MessageChannelPayload;
+import es1819.stroam.server.messages.Message;
 
 public interface Handler {
 
-    void handleMessage(MessageChannelPayload messageChannelPayload);
+    void handleMessage(Message message);
 
 }
