@@ -214,28 +214,6 @@ def checkout(request):
         else:
             LOGGER.error(str(error))
             raise Http404('Bad Request: \n\n' + str(error))
-    else:
-        buyerID = {
-            "ID": "userid123",
-            "NAME": "John Doe",
-            "NIF": 0
-        }
-
-        products = [
-            {
-              "NAME": "Product 1",
-              "PRICE": 10,
-              "QUANTITY": 1,
-              "URL": "#"
-            },
-            {
-                "NAME": "Product 1",
-                "PRICE": 10,
-                "QUANTITY": 1,
-                "URL": "#"
-            },
-        ]
-        totalPrice = 20
 
     tparams = {
         'title': MAIN_TITLE + title,
