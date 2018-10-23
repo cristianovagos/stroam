@@ -1,3 +1,4 @@
+import logging
 import json
 import requests
 from django.http import Http404
@@ -6,6 +7,7 @@ from urllib.request import urlopen
 
 from ..models import *
 
+LOGGER = logging.getLogger(__name__)
 PAYMENT_SERVICE_URL = "http://localhost:5000"
 
 def createCheckout(price, returnURL, cancelURL, items, currency="EUR", merchant="tokensample123"):
@@ -40,11 +42,13 @@ def createCheckout(price, returnURL, cancelURL, items, currency="EUR", merchant=
         for product in items:
             purchaseInfo = Purchase_Production(production_id=int(product['id']))
             purchaseInfo.save()
-            purchaseInfo.season_num = int(product['season'])
+            if product['season'] is not None:
+                purchaseInfo.season_num = int(product['season'])
             purchaseInfo.purchase_id.add(p)
             purchaseInfo.save()
         return redirect(PAYMENT_SERVICE_URL + "/pay?checkout_token=" + checkoutToken)
     else:
+        LOGGER.error(str(responseObj))
         raise Http404("Bad Request:\n\n" + str(responseObj))
 
 def getCheckoutDetails(checkoutToken):
@@ -52,6 +56,7 @@ def getCheckoutDetails(checkoutToken):
         url = urlopen(PAYMENT_SERVICE_URL + "/GetCheckoutDetails?checkout_token=" + checkoutToken)
     except Exception as e:
         url = None
+        LOGGER.error(e)
         print(e)
     return json.loads(url.read().decode())
 
@@ -60,6 +65,7 @@ def executeCheckout(checkoutToken, buyerID):
         url = urlopen(PAYMENT_SERVICE_URL + "/ExecuteCheckout?checkout_token=" + checkoutToken + "&buyer_id=" + buyerID)
     except Exception as e:
         url = None
+        LOGGER.error(e)
         print(e)
     data = json.loads(url.read().decode())
     return data["SUCCESS"]

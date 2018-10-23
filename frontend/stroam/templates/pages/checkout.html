@@ -6,6 +6,39 @@
             <div class="row justify-content-center">
                 <div class="col-sm-10 col-md-10">
                     <h4>Confirm your order:</h4>
+                    <div class="row" style="margin-left: 0; margin-right: 0; margin-top: 35px">
+                        <div class="col-5">
+                            <div class="card">
+                                <div class="card-header font-weight-bold">
+                                    User information:
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        {{ user }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        NIF: 123456789
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-2"></div>
+                        <div class="col-5">
+                            <div class="card">
+                                <div class="card-header font-weight-bold">
+                                    Buyer information:
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        {{ buyerID.NAME }}
+                                    </li>
+                                    <li class="list-group-item">
+                                        NIF: {{ buyerID.NIF }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-hover" style="margin-top: 30px;">
                             <thead class="table-secondary">
@@ -29,9 +62,6 @@
                                                             {{ product.NAME }}
                                                         </a>
                                                     </h6>
-{#                                                    {% if product.1.product.type == "series" %}#}
-{#                                                        <p>Season {{ product.1.season }}</p>#}
-{#                                                    {% endif %}#}
                                                 </div>
                                             </div>
                                         </td>

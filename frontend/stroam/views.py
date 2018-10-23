@@ -1,3 +1,4 @@
+import logging
 from random import shuffle
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpRequest, HttpResponse, Http404
@@ -10,59 +11,48 @@ from .utils import *
 SPACING = ' '
 WEBSITE_TITLE = 'STROAM'
 WEBSITE_SEPARATOR = '|'
-
 MAIN_TITLE = WEBSITE_TITLE + SPACING + WEBSITE_SEPARATOR + SPACING
+
+LOGGER = logging.getLogger(__name__)
 
 def home(request):
     title = 'Stream strong, anytime and anywhere.'
-    numCartProducts = 0
-    if 'productList' in request.session:
-        numCartProducts = len(request.session.get('productList'))
     movies = catalog.getAllCatalog()
     if movies:
         shuffle(movies)
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
-        'numCart': numCartProducts
+        'numCart': request.session.get('cartNumber', 0)
     }
     return render(request, 'pages/index.html', tparams)
 
 def homeMovies(request):
     title = 'Our movies'
-    numCartProducts = 0
-    if 'productList' in request.session:
-        numCartProducts = len(request.session.get('productList'))
     movies = [x for x in catalog.getAllCatalog() if x.type == 'movie']
     if movies:
         shuffle(movies)
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
-        'numCart': numCartProducts
+        'numCart': request.session.get('cartNumber', 0)
     }
     return render(request, 'pages/index.html', tparams)
 
 def homeSeries(request):
     title = 'Our TV Series'
-    numCartProducts = 0
-    if 'productList' in request.session:
-        numCartProducts = len(request.session.get('productList'))
     movies = [x for x in catalog.getAllCatalog() if x.type == 'series']
     if movies:
         shuffle(movies)
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
-        'numCart': numCartProducts
+        'numCart': request.session.get('cartNumber', 0)
     }
     return render(request, 'pages/index.html', tparams)
 
 def singleMovie(request, id):
     assert isinstance(id, int)
-    numCartProducts = 0
-    if 'productList' in request.session:
-        numCartProducts = len(request.session.get('productList'))
 
     p = Purchase_Production.objects.filter(purchase_id__user_id=1, purchase_id__purchase_production__production_id=id,
                                            purchase_id__payment_status=Purchase.PAYMENT_COMPLETED)
@@ -95,13 +85,16 @@ def singleMovie(request, id):
             auxDict[int(request.POST['productID'])] = []
             auxDict[int(request.POST['productID'])].append({'season': None})
         request.session['productList'] = auxDict
-        numCartProducts += 1
+        if 'cartNumber' in request.session:
+            request.session['cartNumber'] += 1
+        else:
+            request.session['cartNumber'] = 1
 
         tparams = {
             'title': MAIN_TITLE + movieTitle,
             'movie': movie,
             'addedToCart': True,
-            'numCart': numCartProducts,
+            'numCart': request.session.get('cartNumber', 0),
             'purchased': moviePurchased,
             'seasonsPurchased': seasonsPurchased
         }
@@ -111,7 +104,7 @@ def singleMovie(request, id):
         'title': MAIN_TITLE + movieTitle,
         'movie': movie,
         'addedToCart': False,
-        'numCart': numCartProducts,
+        'numCart': request.session.get('cartNumber', 0),
         'purchased': moviePurchased,
         'seasonsPurchased': seasonsPurchased
     }
@@ -119,7 +112,6 @@ def singleMovie(request, id):
 
 def shoppingCart(request):
     title = 'Your shopping cart'
-    numCartProducts = 0
 
     if request.method == 'POST':
         if 'productList' in request.session:
@@ -133,6 +125,8 @@ def shoppingCart(request):
                     return HttpResponse('')
             auxDict.pop(request.POST['productID'], None)
             request.session['productList'] = auxDict
+            if 'cartNumber' in request.session:
+                request.session['cartNumber'] -= 1
             return HttpResponse('')
 
     products = {}
@@ -143,7 +137,6 @@ def shoppingCart(request):
             p = catalog.getSingleCatalog(int(product))
             if p:
                 if p.type == 'movie':
-                    numCartProducts += 1
                     price += p.price
                 products[p.id] = {}
                 auxObj = {}
@@ -153,17 +146,15 @@ def shoppingCart(request):
                     auxObj['seasons'].append(obj)
                     if obj['season'] is not None:
                         price += p.price
-                        numCartProducts += 1
                 products[p.id] = auxObj
             else:
                 deleteProductListFromSession(request)
-                numCartProducts = 0
 
     tparams = {
         'title': MAIN_TITLE + title,
         'products': products,
         'totalPrice': price,
-        'numCart': numCartProducts
+        'numCart': request.session.get('cartNumber', 0)
     }
     return render(request, 'pages/shopping-cart.html', tparams)
 
@@ -221,7 +212,30 @@ def checkout(request):
             products = data.get('ITEMS', [])
             buyerID = data.get('BUYER', {})
         else:
+            LOGGER.error(str(error))
             raise Http404('Bad Request: \n\n' + str(error))
+    else:
+        buyerID = {
+            "ID": "userid123",
+            "NAME": "John Doe",
+            "NIF": 0
+        }
+
+        products = [
+            {
+              "NAME": "Product 1",
+              "PRICE": 10,
+              "QUANTITY": 1,
+              "URL": "#"
+            },
+            {
+                "NAME": "Product 1",
+                "PRICE": 10,
+                "QUANTITY": 1,
+                "URL": "#"
+            },
+        ]
+        totalPrice = 20
 
     tparams = {
         'title': MAIN_TITLE + title,
@@ -257,10 +271,6 @@ def paymentError(request):
 
 def userPanel(request):
     title = 'User Panel'
-    numCartProducts = 0
-
-    if 'productList' in request.session:
-        numCartProducts = len(request.session.get('productList'))
 
     if request.method == 'POST':
         p = Purchase.objects.get(id=request.POST['orderID'])
@@ -289,7 +299,7 @@ def userPanel(request):
     tparams = {
         'title': MAIN_TITLE + title,
         'data': data,
-        'numCart': numCartProducts
+        'numCart': request.session.get('cartNumber', 0)
     }
     return render(request, 'pages/user-panel.html', tparams)
 
