@@ -9,17 +9,12 @@ import es1819.stroam.catalog.repository.ProductionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.xml.ws.Response;
 import java.net.URI;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -36,7 +31,16 @@ public class GenreController {
     private GenreRepository genreRepository;
 
     @RequestMapping(value = "/v1/catalog/genre", method = GET)
-    public List<Genre> getAllGenres() { return genreRepository.findAll(); }
+    public List<Genre> getAllGenres(@RequestParam(value = "name", required = false) String name) {
+        if(name != null) {
+            Optional<Genre> genreOptional = genreRepository.findByName(name);
+            if(!genreOptional.isPresent())
+                throw new GenreNotFoundException("name=" + name);
+            return Collections.singletonList(genreOptional.get());
+        }
+
+        return genreRepository.findAll();
+    }
 
     @RequestMapping(value = "/v1/catalog/genre", method = POST)
     public ResponseEntity<Object> addGenre(@RequestBody Genre genre) {
