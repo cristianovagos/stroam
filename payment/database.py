@@ -129,3 +129,25 @@ def get_all(table, column, value):
     cur.close()
 
     return result
+
+def delete(table, column, value):
+    '''
+        Deletes Row from database
+    '''
+
+    cur = get_db().cursor()
+
+    cur.execute('PRAGMA foreign_keys = ON;')
+
+    query = 'DELETE FROM %s WHERE %s=\"%s\"' % (
+        table,
+        column,
+        value
+    )
+
+    cur.execute(query)
+    get_db().commit()
+
+    cur.close()
+
+    return True

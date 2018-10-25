@@ -80,7 +80,7 @@ def login():
     # Returning to origin
     return redirect(url_for(request.args.get('next'), **args))
 
-@app.route('/GetCheckoutDetails', methods=['GET'])
+@app.route('/api/v1/Checkout', methods=['GET'])
 def get_checkout():
     ''' GetCheckoutDetails
     ---
@@ -232,7 +232,7 @@ def get_checkout():
     # Returning information
     return jsonify(info), 200
 
-@app.route('/ExecuteCheckout', methods=['GET'])
+@app.route('/api/v1/ExecuteCheckout', methods=['GET'])
 def execute_checkout():
     ''' ExecuteCheckout
     ---
@@ -302,18 +302,143 @@ def execute_checkout():
     # Everything went well, informing the merchant
     return jsonify({'SUCCESS': True}), 200
 
-@app.route('/CreateCheckout', methods=['PUT'])
-def update_checkout():
-    pass
 
-@app.route('/CreateCheckout', methods=['DELETE'])
+@app.route('/api/v1/Checkout', methods=['DELETE'])
 def delete_checkout():
-    pass
-
-@app.route('/CreateCheckout', methods=['POST'])
-def create_checkout():
-    ''' CreateCheckout
+    ''' EditCheckout
     ---
+    delete:
+        description: Deletes the checkout
+        tags:
+            - Payment
+        parameters:
+            - in: path
+              name: checkout_token
+              schema:
+                type: string
+              required: true
+              description: Checkout token given by create_checkout
+        responses:
+            200:
+                description: A JSON containing result of the proccess
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          SUCCESS:
+                            type: boolean
+            400:
+                description: A JSON containing a ERROR that indentifies the problem
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          ERROR:
+                            type: string
+    '''
+    # request.args looks ugly and takes too much space...
+    args = request.args
+    keys = args.keys()
+    required_keys = ['checkout_token']
+
+    # Checking for required arguments
+    if not args or not check_keys(required_keys, keys):
+        return jsonify({'ERROR': error_message('invalid_request')}), 400
+
+    # Checking if checkout exists
+    if not db.exists('CHECKOUT', 'id', args['checkout_token']):
+        return jsonify({'ERROR': error_message('invalid_checkout')}), 400
+
+    # Delete from database
+    try:
+        db.delete('CHECKOUT', 'id', args['checkout_token'])
+    except Exception as e:
+        print(e)
+        return jsonify({'ERROR': error_message('db_error')}), 500
+
+    # Everything went well
+    return jsonify({'SUCCESS': True}), 200
+
+
+@app.route('/api/v1/Checkout', methods=['POST','PUT'])
+def create_checkout():
+    ''' Create/Update Checkout
+    ---
+    put:
+        description: Updates a checkout, all the information is replaced by the on given.
+        tags:
+            - Payment
+        parameters:
+            - in: path
+              name: checkout_token
+              schema:
+                type: string
+              required: true
+              description: Checkout token given by create_checkout
+        requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    AMOUNT:
+                      type: number
+                      description: Amount to be paid by the client
+                    MERCHANT:
+                      type: string
+                      description: Token that indentifies the merchant
+                    RETURN_URL:
+                      type: string
+                      description: URL to where the client in redirect if the payment is successful
+                    CANCEL_URL:
+                      type: string
+                      description: URL to where the client in redirect if the payment is cancelled
+                    CURRENCY:
+                      type: string
+                      description: Three characthers currency code. Default value is 'EUR'. [https://www.xe.com/iso4217.php]
+                      default : EUR
+                    ITEMS:
+                      type: array
+                      items:
+                            type : object
+                            properties:
+                                NAME:
+                                    type : string
+                                    description: Checkout item's name. Default value is "Item". This parameter is required if you fill any other item parameter.
+                                    default : Item
+                                PRICE:
+                                    type : number
+                                    description: Checkout item's price. Default value is the one given in 'AMOUNT'. This parameter is required if you fill any other item parameter.
+                                QUANTITY:
+                                    type : integer
+                                    description: Checkout item's quantity. Default value is 1. This parameter is not required at any situation.
+                                    default : 1
+                                URL:
+                                    type : string
+                                    description: Checkout item's URL to your domain. This parameter is not required at any situation.
+                  required:
+                    - AMOUNT
+                    - MERCHANT
+                    - RETURN_URL
+                    - CANCEL_URL
+        responses:
+            201:
+                description: A JSON containing result of the proccess
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          SUCCESS:
+                            type: boolean
+            400:
+                description: A JSON containing a ERROR that indentifies the problem
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          ERROR:
+                            type: string
     post:
         description: Creates a checkout
         tags:
@@ -348,18 +473,18 @@ def create_checkout():
                             properties:
                                 NAME:
                                     type : string
-                                    description: Checkout item's name. Default value is "Item". This parameter is required if you fill any other "ITEM_n" parameter with the same 'n'. ['n' is the sequencial number of the item and it can be between 0 and 9 (up to 10 items)]
+                                    description: Checkout item's name. Default value is "Item". This parameter is required if you fill any other item parameter.
                                     default : Item
                                 PRICE:
                                     type : number
-                                    description: Checkout item's price. Default value is the one given in 'AMOUNT'. This parameter is required if you fill any other "ITEM_n" parameter with the same 'n'. ['n' is the sequencial number of the item and it can be between 0 and 9 (up to 10 items)]
+                                    description: Checkout item's price. Default value is the one given in 'AMOUNT'. This parameter is required if you fill any other item parameter.
                                 QUANTITY:
                                     type : integer
-                                    description: Checkout item's quantity. Default value is 1. This parameter is not required at any situation. ['n' is the sequencial number of the item and it can be between 0 and 9 (up to 10 items)]
+                                    description: Checkout item's quantity. Default value is 1. This parameter is not required at any situation.
                                     default : 1
                                 URL:
                                     type : string
-                                    description: Checkout item's URL to your domain. This parameter is not required at any situation. ['n' is the sequencial number of the item and it can be between 0 and 9 (up to 10 items)]
+                                    description: Checkout item's URL to your domain. This parameter is not required at any situation.
                   required:
                     - AMOUNT
                     - MERCHANT
@@ -404,11 +529,18 @@ def create_checkout():
     if not db.exists('MERCHANT', 'id', param['MERCHANT']):
         return jsonify({'ERROR': error_message('invalid_merchant')}), 400
 
-    # Generating token and checking if it doesn't exist already
-    while True:
-        token = secrets.token_urlsafe(16)
-        if not db.exists('CHECKOUT', 'id', token):
-            break
+    # If request is POST a.k.a creating a new checkout
+    if request.method == 'POST':
+        while True:
+            token = secrets.token_urlsafe(16)
+            if not db.exists('CHECKOUT', 'id', token):
+                break
+    # Else updating existing one
+    else:
+        if(delete_checkout()[1] == 200):
+            token = request.args['checkout_token']
+        else:
+            return jsonify({'ERROR': error_message('invalid_checkout')}), 400
 
     # Sorting keys according to db insertion order
     sorted(keys, key=lambda x: expected_keys.index(x))
@@ -416,10 +548,6 @@ def create_checkout():
     # Checking for optional parameters
     if not 'CURRENCY' in keys:
         param['CURRENCY'] = None
-
-    # Adding items to checkout if given by the merchant
-    if 'ITEMS' in keys and not add_items(param['ITEMS'], token, param['AMOUNT']):
-        return jsonify({'ERROR': error_message('add_items')}), 400
 
     # Inserting new checkout to database
     try:
@@ -430,8 +558,13 @@ def create_checkout():
         print(e)
         return jsonify({'ERROR': error_message('db_error')}), 500
 
-    # Everything went well, returning token for new checkout
-    return jsonify({'CHECKOUT_TOKEN': token}), 201
+    # Adding items to checkout if given by the merchant
+    if 'ITEMS' in keys and not add_items(param['ITEMS'], token, param['AMOUNT']):
+        delete_checkout()
+        return jsonify({'ERROR': error_message('add_items')}), 400
+
+    # Everything went well, returning token for new checkout or true if it was an update
+    return (jsonify({'CHECKOUT_TOKEN': token}), 201) if request.method == 'POST' else (jsonify({'SUCCESS': True}), 200)
 
 @app.route('/pay', methods=['GET'])
 def pay():
@@ -528,6 +661,7 @@ with app.test_request_context():
     spec.add_path(view=create_checkout)
     spec.add_path(view=get_checkout)
     spec.add_path(view=execute_checkout)
+    spec.add_path(view=delete_checkout)
 
 with open('static/swagger.json', 'w') as f:
     json.dump(spec.to_dict(), f)

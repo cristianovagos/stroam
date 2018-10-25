@@ -32,7 +32,7 @@ CREATE TABLE CREDIT_CARD(
   expiration  TEXT NOT NULL,
   owner_name  TEXT NOT NULL,
   user_id     TEXT NOT NULL,
-  PRIMARY KEY (cc_number, user_id),
+  PRIMARY KEY (cc_number),
   FOREIGN KEY (user_id) REFERENCES USER(id)
 );
 
@@ -73,7 +73,8 @@ CREATE TABLE ITEM (
   quantity    INT DEFAULT 1,
   url         TEXT,
   checkout    TEXT NOT NULL,
-  FOREIGN KEY (checkout) REFERENCES CHECKOUT(id)
+  PRIMARY KEY (name, checkout),
+  FOREIGN KEY (checkout) REFERENCES CHECKOUT(id) ON DELETE CASCADE
 );
 
 INSERT INTO USER (id, email, password) VALUES ("tokensample123", "geral@stroam.net", "password123");
