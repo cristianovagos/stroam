@@ -35,7 +35,7 @@ public class Production {
     @NotNull
     private String year;
 
-    @OneToMany(cascade = CascadeType.ALL,
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
     fetch = FetchType.LAZY)
     private Set<Genre> genres;
 

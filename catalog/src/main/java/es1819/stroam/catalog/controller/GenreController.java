@@ -17,8 +17,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.xml.ws.Response;
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -26,6 +28,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RestController
 @RequestMapping("/api")
 public class GenreController {
+
+    @Autowired
+    private ProductionRepository productionRepository;
 
     @Autowired
     private GenreRepository genreRepository;
@@ -63,5 +68,15 @@ public class GenreController {
         genre.setId(genre1.get().getId());
         genreRepository.save(genre);
         return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(value = "/v1/catalog/genre/{id}/productions", method = GET)
+    public List<Production> getProductionsByGenreID(@PathVariable("id") Long id) {
+        Optional<Genre> genre = genreRepository.findById(id);
+        if(!genre.isPresent())
+            throw new GenreNotFoundException("id=" + id);
+
+        Optional<List<Production>> productionList = productionRepository.findAllByGenres_id(id);
+        return productionList.orElse(Collections.emptyList());
     }
 }

@@ -6,6 +6,7 @@ import es1819.stroam.catalog.model.Production;
 import es1819.stroam.catalog.model.SeriesSeason;
 import es1819.stroam.catalog.model.retrofit.OmdbEpisodeSeasonResult;
 import es1819.stroam.catalog.model.retrofit.OmdbSeasonResult;
+import es1819.stroam.catalog.repository.GenreRepository;
 import es1819.stroam.catalog.repository.ProductionRepository;
 import es1819.stroam.catalog.model.retrofit.OmdbResult;
 import es1819.stroam.catalog.model.retrofit.OmdbService;
@@ -16,13 +17,16 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import retrofit2.Response;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Component
+@Transactional
 public class OmdbMovieRunner implements CommandLineRunner {
 
     private final String API_KEY = "79c1ed74";
@@ -32,6 +36,9 @@ public class OmdbMovieRunner implements CommandLineRunner {
 
     @Autowired
     ProductionRepository repository;
+
+    @Autowired
+    GenreRepository genreRepository;
 
     // Primeiros IDs são filmes, o resto séries
     String[] moviesIDs = {
@@ -73,9 +80,14 @@ public class OmdbMovieRunner implements CommandLineRunner {
                     List<Genre> genreList = new ArrayList<>();
                     String[] genres = result.getGenre().split(",");
                     for (int j = 0; j < genres.length; j++) {
-                        Genre genre = new Genre();
-                        genre.setName(genres[j].trim());
-                        genreList.add(genre);
+                        Optional<Genre> genreOptional = genreRepository.findByName(genres[j].trim());
+                        if(!genreOptional.isPresent()) {
+                            Genre genre = new Genre();
+                            genre.setName(genres[j].trim());
+                            genreList.add(genre);
+                        } else {
+                            genreList.add(genreOptional.get());
+                        }
                     }
                     production.setGenres(new HashSet<>(genreList));
 

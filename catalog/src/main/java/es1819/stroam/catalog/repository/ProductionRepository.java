@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface ProductionRepository extends JpaRepository<Production, Long> {
     Optional<Production> findById(Long productionID);
     Optional<List<Production>> findAllByName(String name);
+    Optional<List<Production>> findAllByGenres_id(Long id);
 }
