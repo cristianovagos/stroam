@@ -17,49 +17,56 @@ apenas mostra uma lista com os filmes existentes no catálogo
         {% else %}
             {% for movie in movies %}
                 <div class="movie-card">
-                <div class="movie-header"
-                     style="background: url('{{ movie.poster }}'); background-size: cover">
-                    <div class="header-icon-container">
-                        <a href="{% url 'movie-single' id=movie.id %}">
-                            <i class="fas fa-play header-icon"></i>
-                        </a>
+                    <div class="movie-header"
+                         style="background: url('{{ movie.poster }}'); background-size: cover">
+                        <div class="header-icon-container">
+                            <a href="{% url 'movie-single' id=movie.id %}">
+                                <i class="fas fa-play header-icon"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="movie-content">
+                        <div class="movie-content-header">
+                            <a href="{% url 'movie-single' id=movie.id %}">
+                                <h3 class="movie-title">{{ movie.title }}</h3>
+                            </a>
+                        </div>
+                        <div class="movie-info">
+                            <div class="info-section">
+                                <label>Year</label>
+                                <span>{{ movie.year }}</span>
+                            </div>
+                            <div class="info-section">
+                                {% if movie.genres|length > 1 %}
+                                    <label>Genres</label>
+                                {% else %}
+                                    <label>Genre</label>
+                                {% endif %}
+                                <span>
+                                    {% for genre in movie.genres %}
+                                        {% if forloop.counter < movie.genres|length %}
+                                            <a href="{% url 'genre-movies' genre=genre.name %}">{{ genre.name }}</a><br>
+                                        {% else %}
+                                            <a href="{% url 'genre-movies' genre=genre.name %}">{{ genre.name }}</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </span>
+                            </div>
+                            <div class="info-section">
+                                <label>Type</label>
+                                {% if movie.type == "movie" %}
+                                    <a href="{% url 'homeMovies' %}">
+                                        <span>{{ movie.type }}</span>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'homeSeries' %}">
+                                        <span>{{ movie.type }}</span>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="movie-content">
-                    <div class="movie-content-header">
-                        <a href="{% url 'movie-single' id=movie.id %}">
-                            <h3 class="movie-title">{{ movie.title }}</h3>
-                        </a>
-    {#                    <div class="imax-logo"></div>#}
-                    </div>
-                    <div class="movie-info">
-                        <div class="info-section">
-                            <label>Year</label>
-                            <span>{{ movie.year }}</span>
-                        </div>
-                        <div class="info-section">
-                            {% if movie.genres|length > 1 %}
-                                <label>Genres</label>
-                            {% else %}
-                                <label>Genre</label>
-                            {% endif %}
-                            <span>
-                                {% for genre in movie.genres %}
-                                    {% if forloop.counter < movie.genres|length %}
-                                        {{ genre }}<br>
-                                    {% else %}
-                                        {{ genre }}
-                                    {% endif %}
-                                {% endfor %}
-                            </span>
-                        </div>
-                        <div class="info-section">
-                            <label>Type</label>
-                            <span>{{ movie.type }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
             {% endfor %}
         {% endif %}
     </div>

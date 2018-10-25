@@ -23,6 +23,7 @@ urlpatterns = [
     path('movies/', views.homeMovies, name='homeMovies'),
     path('series/', views.homeSeries, name='homeSeries'),
     path('movie/<int:id>', views.singleMovie, name='movie-single'),
+    path('genre/<slug:genre>', views.genreMovies, name='genre-movies'),
     path('cart/', views.shoppingCart, name='shopping-cart'),
     path('checkout/', views.checkout, name='checkout'),
     path('checkout/create', views.checkoutCreate, name='checkoutCreate'),

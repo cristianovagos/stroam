@@ -51,6 +51,24 @@ def homeSeries(request):
     }
     return render(request, 'pages/index.html', tparams)
 
+def genreMovies(request, genre):
+    title = genreName = genre
+    movies = None
+    requested_genre = catalog.getGenreByName(genre)
+    if requested_genre is not None:
+        title = requested_genre.name
+        movies = catalog.getProductionsByGenreID(requested_genre.id)
+        if movies:
+            shuffle(movies)
+
+    tparams = {
+        'title': MAIN_TITLE + title,
+        'movies': movies,
+        'genreName': genreName,
+        'numCart': request.session.get('cartNumber', 0)
+    }
+    return render(request, 'pages/genre.html', tparams)
+
 def singleMovie(request, id):
     assert isinstance(id, int)
 

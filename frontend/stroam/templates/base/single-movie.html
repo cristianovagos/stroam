@@ -30,7 +30,9 @@
                     <h6>Genre:
                         <span style="font-size: 15px">
                             {% for genre in movie.genres %}
-                                <span class="badge badge-danger">{{ genre }}</span>
+                                <span class="badge badge-danger">
+                                    <a href="{% url 'genre-movies' genre=genre.name %}">{{ genre.name }}</a>
+                                </span>
                             {% endfor %}
                         </span>
                     </h6>
