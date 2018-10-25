@@ -8,7 +8,8 @@ from urllib.request import urlopen
 from ..models import *
 
 LOGGER = logging.getLogger(__name__)
-PAYMENT_SERVICE_URL = "http://localhost:5000/api/"
+PAYMENT_SERVICE_URL = "http://localhost:5000"
+PAYMENT_SERVICE_API_URL = "http://localhost:5000/api/"
 
 def createCheckout(price, returnURL, cancelURL, items, currency="EUR", merchant="tokensample123"):
     jsonItems = []
@@ -17,6 +18,7 @@ def createCheckout(price, returnURL, cancelURL, items, currency="EUR", merchant=
             "NAME": item['name'],
             "PRICE": item['price'],
             "QUANTITY": item['quantity'],
+            "IMAGE": item['image'],
             "URL": item['url']
         })
     jsonObj = {
@@ -29,7 +31,7 @@ def createCheckout(price, returnURL, cancelURL, items, currency="EUR", merchant=
     }
 
     headers = {"content-type": "application/json"}
-    r = requests.post(PAYMENT_SERVICE_URL + "v1/Checkout", data=json.dumps(jsonObj), headers=headers)
+    r = requests.post(PAYMENT_SERVICE_API_URL + "v1/Checkout", data=json.dumps(jsonObj), headers=headers)
     try:
         responseObj = json.loads(r.text)
     except Exception:
@@ -53,7 +55,7 @@ def createCheckout(price, returnURL, cancelURL, items, currency="EUR", merchant=
 
 def getCheckoutDetails(checkoutToken):
     try:
-        url = urlopen(PAYMENT_SERVICE_URL + "v1/Checkout?checkout_token=" + checkoutToken)
+        url = urlopen(PAYMENT_SERVICE_API_URL + "v1/Checkout?checkout_token=" + checkoutToken)
     except Exception as e:
         url = None
         LOGGER.error(e)
@@ -62,7 +64,7 @@ def getCheckoutDetails(checkoutToken):
 
 def executeCheckout(checkoutToken, buyerID):
     try:
-        url = urlopen(PAYMENT_SERVICE_URL + "v1/ExecuteCheckout?checkout_token=" + checkoutToken + "&buyer_id=" + buyerID)
+        url = urlopen(PAYMENT_SERVICE_API_URL + "v1/ExecuteCheckout?checkout_token=" + checkoutToken + "&buyer_id=" + buyerID)
     except Exception as e:
         url = None
         LOGGER.error(e)

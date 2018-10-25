@@ -195,6 +195,7 @@ def checkoutCreate(request):
                     products.append({
                         "name": p.title + season,
                         "price": p.price,
+                        "image": p.poster,
                         "quantity": 1,
                         "url": request.build_absolute_uri(reverse('movie-single', kwargs={'id':p.id})) + seasonAnchor,
                         "season": obj.get('season', None),
