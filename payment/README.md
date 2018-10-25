@@ -6,35 +6,44 @@ StrongPay is a payment gateway service based on PayPal. It's composed of a front
 
 ## API Endpoints
 
-> **URL** : '/CreateCheckout'
+> **URL** : '/api/v1/Checkout'
 **Method** : `POST`
 **Description** : Create a checkout for later to be paid by an user.
 
-> **URL** : '/GetCheckoutDetails'
+> **URL** : '/api/v1/Checkout'
 **Method** : `GET`
-**Description** : Gets checkout details such as who paid and billing address
+**Description** : Gets checkout details such as who paid and billing address.
 
-> **URL** : '/ExecuteCheckout'
+> **URL** : '/api/v1/Checkout'
+**Method** : `PUT`
+**Description** : Replaces all information of checkout.
+
+> **URL** : '/api/v1/Checkout'
+**Method** : `DELETE`
+**Description** : Deletes checkout.
+
+> **URL** : '/api/v1/ExecuteCheckout'
 **Method** : `GET`
 **Description** : Confirm and execute payment. Return Success or Failure.
 
 ## What is done
 
 - Index page with login form
-- Login Page
-- /CreateCheckout API call
+- API Call to Create Checkout
+- API Call with Checkout information
+- API Call to Update/Delete Checkout
 - Redirect link for payment to be done
+- API Call to execute checkout
 - Basic credit card Validation
-- Sturb API endpoints (/GetCheckoutDetails and /ExecuteCheckout)
+- Ability to store used Credit Card and Billing Address
 
 ## What is left
 
 - Register for Client and Merchant
 - Profile Management for the Client and Merchant
-- /GetCheckoutDetails endpoint development
-- /ExecuteCheckout endpoint development
-- Hability to store used credit cards
-- Billing Address
+- Pre-filling of billing address and credit card
+- Improve JavaScript validation of payment form
+- Minor security features 
 
 ## Deployment
 
