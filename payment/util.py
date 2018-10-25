@@ -76,6 +76,9 @@ def add_items(items, checkout, amount):
         if 'URL' in keys:
             keys_to_db.append('URL')
             columns = (*columns, 'url')
+        if 'IMAGE' in keys:
+            keys_to_db.append('IMAGE')
+            columns = (*columns, 'image')
         try:
             db.insert('ITEM', \
                 columns, \

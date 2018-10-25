@@ -73,6 +73,7 @@ CREATE TABLE ITEM (
   quantity    INT DEFAULT 1,
   url         TEXT,
   checkout    TEXT NOT NULL,
+  image       TEXT,
   PRIMARY KEY (name, checkout),
   FOREIGN KEY (checkout) REFERENCES CHECKOUT(id) ON DELETE CASCADE
 );

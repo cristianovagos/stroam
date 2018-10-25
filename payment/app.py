@@ -414,6 +414,9 @@ def create_checkout():
                                     type : integer
                                     description: Checkout item's quantity. Default value is 1. This parameter is not required at any situation.
                                     default : 1
+                                IMAGE:
+                                    type : string
+                                    description: Checkout item's image URL. It must be from your domain. This parameter is not required at any situation.
                                 URL:
                                     type : string
                                     description: Checkout item's URL to your domain. This parameter is not required at any situation.
@@ -482,6 +485,9 @@ def create_checkout():
                                     type : integer
                                     description: Checkout item's quantity. Default value is 1. This parameter is not required at any situation.
                                     default : 1
+                                IMAGE:
+                                    type : string 
+                                    description: Checkout item's image URL. It must be from your domain. This parameter is not required at any situation.
                                 URL:
                                     type : string
                                     description: Checkout item's URL to your domain. This parameter is not required at any situation.

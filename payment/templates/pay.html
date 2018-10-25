@@ -19,24 +19,25 @@
                     <span class="order-details"> Order Details: </span>
                     <table class="order-table">
                       <tr>
-                        <th>Description</th>
+                        <th colspan="2" >Description</th>
                         <th style="text-align:right">Amount</th>
                       </tr>
                       {% if items != [] %}
                         {% for item in items %}
                             <tr>
-                              <td>{{item.name}} <b> x {{item.quantity}} </b> </td>
+                              <td> {% if item.image %} <img style="height:38px; padding-bottom:0" src="{{item.image}}" width="38"/> {% endif %} </td>
+                              <td> {% if item.url %} <a href="{{item.url}}" > {% endif %} {{item.name}}</a> <b> x {{item.quantity}} </b> </td>
                               <td style="text-align:right">{{"{:.2f}".format(item.price)}} {{currency}}</td>
                             </tr>
                         {% endfor %}
                       {% else %}
                       <tr>
-                        <td>Item</td>
+                        <td colspan="2">Item</td>
                         <td style="text-align:right">{{amount}}</td>
                       </tr>
                       {% endif %}
                       <tr>
-                        <td>Total:</td>
+                        <td colspan="2">Total:</td>
                         <td style="text-align:right">{{amount}} {{currency}}</td>
                       </tr>
                     </table>
