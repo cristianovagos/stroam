@@ -1,0 +1,27 @@
+{% extends 'base/layout.html' %}
+
+{% block content %}
+    <section>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Genres</li>
+            </ol>
+        </nav>
+        <div class="container" style="margin-top: 20px">
+
+        </div>
+        <div class="container" style="margin-top: 20px">
+            {% for genre in genres %}
+                <div class="movie-card" style="background: #dc3545">
+                    <div class="movie-content-header">
+                        <a href="{% url 'genre-movies' genre=genre.name %}">
+                            <div class="movie-content text-center" style="color: white">
+                                <h5>{{ genre.name }}</h5>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

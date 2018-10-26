@@ -1,6 +1,8 @@
 import json
 import requests
 from urllib.request import urlopen
+from .genre import *
+from .season import *
 
 BASE_CATALOG_URL = "http://localhost:4000/api"
 
@@ -20,18 +22,7 @@ class Production:
         self.seasons = seasons
         self.seasonList = seasonList
 
-class Season:
-    def __init__(self, id, seasonNum, episodes):
-        self.id = id
-        self.seasonNum = seasonNum
-        self.episodes = episodes
-
-class Genre:
-    def __init__(self, id, name):
-        self.id = id
-        self.name = name
-
-def getAllCatalog():
+def getAllProduction():
     prodsList = []
 
     try:
@@ -61,7 +52,7 @@ def getAllCatalog():
 
     return prodsList
 
-def getSingleCatalog(id):
+def getSingleProduction(id):
     assert isinstance(id, int)
 
     try:
@@ -94,28 +85,6 @@ def getSingleCatalog(id):
 
     return Production(id, title, releaseDate, year, genres, director, type, poster, description, runtime, price, seasons, seasonList)
 
-def getSeriesSeason(id, seasonNum):
-    assert isinstance(seasonNum, int)
-    assert isinstance(id, int)
-
-    try:
-        url = urlopen(BASE_CATALOG_URL + "/v1/catalog/" + str(id) + "/season/" + str(seasonNum))
-    except Exception:
-        return None
-
-    data = json.loads(url.read().decode())
-
-    id = data['id']
-    episodes = []
-    for episode in data['episodes']:
-        ep = {}
-        ep['num'] = episode['episode']
-        ep['title'] = episode['title']
-        ep['releaseDate'] = episode['releaseDate']
-        episodes.append(ep)
-
-    return Season(id, seasonNum, episodes)
-
 def getProductionsByGenreID(id):
     assert isinstance(id, int)
 
@@ -146,26 +115,3 @@ def getProductionsByGenreID(id):
         prodsList.append(p)
 
     return prodsList
-
-def getGenreInfo(id):
-    assert isinstance(id, int)
-
-    try:
-        url = urlopen(BASE_CATALOG_URL + "/v1/catalog/genre/" + str(id))
-    except Exception:
-        return None
-
-    data = json.loads(url.read().decode())
-    return Genre(data['id'], data['name'])
-
-def getGenreByName(genrename):
-    r = requests.get(BASE_CATALOG_URL + "/v1/catalog/genre", params={"name": genrename})
-    try:
-        data = json.loads(r.text)
-    except Exception:
-        return None
-    if r.status_code != 404:
-        genre_id = data[0]['id']
-        genre_name = data[0]['name']
-        return Genre(genre_id, genre_name)
-    return None

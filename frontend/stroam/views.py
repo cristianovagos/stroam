@@ -3,7 +3,7 @@ from random import shuffle
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpRequest, HttpResponse, Http404
 
-from .catalog import catalog
+from .catalog import production, season, genre
 from .payment import payment
 from .models import *
 from .utils import *
@@ -17,7 +17,7 @@ LOGGER = logging.getLogger(__name__)
 
 def home(request):
     title = 'Stream strong, anytime and anywhere.'
-    movies = catalog.getAllCatalog()
+    movies = production.getAllProduction()
     if movies:
         shuffle(movies)
     tparams = {
@@ -29,7 +29,7 @@ def home(request):
 
 def homeMovies(request):
     title = 'Our movies'
-    movies = [x for x in catalog.getAllCatalog() if x.type == 'movie']
+    movies = [x for x in production.getAllProduction() if x.type == 'movie']
     if movies:
         shuffle(movies)
     tparams = {
@@ -41,7 +41,7 @@ def homeMovies(request):
 
 def homeSeries(request):
     title = 'Our TV Series'
-    movies = [x for x in catalog.getAllCatalog() if x.type == 'series']
+    movies = [x for x in production.getAllProduction() if x.type == 'series']
     if movies:
         shuffle(movies)
     tparams = {
@@ -51,13 +51,25 @@ def homeSeries(request):
     }
     return render(request, 'pages/index.html', tparams)
 
+def genreList(request):
+    title = 'Our Genres'
+    genres = genre.getAllGenres()
+    if genres:
+        shuffle(genres)
+    tparams = {
+        'title': MAIN_TITLE + title,
+        'genres': genres,
+        'numCart': request.session.get('cartNumber', 0)
+    }
+    return render(request, 'pages/genre-list.html', tparams)
+
 def genreMovies(request, genre):
     title = genreName = genre
     movies = None
-    requested_genre = catalog.getGenreByName(genre)
+    requested_genre = production.getGenreByName(genre)
     if requested_genre is not None:
         title = requested_genre.name
-        movies = catalog.getProductionsByGenreID(requested_genre.id)
+        movies = production.getProductionsByGenreID(requested_genre.id)
         if movies:
             shuffle(movies)
 
@@ -76,7 +88,7 @@ def singleMovie(request, id):
                                            purchase_id__payment_status=Purchase.PAYMENT_COMPLETED)
     moviePurchased = p.count() > 0
 
-    movie = catalog.getSingleCatalog(id)
+    movie = production.getSingleProduction(id)
     seasonsPurchased = []
     if movie is not None:
         movieTitle = movie.title
@@ -152,7 +164,7 @@ def shoppingCart(request):
     if 'productList' in request.session:
         prodList = request.session.get('productList')
         for product in prodList:
-            p = catalog.getSingleCatalog(int(product))
+            p = production.getSingleProduction(int(product))
             if p:
                 if p.type == 'movie':
                     price += p.price
@@ -177,14 +189,12 @@ def shoppingCart(request):
     return render(request, 'pages/shopping-cart.html', tparams)
 
 def checkoutCreate(request):
-    # checkURLOrigin(request, request.build_absolute_uri(reverse('shopping-cart')))
-
     products = []
     price = 0
     if 'productList' in request.session:
         prodList = request.session.get('productList')
         for product in prodList:
-            p = catalog.getSingleCatalog(int(product))
+            p = production.getSingleProduction(int(product))
             if p:
                 season = ""
                 seasonAnchor = ""
@@ -208,7 +218,6 @@ def checkoutCreate(request):
 
 def checkout(request):
     title = 'Checkout - Confirm Payment'
-    # checkURLOrigin(request, payment.PAYMENT_SERVICE_URL)
 
     if request.method == 'POST':
         checkoutToken = request.POST.get('checkoutToken', None)
@@ -239,13 +248,13 @@ def checkout(request):
         'checkoutToken': checkoutToken,
         'buyerID': buyerID,
         'products': products,
-        'totalPrice': totalPrice
+        'totalPrice': totalPrice,
+        'cartShowing': False
     }
     return render(request, 'pages/checkout.html', tparams)
 
 def paymentCompleted(request):
     title = 'Payment Completed'
-    # checkURLOrigin(request, payment.PAYMENT_SERVICE_URL)
     deleteProductListFromSession(request)
 
     tparams = {
@@ -255,7 +264,6 @@ def paymentCompleted(request):
 
 def paymentError(request):
     title = 'Payment Canceled'
-    # checkURLOrigin(request, payment.PAYMENT_SERVICE_URL)
     deleteProductListFromSession(request)
 
     print("checkoutError")
@@ -285,7 +293,7 @@ def userPanel(request):
         data[purchase.id]['date_payment'] = purchase.date_payment
         data[purchase.id]['products'] = {}
         for production in productions:
-            product = catalog.getSingleCatalog(production.production_id)
+            product = production.getSingleCatalog(production.production_id)
             data[purchase.id]['products'][production.id] = {}
             data[purchase.id]['products'][production.id]['production'] = product
             if product.type == 'series':
