@@ -24,6 +24,7 @@ if(document.getElementsByClassName("login-form")[0]){
 else {
 
   document.getElementById("proccess").onclick = function(){
+      var using_old = document.getElementById("using-old");
       error_div.style.display = "none";
       // Getting the inputs to validate - Content 1
       var card_number = document.getElementsByName("card-number")[0];
@@ -52,31 +53,34 @@ else {
       // Validation
       var valid = true;
       var error = "";
-      if (!validateContent(card_number.value) || !valid_credit_card(card_number.value)) {
-        showWarning(card_number);
-        valid = false;
-        error = "Invalid Credit Card Number";
-        showContent1();
+      if(!using_old){
+        if (!validateContent(card_number.value) || !valid_credit_card(card_number.value)) {
+          showWarning(card_number);
+          valid = false;
+          error = "Invalid Credit Card Number";
+          showContent1();
+        }
+        else if (!validateExpDate(expiration.value)) {
+          showWarning(expiration);
+          valid = false;
+          error = "Expiration date not valid";
+          showContent1();
+        }
+        else if (!validateContent(cvc.value)) {
+          showWarning(cvc);
+          valid = false;
+          error = "Invalid CVC";
+          showContent1();
+        }
+        else if (!validateContent(card_owner.value)) {
+          showWarning(card_owner);
+          valid = false;
+          error = "Invalid Card Owner name";
+          showContent1();
+        }
       }
-      else if (!validateExpDate(expiration.value)) {
-        showWarning(expiration);
-        valid = false;
-        error = "Expiration date not valid";
-        showContent1();
-      }
-      else if (!validateContent(cvc.value)) {
-        showWarning(cvc);
-        valid = false;
-        error = "Invalid CVC";
-        showContent1();
-      }
-      else if (!validateContent(card_owner.value)) {
-        showWarning(card_owner);
-        valid = false;
-        error = "Invalid Card Owner name";
-        showContent1();
-      }
-      else if (!validateContent(first_name.value)) {
+
+      if (!validateContent(first_name.value)) {
         showWarning(first_name);
         valid = false;
         error = "Invalid First Name";
@@ -178,7 +182,33 @@ function hideWarning(input) {
     inputDiv.classList.remove("alert");
 };
 
+function cc_changed(elmnt, newcard) {
+  var newCredit = document.getElementById("newCredit");
+  var oldCredit = document.getElementById("oldCredit");
+  var wallet = document.getElementById("wallet");
+  var using_old = document.getElementById("using-old");
 
+  if(!newcard){
+    newCredit.style.display = "none";
+
+    var card_number = document.getElementsByName("old-card-number")[0];
+    var expiration = document.getElementsByName("old-exp")[0];
+    cc = elmnt.innerHTML.split(" | ");
+    card_number.value = cc[0];
+    expiration.value = cc[1];
+
+    oldCredit.style.display = "block";
+    wallet.innerHTML = "Using Credit Card From Wallet";
+    using_old.value = true;
+  }
+  else
+  {
+    newCredit.style.display = "block";
+    oldCredit.style.display = "none";
+    wallet.innerHTML = "Credit Card Wallet"
+    using_old.value = false;
+  }
+};
 
 
 // THIS CODE IS NOT MINE

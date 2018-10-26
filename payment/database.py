@@ -94,23 +94,53 @@ def exists(table, columns, values):
 
     return result
 
-def get(table, column, value):
+def get(table, columns, values):
     '''
         Returns Row from database
     '''
+    if isinstance(columns, str):
+        columns = [columns]
+
+    if isinstance(values, str):
+        values = [values]
 
     cur = get_db().cursor()
 
-    query = 'SELECT * FROM %s WHERE %s=\"%s\" LIMIT 1' % (
+    query = 'SELECT * FROM %s WHERE %s %s LIMIT 1' % (
         table,
-        column,
-        value
+        '= ? AND '.join(columns),
+        '= ?'
     )
 
-    result = cur.execute(query).fetchone()
+    result = cur.execute(query, values).fetchone()
     cur.close()
 
     return result
+
+def get_cc(table, number, columns, values):
+    '''
+        Returns Row from credit card table
+    '''
+    if isinstance(columns, str):
+        columns = [columns]
+
+    if isinstance(values, str):
+        values = [values]
+
+    cur = get_db().cursor()
+
+    query = 'SELECT * FROM %s WHERE cc_number LIKE \'%s\' AND %s %s LIMIT 1' % (
+        table,
+        number,
+        '= ? AND '.join(columns),
+        '= ?'
+    )
+
+    result = cur.execute(query, values).fetchone()
+    cur.close()
+
+    return result
+
 
 def get_all(table, column, value):
     '''

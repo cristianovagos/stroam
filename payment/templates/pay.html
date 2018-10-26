@@ -80,26 +80,53 @@
                         <span class="payment-title"> Payment Details</span>
                         <img src="{{ url_for('static',filename='images/credit.png') }}" alt="StrongPay"/>
 
-                        <div class="payment-input">
-                            <input  type="number" name="card-number" placeholder="Card Number" maxlength="16"/>
-                            <span> <i class="fa fa-credit-card" aria-hidden="true"></i> </span>
+                        {% if cc_wallet != [] %}
+                        <div class="payment-input" id="dropdown">
+                          <button id="wallet" type="button" class="dropbtn">Credit Card Wallet</button>
+                          <div class="dropdown-content">
+                              <a href="#" onclick="cc_changed(this, true)">New Card</a>
+                            {% for cc in cc_wallet %}
+                              <a href="#" onclick="cc_changed(this, false)">{{cc}}</a>
+                            {% endfor %}
+                          </div>
+                        </div>
+                        {% endif %}
+
+                        <div id="oldCredit" style="display:none">
+                          <input type="hidden" id="using-old" name="using-old" value="false">
+                          <div class="payment-input">
+                              <input readonly="readonly" name="old-card-number" placeholder="Card Number" maxlength="16"/>
+                              <span> <i class="fa fa-credit-card" aria-hidden="true"></i> </span>
+                          </div>
+
+                          <div class="payment-input" style="margin-bottom:70px">
+                              <input readonly="readonly" type="text" name="old-exp" placeholder="MM/YY" maxlength="5"/>
+                              <span> <i class="fa fa-calendar" aria-hidden="true"></i> </span>
+                          </div>
+
                         </div>
 
-                        <div id="half" class="payment-input">
-                            <input type="text" name="exp" placeholder="MM/YY" maxlength="5"/>
-                            <span> <i class="fa fa-calendar" aria-hidden="true"></i> </span>
-                        </div>
+                        <div id="newCredit">
+                          <div class="payment-input">
+                              <input name="card-number" placeholder="Card Number" maxlength="16"/>
+                              <span> <i class="fa fa-credit-card" aria-hidden="true"></i> </span>
+                          </div>
 
-                        <div id="half" class="payment-input">
-                            <input type="number" name="cvc" placeholder="CVC" maxlength="3" />
-                            <span> <i class="fa fa-lock" aria-hidden="true"></i> </span>
-                        </div>
+                          <div id="half" class="payment-input">
+                              <input type="text" name="exp" placeholder="MM/YY" maxlength="5"/>
+                              <span> <i class="fa fa-calendar" aria-hidden="true"></i> </span>
+                          </div>
 
-                        <div class="payment-input">
-                            <input type="text" name="card-owner" placeholder="Card Owner Name" />
-                            <span> <i class="fa fa-user" aria-hidden="true"></i> </span>
-                        </div>
+                          <div id="half" class="payment-input">
+                              <input name="cvc" placeholder="CVC" maxlength="3" />
+                              <span> <i class="fa fa-lock" aria-hidden="true"></i> </span>
+                          </div>
 
+                          <div class="payment-input">
+                              <input type="text" name="card-owner" placeholder="Card Owner Name" />
+                              <span> <i class="fa fa-user" aria-hidden="true"></i> </span>
+                          </div>
+                        </div>
                         <div class="payment-button">
                             <button type="button" id="next">Next</button>
                         </div>

@@ -486,7 +486,7 @@ def create_checkout():
                                     description: Checkout item's quantity. Default value is 1. This parameter is not required at any situation.
                                     default : 1
                                 IMAGE:
-                                    type : string 
+                                    type : string
                                     description: Checkout item's image URL. It must be from your domain. This parameter is not required at any situation.
                                 URL:
                                     type : string
@@ -601,6 +601,12 @@ def pay():
 
     # Checking if user is already logged in
     login_form = False if 'user_id' in session and db.exists('CLIENT', 'id', session['user_id']) else True
+    cc_wallet = []
+
+    if not login_form:
+        cc_db = db.get_all('CREDIT_CARD', 'user_id', session['user_id'])
+        for cc in cc_db:
+            cc_wallet.append('*' * 12 + str(cc['cc_number'])[-4:] + ' | ' + cc['expiration'])
 
     # Checking if there is error message to be shown
     error = False if not request.args.get('error') else request.args.get('error')
@@ -609,6 +615,7 @@ def pay():
                                        items = items,
                                        currency = checkout['currency'] if  checkout['currency'] else 'EUR',
                                        login_form = login_form,
+                                       cc_wallet = cc_wallet,
                                        error = error_message(error) ), 200
 
 @app.route('/proccess_payment', methods=['POST'])
@@ -638,15 +645,22 @@ def proccess_payment():
     param = request.form.to_dict()
     keys = param.keys()
     required_keys = ['card-number', 'exp', 'cvc', 'card-owner', 'first_name', \
+                    'old-card-number', 'old-exp', 'using-old', \
                     'last_name', 'country', 'city', 'address', 'post_code', 'phone']
 
     # Checking for required parameters
     if not param or not check_keys(required_keys, keys):
         return redirect(url_for('pay', checkout_token = args['checkout'], error = "invalid_request"))
 
-    # Create a relation of the credit card with the user
-    if not add_credit_to_user(param, session['user_id']):
-        return redirect(url_for('pay', checkout_token = args['checkout'], error = "db_error" ))
+    if ( param['using-old'] == "false" ):
+        # Create a relation of the credit card with the user
+        if not add_credit_to_user(param, session['user_id']):
+            return redirect(url_for('pay', checkout_token = args['checkout'], error = "db_error" ))
+    else:
+        cc = db.get_cc('CREDIT_CARD', '%'+param['old-card-number'].replace("*", "") \
+                                    ,['expiration', 'user_id'], \
+                                    [ param['old-exp'], session['user_id'] ])
+        param['card-number'] = cc['cc_number']
 
     # Create a relation of the billing address with the user
     billing_id = add_address_to_user(param, session['user_id'])
