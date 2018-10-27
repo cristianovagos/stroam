@@ -82,10 +82,10 @@ def login():
 
 @app.route('/api/v1/Checkout', methods=['GET'])
 def get_checkout():
-    ''' GetCheckoutDetails
+    ''' Get Checkout Details
     ---
     get:
-        description: Gets checkout details such as who paid and billing address
+        description: Returns checkout details such as items, status, buyer, billing address.
         tags:
             - Payment
         parameters:
@@ -108,40 +108,40 @@ def get_checkout():
                             properties:
                                 ID:
                                     type : string
-                                    description : Checkout's ID.
+                                    description : Checkout's ID value given when it is created.
                                 AMOUNT:
                                     type : number
-                                    description : Total amount of checkout.
+                                    description : Total amount of checkout, must be equal to the sum of the items.
                                 STATUS:
                                     type : string
-                                    description : Current status of checkout.
+                                    description : Current status of checkout. ('CREATED'/'READY','PAID')
                                 CURRENCY:
                                     type : string
                                     description : Currency used on checkout.
                                 PAID_WITH:
                                     type : string
-                                    description : Partial part of credit card used for the purchase.
+                                    description : Partial part of the Credit Card used for the purchase.
                           BUYER:
                             type: object
                             properties:
                                 ID:
                                     type : string
-                                    description : Buyer ID.
+                                    description : ID that identifies buyer in the system.
                                 NAME:
                                     type : string
-                                    description : Buyer Name.
+                                    description : Registration name of the buyer.
                                 NIF:
                                     type : number
-                                    description : Buyer NIF.
+                                    description : NIF given by the buyer. (Optional)
                           MERCHANT:
                              type: object
                              properties:
                                 ID:
                                     type : string
-                                    description : Merchant ID.
+                                    description : ID that identifies merchant in the system.
                                 NAME:
                                     type : string
-                                    description : Merchant Name.
+                                    description : Registration name of the merchant.
                           ITEMS:
                               type: array
                               items:
@@ -149,19 +149,22 @@ def get_checkout():
                                   properties:
                                      NAME:
                                         type : string
-                                        description : Item name.
+                                        description : Name/Description of the item given by the merchant.
                                      PRICE:
                                         type : number
-                                        description : Item price.
+                                        description : Total price of the item.
                                      QUANTITY:
                                         type : number
-                                        description : Item quantity.
+                                        description : Quantity of the item to be bought.
                                      URL:
                                         type : string
-                                        description : Item url to merchant website.
+                                        description : URL of the item in the merchant's domain.
+                                     IMAGE:
+                                        type : string
+                                        description : URL of item's image in the merchant's domain.
 
             400:
-                description: A JSON containing a ERROR that indentifies the problem
+                description: A JSON containing a ERROR that identifies the problem
                 content:
                     application/json:
                       schema:
@@ -186,20 +189,19 @@ def get_checkout():
     if not checkout:
         return jsonify({'ERROR': error_message('invalid_checkout')}), 400
 
-    # Get buyer, items and merchant information from database
-    buyer = db.get('CLIENT', 'id', checkout['paid_by'])
+    # Getting Items and Merchant information from database
     items = db.get_all('ITEM', 'checkout', checkout['id'])
     merchant = db.get('MERCHANT', 'id', checkout['merchant'])
-    billing_address = db.get('BILLING_ADDRESS', 'id', checkout['billing_address'])
+    # Turning sqlite Row into a dict
     items = [ dict(i) for i in items]
 
-    # Ignore this, simply making every key on dictionary uppercase because it looks good
+    # Ignore this, simply making every key on dictionary uppercase because it looks cool
     for i in items:
         i.pop('checkout')
         for k in list(i):
             i[k.upper()] = i.pop(k)
 
-    # Building information
+    # Building default information
     info = {
             'CHECKOUT' : {'ID': checkout['id'], 'STATUS' : checkout['status'],
                             'AMOUNT' : checkout['amount'],
@@ -208,19 +210,14 @@ def get_checkout():
             'ITEMS'    : items
     }
 
-    # Check if there is a BUYER to add
-    if buyer:
+    # If the checkout status is different from CREATE it must have a buyer already
+    if checkout['status'] != "CREATED":
+        # BUYER INFORMATION
+        buyer = db.get('CLIENT', 'id', checkout['paid_by'])
         info['BUYER'] = {'ID' : buyer['id'], 'NAME' : buyer['name'],
                         'NIF': buyer['nif']};
-
-    # Checking if there is credit card information to add
-    if checkout['paid_with']:
-        # Hiding credit card info
-        credit_card = '*' * 12 + str(checkout['paid_with'])[-4:]
-        info['CHECKOUT']['PAID_WITH'] = credit_card
-
-    # Checking if there is billing address information to add
-    if billing_address:
+        # BILLING ADDRESS INFORMATION
+        billing_address = db.get('BILLING_ADDRESS', 'id', checkout['billing_address'])
         info['BILLING_ADDRESS'] = { 'FIRST NAME': billing_address['first_name'],
                                     'LAST NAME': billing_address['last_name'],
                                     'COUNTRY' : billing_address['country'],
@@ -228,6 +225,9 @@ def get_checkout():
                                     'ADDRESS' : billing_address['address'],
                                     'POST-CODE' : billing_address['post_code'],
                                     'PHONE' : billing_address['phone']}
+        # CREDIT CARD INFORMATION
+        credit_card = '*' * 12 + str(checkout['paid_with'])[-4:]  # Hiding credit card info
+        info['CHECKOUT']['PAID_WITH'] = credit_card
 
     # Returning information
     return jsonify(info), 200
@@ -246,16 +246,15 @@ def execute_checkout():
               schema:
                 type: string
               required: true
-              description: Checkout token given by create_checkout
+              description: Checkout's ID value given when it is created.
             - in: path
               name: buyer_id
               schema:
                 type: string
               required: true
-              description: Buyer ID given by /GetCheckoutDetails
-        responses:
+              description: Buyer's ID value given on Checkout Details.
             200:
-                description: A JSON containing result of payment
+                description: A JSON containing the result of payment.
                 content:
                     application/json:
                       schema:
@@ -263,7 +262,7 @@ def execute_checkout():
                           SUCCESS:
                             type: boolean
             400:
-                description: A JSON containing a ERROR that indentifies the problem
+                description: A JSON containing the ERROR that identifies the problem.
                 content:
                     application/json:
                       schema:
@@ -317,10 +316,10 @@ def delete_checkout():
               schema:
                 type: string
               required: true
-              description: Checkout token given by create_checkout
+              description: Checkout's ID value given when it is created.
         responses:
             200:
-                description: A JSON containing result of the proccess
+                description: A JSON containing the result of the proccess.
                 content:
                     application/json:
                       schema:
@@ -328,7 +327,7 @@ def delete_checkout():
                           SUCCESS:
                             type: boolean
             400:
-                description: A JSON containing a ERROR that indentifies the problem
+                description: A JSON containing a ERROR that identifies the problem
                 content:
                     application/json:
                       schema:
@@ -365,7 +364,7 @@ def create_checkout():
     ''' Create/Update Checkout
     ---
     put:
-        description: Updates a checkout, all the information is replaced by the on given.
+        description: Creates/Updates the Checkout information. Updating the information will replace all the original information.
         tags:
             - Payment
         parameters:
@@ -374,7 +373,7 @@ def create_checkout():
               schema:
                 type: string
               required: true
-              description: Checkout token given by create_checkout
+              description: Checkout's ID value given when it is created.
         requestBody:
             required: true
             content:
@@ -384,10 +383,10 @@ def create_checkout():
                   properties:
                     AMOUNT:
                       type: number
-                      description: Amount to be paid by the client
+                      description: Total amount to be paid by the client. This value must be equal to the sum of the item's price.
                     MERCHANT:
                       type: string
-                      description: Token that indentifies the merchant
+                      description: ID that identifies merchant in the system.
                     RETURN_URL:
                       type: string
                       description: URL to where the client in redirect if the payment is successful
@@ -396,7 +395,7 @@ def create_checkout():
                       description: URL to where the client in redirect if the payment is cancelled
                     CURRENCY:
                       type: string
-                      description: Three characthers currency code. Default value is 'EUR'. [https://www.xe.com/iso4217.php]
+                      description: Three characters currency code. Default value is 'EUR'. [https://www.xe.com/iso4217.php]
                       default : EUR
                     ITEMS:
                       type: array
@@ -435,7 +434,7 @@ def create_checkout():
                           SUCCESS:
                             type: boolean
             400:
-                description: A JSON containing a ERROR that indentifies the problem
+                description: A JSON containing a ERROR that identifies the problem
                 content:
                     application/json:
                       schema:
@@ -455,10 +454,10 @@ def create_checkout():
                   properties:
                     AMOUNT:
                       type: number
-                      description: Amount to be paid by the client
+                      description: Total amount to be paid by the client. This value must be equal to the sum of the item's price.
                     MERCHANT:
                       type: string
-                      description: Token that indentifies the merchant
+                      description: ID that identifies merchant in the system.
                     RETURN_URL:
                       type: string
                       description: URL to where the client in redirect if the payment is successful
@@ -467,7 +466,7 @@ def create_checkout():
                       description: URL to where the client in redirect if the payment is cancelled
                     CURRENCY:
                       type: string
-                      description: Three characthers currency code. Default value is 'EUR'. [https://www.xe.com/iso4217.php]
+                      description: Three characters currency code. Default value is 'EUR'. [https://www.xe.com/iso4217.php]
                       default : EUR
                     ITEMS:
                       type: array
@@ -498,7 +497,7 @@ def create_checkout():
                     - CANCEL_URL
         responses:
             201:
-                description: A JSON containing a TOKEN that indentifies the Checkout
+                description: A JSON containing a TOKEN that identifies the Checkout
                 content:
                     application/json:
                       schema:
@@ -506,7 +505,7 @@ def create_checkout():
                           TOKEN:
                             type: string
             400:
-                description: A JSON containing a ERROR that indentifies the problem
+                description: A JSON containing a ERROR that identifies the problem
                 content:
                     application/json:
                       schema:
@@ -652,10 +651,12 @@ def proccess_payment():
     if not param or not check_keys(required_keys, keys):
         return redirect(url_for('pay', checkout_token = args['checkout'], error = "invalid_request"))
 
+    # If using a new credit card add it to database
     if ( param['using-old'] == "false" ):
         # Create a relation of the credit card with the user
         if not add_credit_to_user(param, session['user_id']):
             return redirect(url_for('pay', checkout_token = args['checkout'], error = "db_error" ))
+    # Else find the old credit card
     else:
         cc = db.get_cc('CREDIT_CARD', '%'+param['old-card-number'].replace("*", "") \
                                     ,['expiration', 'user_id'], \
@@ -670,6 +671,7 @@ def proccess_payment():
     # Save information about payment in the checkout
     return_url = prepare_checkout(args['checkout'], param['card-number'], billing_id, session['user_id'])
 
+    # Checking if checkout was successfully updated
     if not return_url:
         return redirect(url_for('pay', checkout_token = args['checkout'], error = "db_error"))
 
