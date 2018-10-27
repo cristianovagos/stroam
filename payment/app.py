@@ -253,6 +253,7 @@ def execute_checkout():
                 type: string
               required: true
               description: Buyer's ID value given on Checkout Details.
+        responses:
             200:
                 description: A JSON containing the result of payment.
                 content:
