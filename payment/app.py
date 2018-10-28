@@ -34,7 +34,24 @@ def index():
         return render_template('index.html', error = error_message(request.args.get('error'))), 400
 
     if 'user_id' in session and db.exists('CLIENT', 'id', session['user_id']):
-        return 'i know you are logged in, i just don\'t have a page yet'
+        # Getting client basic info
+        user = db.get('USER', 'id', session['user_id'])
+        client = db.get('CLIENT', 'id', session['user_id'])
+        # Getting credit card info
+        cc_wallet = []
+        cc_db = db.get_all('CREDIT_CARD', 'user_id', session['user_id'])
+        for cc in cc_db:
+            cc_wallet.append('*' * 12 + str(cc['cc_number'])[-4:] + ' | ' + cc['expiration'])
+        # Getting Billing Address info
+        billing_address = []
+        billing_address_db = db.get_all('BILLING_ADDRESS', 'user_id', session['user_id'])
+        for ba in billing_address_db:
+            billing_address.append(ba['first_name'] + ' ' + ba['last_name'] + ', ' + ba['address'] + ', ' + ba['country'] )
+        return render_template('profile.html',
+                                user = user,
+                                client = client,
+                                cc_wallet = cc_wallet,
+                                billing_address = billing_address), 200
 
     return render_template('index.html'), 200
 

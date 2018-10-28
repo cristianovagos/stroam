@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>StrongPay</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static',filename='images/small-logo.png') }}" />
+    <link href="https://fonts.googleapis.com/css?family=Arimo" rel="stylesheet">
+    <link rel= "stylesheet" type= "text/css" href="{{ url_for('static',filename='style/style.css') }}">
+    <link rel= "stylesheet" type= "text/css" href="{{ url_for('static',filename='style/login.css') }}">
+    <link rel= "stylesheet" type= "text/css" href="{{ url_for('static',filename='style/profile.css') }}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="background">
+        <div class="container">
+            <div class="wrap-login">
+
+                <div class="image-div">
+                    <img src="{{ url_for('static',filename='images/logo.png') }}" alt="StrongPay"/>
+                </div>
+
+                <div class="tab">
+                  <button id="defaultOpen" class="tablinks" onclick="changeTabs(event, 'Buyer')">Buyer</button>
+                  <button class="tablinks" onclick="changeTabs(event, 'Merchant')">Merchant</button>
+                </div>
+
+                <div id="Buyer" class="tabcontent">
+                  <div class="wrap-tabcontent">
+
+                      <div>
+                        <div style="padding-top:20px" class="label-crud">
+                            <span>Name:</span>
+                            <button>Edit</button>
+                        </div>
+                        <div class="input">
+                            <input type="text" readonly="readonly" value="{{client.name}}"/>
+                        </div>
+                        <div class="label-crud">
+                            <span>E-mail:</span>
+                        </div>
+                        <div class="input">
+                            <input type="text" readonly="readonly" value="{{user.email}}"/>
+                        </div>
+                        <div class="label-crud">
+                            <span>NIF:</span>
+                            <button>Edit</button>
+                        </div>
+                        <div class="input">
+                            <input type="text" readonly="readonly" value="{{client.nif}}"/>
+                        </div>
+
+                        <hr>
+                        {% if cc_wallet != [] %}
+                        <div>
+
+                          <div class="input" id="dropdown">
+                            <button id="wallet" type="button" class="dropbtn">Credit Card Wallet</button>
+                            <div class="dropdown-content">
+                                {% for cc in cc_wallet %}
+                                <a href="#" onclick="cc_changed(this, true)">{{cc}}</a>
+                                {% endfor %}
+                            </div>
+                           </div>
+
+                          <div>
+                            <div class="input">
+                                <input id="has-icon" readonly="readonly" placeholder="Card Number" maxlength="16"/>
+                                <span> <i class="fa fa-credit-card" aria-hidden="true"></i> </span>
+                            </div>
+
+                            <div class="input" >
+                                <input id="has-icon" readonly="readonly" type="text" placeholder="MM/YY" maxlength="5"/>
+                                <span> <i class="fa fa-calendar" aria-hidden="true"></i> </span>
+                            </div>
+                          </div>
+                        </div>
+                        {% endif %}
+                      </div>
+
+                      {% if billing_address != [] %}
+                      <div>
+
+                        <div class="input" id="dropdown">
+                          <button id="wallet" type="button" class="dropbtn">Your Billing Address's</button>
+                          <div class="dropdown-content">
+                              {% for ba in billing_address %}
+                                <a href="#" onclick="cc_changed(this, true)">{{ba}}</a>
+                              {% endfor %}
+                          </div>
+                        </div>
+
+                        <div>
+                          <div class="input">
+                              <input id="has-icon" type="text" name="first_name" placeholder="First Name"/>
+                              <span> <i class="fa fa-user" aria-hidden="true"></i> </span>
+                          </div>
+
+                          <div class="input">
+                              <input id="has-icon" type="text" name="last_name" placeholder="Last Name" />
+                              <span> <i class="fa fa-user" aria-hidden="true"></i> </span>
+                          </div>
+
+                          <div class="input">
+                              <input id="has-icon" type="text" name="country" placeholder="Country" />
+                              <span> <i class="fa fa-flag" aria-hidden="true"></i> </span>
+                          </div>
+
+                          <div class="input">
+                              <input id="has-icon" type="text" name="city" placeholder="Town / City" />
+                              <span> <i class="fa fa-map-marker" aria-hidden="true"></i> </span>
+                          </div>
+
+                          <div class="input">
+                              <input id="has-icon" type="text" name="address" placeholder="Address" />
+                              <span> <i class="fa fa-home" aria-hidden="true"></i> </span>
+                          </div>
+
+                          <div class="input">
+                              <input id="has-icon" type="text" name="post_code" placeholder="Post Code" />
+                              <span> <i class="fa fa-map-pin" aria-hidden="true"></i> </span>
+                          </div>
+
+                          <div class="input">
+                              <input id="has-icon" type="number" name="phone" placeholder="Phone" />
+                              <span> <i class="fa fa-phone" aria-hidden="true"></i> </span>
+                          </div>
+                        </div>
+
+                      </div>
+                      {% endif %}
+                  </div>
+                </div>
+
+                <div id="Merchant" class="tabcontent">
+
+                </div>
+
+                {% if error %}
+                <div class="error">
+                   <i class="fa fa-times-circle"></i>
+                   {{error}}
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static',filename='js/profile.js') }}"></script>
+
+</body>
+
+</html>

@@ -32,6 +32,10 @@
   margin-bottom: 10px;
 }
 
+#has-icon{
+  padding-left: 50px;
+}
+
 .login-input input{
   font-family: Arimo;
   font-size: 15px;
