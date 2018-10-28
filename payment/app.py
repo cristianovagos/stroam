@@ -97,6 +97,114 @@ def login():
     # Returning to origin
     return redirect(url_for(request.args.get('next'), **args))
 
+@app.route('/api/v1/user', methods=['GET'])
+def get_user():
+    ''' Get all information from user
+    ---
+    get:
+        description: Returns user information such as name, email, credit cards and billing address's.
+        tags:
+            - User
+        responses:
+            200:
+                description: A JSON containing user information.
+                content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          BUYER:
+                            type: object
+                            properties:
+                                ID:
+                                    type : string
+                                    description : Checkout ID value given when it is created.
+                                NAME:
+                                    type : number
+                                    description : Total amount of checkout, must be equal to the sum of the items.
+                                NIF:
+                                    type : string
+                                    description : Current status of checkout. (CREATED/READY/PAID)
+                                CREDIT_CARDS:
+                                    type: array
+                                    description : User credit card list.
+                                    items:
+                                        type: object
+                                        properties:
+                                           NUMBER:
+                                              type : string
+                                              description : Last digits of the credit card number.
+                                           EXP:
+                                              type : string
+                                              description : Expiration data of the credit card.
+                                BILLING_ADDRESS:
+                                    type: array
+                                    description : User billing address list.
+                                    items:
+                                        type: object
+                                        properties:
+                                           FIRST_NAME:
+                                              type : string
+                                              description : First Name of the billing address.
+                                           LAST_NAME:
+                                              type : string
+                                              description : Last Name of the billing address.
+                                           COUNTRY:
+                                              type : string
+                                              description : Country of the billing address.
+                                           ADDRESS:
+                                              type : string
+                                              description : Street name and number of the billing address.
+                                           POST_CODE:
+                                              type : string
+                                              description : Post code of the billing address.
+                                           CITY:
+                                              type : string
+                                              description : City of the billing address.
+                                           PHONE:
+                                              type : number
+                                              description : Phone of the billing address.
+
+            400:
+                description: A JSON containing a ERROR that identifies the problem
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          ERROR:
+                            type: string
+    '''
+
+    if 'user_id' in session and db.exists('USER', 'id', session['user_id']):
+        # Getting info from user
+        user = db.get('USER', 'id', session['user_id']);
+        client = db.get('CLIENT', 'id', session['user_id']);
+        merchant = db.get('MERCHANT', 'id', session['user_id']);
+
+        # Getting credit card info
+        cc_wallet = []
+        cc_db = db.get_all('CREDIT_CARD', 'user_id', session['user_id'])
+        for cc in cc_db:
+            cc_wallet.append({'NUMBER': '*' * 12 + str(cc['cc_number'])[-4:], 'EXP': cc['expiration']})
+        # Getting Billing Address info
+        billing_address_db = db.get_all('BILLING_ADDRESS', 'user_id', session['user_id'])
+        billing_address = [ dict(i) for i in billing_address_db]
+        for i in billing_address:
+            i.pop('id')
+            i.pop('user_id')
+            for k in list(i):
+                i[k.upper()] = i.pop(k)
+
+        # Building info
+        info = {'BUYER' : { 'NAME': client['name'], 'EMAIL': user['email'], 'NIF': client['nif'],
+                            'CREDIT_CARDS': cc_wallet,
+                            'BILLING_ADDRESS': billing_address },
+                'MERCHANT': {}}
+        return jsonify(info);
+    else:
+        return 'Please login' #TODO: fix this
+
+
 @app.route('/api/v1/Checkout', methods=['GET'])
 def get_checkout():
     ''' Get Checkout Details
@@ -702,6 +810,7 @@ with app.test_request_context():
     spec.add_path(view=get_checkout)
     spec.add_path(view=execute_checkout)
     spec.add_path(view=delete_checkout)
+    spec.add_path(view=get_user)
 
 with open('static/swagger.json', 'w') as f:
     json.dump(spec.to_dict(), f)

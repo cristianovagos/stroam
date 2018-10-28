@@ -36,59 +36,54 @@
                             <button>Edit</button>
                         </div>
                         <div class="input">
-                            <input type="text" readonly="readonly" value="{{client.name}}"/>
+                            <input id="name" type="text" readonly="readonly" />
                         </div>
                         <div class="label-crud">
                             <span>E-mail:</span>
                         </div>
                         <div class="input">
-                            <input type="text" readonly="readonly" value="{{user.email}}"/>
+                            <input id="email" type="text" readonly="readonly"/>
                         </div>
                         <div class="label-crud">
                             <span>NIF:</span>
                             <button>Edit</button>
                         </div>
                         <div class="input">
-                            <input type="text" readonly="readonly" value="{{client.nif}}"/>
+                            <input id="nif" type="text" readonly="readonly"/>
                         </div>
 
                         <hr>
-                        {% if cc_wallet != [] %}
                         <div>
 
                           <div class="input" id="dropdown">
                             <button id="wallet" type="button" class="dropbtn">Credit Card Wallet</button>
-                            <div class="dropdown-content">
-                                {% for cc in cc_wallet %}
-                                <a href="#" onclick="cc_changed(this, true)">{{cc}}</a>
-                                {% endfor %}
+                            <div id="cc_div" class="dropdown-content">
+
                             </div>
                            </div>
 
                           <div>
                             <div class="input">
-                                <input id="has-icon" readonly="readonly" placeholder="Card Number" maxlength="16"/>
+                                <input id="has-icon" name="card_number" readonly="readonly" placeholder="Card Number" maxlength="16"/>
                                 <span> <i class="fa fa-credit-card" aria-hidden="true"></i> </span>
                             </div>
 
                             <div class="input" >
-                                <input id="has-icon" readonly="readonly" type="text" placeholder="MM/YY" maxlength="5"/>
+                                <input id="has-icon" name="card_exp"  readonly="readonly" type="text" placeholder="MM/YY" maxlength="5"/>
                                 <span> <i class="fa fa-calendar" aria-hidden="true"></i> </span>
                             </div>
                           </div>
                         </div>
-                        {% endif %}
+
                       </div>
 
-                      {% if billing_address != [] %}
+
                       <div>
 
                         <div class="input" id="dropdown">
                           <button id="wallet" type="button" class="dropbtn">Your Billing Address's</button>
-                          <div class="dropdown-content">
-                              {% for ba in billing_address %}
-                                <a href="#" onclick="cc_changed(this, true)">{{ba}}</a>
-                              {% endfor %}
+                          <div id="ba_div" class="dropdown-content">
+
                           </div>
                         </div>
 
@@ -130,7 +125,6 @@
                         </div>
 
                       </div>
-                      {% endif %}
                   </div>
                 </div>
 
@@ -149,8 +143,8 @@
         </div>
     </div>
 
-    <script src="{{ url_for('static',filename='js/profile.js') }}"></script>
-
 </body>
+
+<script src="{{ url_for('static',filename='js/profile.js') }}"></script>
 
 </html>
