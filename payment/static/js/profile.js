@@ -12,43 +12,43 @@ window.onload=function(e){
     if (Http.readyState == 4 && Http.status == 200){
       // Parsing response
       info = JSON.parse(Http.responseText);
-      console.log(info);
+      if(!"ERROR" in info){
+        // Filling basic information
+        document.getElementById("name").value = info['BUYER']['NAME'];
+        document.getElementById("email").value = info['BUYER']['EMAIL'];
+        document.getElementById("nif").value = info['BUYER']['NIF'];
 
-      // Filling basic information
-      document.getElementById("name").value = info['BUYER']['NAME'];
-      document.getElementById("email").value = info['BUYER']['EMAIL'];
-      document.getElementById("nif").value = info['BUYER']['NIF'];
+        // Filling Credit Card List
+        var ccDiv = document.getElementById("cc_div");
+        info['BUYER']['CREDIT_CARDS'].forEach(function(element, i) {
+          var ccInfo = document.createElement("A");
+          ccInfo.setAttribute('class', 'credit_card');
+          ccInfo.setAttribute('href', '#');
+          ccInfo.setAttribute('onclick', 'cc_changed(this)');
+          ccInfo.setAttribute('index', i);
+          ccInfo.innerHTML = element['NUMBER'] + ' | ' + element['EXP'];
+          ccDiv.appendChild(ccInfo);
+        });
 
-      // Filling Credit Card List
-      var ccDiv = document.getElementById("cc_div");
-      info['BUYER']['CREDIT_CARDS'].forEach(function(element, i) {
-        var ccInfo = document.createElement("A");
-        ccInfo.setAttribute('class', 'credit_card');
-        ccInfo.setAttribute('href', '#');
-        ccInfo.setAttribute('onclick', 'cc_changed(this)');
-        ccInfo.setAttribute('index', i);
-        ccInfo.innerHTML = element['NUMBER'] + ' | ' + element['EXP'];
-        ccDiv.appendChild(ccInfo);
-      });
-
-      // Filling Billing Address List
-      var baDiv = document.getElementById("ba_div");
-      info['BUYER']['BILLING_ADDRESS'].forEach(function(element, i) {
-        var baInfo = document.createElement("A");
-        baInfo.setAttribute('class', 'billing_address');
-        baInfo.setAttribute('href', '#');
-        baInfo.setAttribute('onclick', 'ba_changed(this)');
-        baInfo.setAttribute('index', i);
-        baInfo.innerHTML = [[element['FIRST_NAME'], element['LAST_NAME']].join(' '),
-                            [element['ADDRESS'], element['COUNTRY']].join(', ')].join(', ');
-        baDiv.appendChild(baInfo);
-      });
+        // Filling Billing Address List
+        var baDiv = document.getElementById("ba_div");
+        info['BUYER']['BILLING_ADDRESS'].forEach(function(element, i) {
+          var baInfo = document.createElement("A");
+          baInfo.setAttribute('class', 'billing_address');
+          baInfo.setAttribute('href', '#');
+          baInfo.setAttribute('onclick', 'ba_changed(this)');
+          baInfo.setAttribute('index', i);
+          baInfo.innerHTML = [[element['FIRST_NAME'], element['LAST_NAME']].join(' '),
+                              [element['ADDRESS'], element['COUNTRY']].join(', ')].join(', ');
+          baDiv.appendChild(baInfo);
+        });
 
 
-      // Selecting the first credit card and billing address
-      document.getElementById("defaultOpen").click();
-      document.getElementsByClassName("credit_card")[0].click();
-      document.getElementsByClassName("billing_address")[0].click();
+        // Selecting the first credit card and billing address
+        document.getElementById("defaultOpen").click();
+        document.getElementsByClassName("credit_card")[0].click();
+        document.getElementsByClassName("billing_address")[0].click();
+      }
     }
   }
 
