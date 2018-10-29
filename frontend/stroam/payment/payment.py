@@ -71,3 +71,11 @@ def executeCheckout(checkoutToken, buyerID):
         print(e)
     data = json.loads(url.read().decode())
     return data["SUCCESS"]
+
+def deleteCheckout(checkoutToken):
+    r = requests.delete(PAYMENT_SERVICE_API_URL + "v1/Checkout", params={'checkoutToken': checkoutToken})
+    try:
+        data = json.loads(r.text)
+        return data.get("SUCCESS", False)
+    except Exception:
+        return False

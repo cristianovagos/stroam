@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from .payment import payment
 
 class Purchase(models.Model):
     AWAITING_PAYMENT = 1
@@ -16,6 +17,7 @@ class Purchase(models.Model):
 
     user_id = models.IntegerField()
     token_payment = models.CharField(unique=True, max_length=50)
+    token_isValid = models.BooleanField(default=True)
     payment_status = models.IntegerField(choices=PAYMENT_STATUS, default=AWAITING_PAYMENT)
     date_created = models.DateTimeField(default=timezone.now)
     date_payment = models.DateTimeField(blank=True, null=True)
@@ -26,12 +28,15 @@ class Purchase(models.Model):
 
     def onOrderCancelled(self):
         self.payment_status = self.ORDER_CANCELLED
+        if payment.deleteCheckout(self.token_payment):
+            self.token_isValid = False
         self.save()
 
     def onCompletedPayment(self):
-        self.payment_status = self.PAYMENT_COMPLETED
-        self.date_payment = timezone.now()
-        self.save()
+        if self.token_isValid:
+            self.payment_status = self.PAYMENT_COMPLETED
+            self.date_payment = timezone.now()
+            self.save()
 
 class Purchase_Production(models.Model):
     production_id = models.IntegerField()

@@ -29,9 +29,11 @@ def home(request):
 
 def homeMovies(request):
     title = 'Our movies'
-    movies = [x for x in production.getAllProduction() if x.type == 'movie']
-    if movies:
+    try:
+        movies = [x for x in production.getAllProduction() if x.type == 'movie']
         shuffle(movies)
+    except Exception:
+        movies = None
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
@@ -41,9 +43,11 @@ def homeMovies(request):
 
 def homeSeries(request):
     title = 'Our TV Series'
-    movies = [x for x in production.getAllProduction() if x.type == 'series']
-    if movies:
+    try:
+        movies = [x for x in production.getAllProduction() if x.type == 'series']
         shuffle(movies)
+    except Exception:
+        movies = None
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
@@ -288,6 +292,7 @@ def userPanel(request):
         productions = Purchase_Production.objects.filter(purchase_id=purchase.id)
         data[purchase.id] = {}
         data[purchase.id]['payment_status'] = purchase.payment_status
+        data[purchase.id]['token_isValid'] = purchase.token_isValid
         data[purchase.id]['token_payment'] = purchase.token_payment
         data[purchase.id]['date_created'] = purchase.date_created
         data[purchase.id]['date_payment'] = purchase.date_payment
