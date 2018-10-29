@@ -1,0 +1,38 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<title>Movie title here</title>
+
+	<link rel="stylesheet" href="css/styles.css?v=1.0">
+
+	<style>
+	    video {
+	        width: 800px;
+	        height:600px;
+	    }
+	</style>
+
+</head>
+
+<body>
+
+	<div align="center" border-style="hidden" border-width="5 px ">
+		<h1 align="center"> Movie name here </h1>
+		<button align="center" onClick="streamSetup()">
+			Watch movie
+		</button>
+	</div>
+
+	 </button>
+
+	<div id="playerDiv" align="center" style="visibility: hidden;"> 
+        <video controls id="videoPlayer" type="video/mp4"/>Video stream not available.</video>
+    </div>
+
+  <script src="./client.js"> </script>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "stroam_stream_alternative",
+  "version": "1.0.0",
+  "description": "An alternative version of the streaming implementation. The player source is defined dynamically and the player sends GET requests to server which responds with chunks of data corresponding to the desired video file",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "author": "João Amaral",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+  }
+}

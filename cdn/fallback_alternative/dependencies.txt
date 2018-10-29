@@ -1,0 +1,7 @@
+node.js
+express.js 
+	$npm install express
+ fs (File system) 
+	$npm i file-system
+ ws (Web-socket)
+	$npm i ws 
