@@ -326,12 +326,12 @@ def get_checkout():
                         'NIF': buyer['nif']};
         # BILLING ADDRESS INFORMATION
         billing_address = db.get('BILLING_ADDRESS', 'id', checkout['billing_address'])
-        info['BILLING_ADDRESS'] = { 'FIRST NAME': billing_address['first_name'],
-                                    'LAST NAME': billing_address['last_name'],
+        info['BILLING_ADDRESS'] = { 'FIRST_NAME': billing_address['first_name'],
+                                    'LAST_NAME': billing_address['last_name'],
                                     'COUNTRY' : billing_address['country'],
                                     'CITY' : billing_address['city'],
                                     'ADDRESS' : billing_address['address'],
-                                    'POST-CODE' : billing_address['post_code'],
+                                    'POST_CODE' : billing_address['post_code'],
                                     'PHONE' : billing_address['phone']}
         # CREDIT CARD INFORMATION
         credit_card = '*' * 12 + str(checkout['paid_with'])[-4:]  # Hiding credit card info
