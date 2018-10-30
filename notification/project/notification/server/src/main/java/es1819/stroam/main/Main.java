@@ -10,13 +10,13 @@ import java.io.PrintStream;
 public class Main {
 
     static {
-        try {
+        /*try {
             PrintStream errFilePrintStream = new PrintStream(
                     new FileOutputStream("./systemErr.txt", true));
             System.setErr(errFilePrintStream);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/ //TODO: nao usar no desenvolvimento
     }
 
     public static void main(String[] args) {

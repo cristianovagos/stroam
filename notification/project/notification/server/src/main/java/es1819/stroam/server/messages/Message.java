@@ -12,94 +12,70 @@ public class Message {
     private UUID userId;
     private byte[] payload;
 
-    public Message(MessageType type) {
-        if(type == null)
-            throw new NullPointerException("Message type cannot be null");
+    public Message(String channel, byte[] payload) { //TODO: testar bem os canais. experimentar com partes nulas e por ai adiante
+        if(channel == null || channel.isEmpty())
+            throw new IllegalArgumentException("Channel cannot be null or empty");
 
-        this.type = type;
-    }
-
-    public static Message parse(String channel, byte[] payload) throws IllegalArgumentException {
         if(payload.length == 0)
             throw new IllegalArgumentException("Message cannot have a empty content (payload)");
 
         String[] channelParts = channel.split(Constants.CHANNEL_SEPARATOR);
 
-        if(channelParts.length == 0 || channelParts[0].equals(Constants.CHANNEL_SERVICE_PREFIX))
+        if(channelParts.length == 0)
             throw new IllegalArgumentException("Message contains a invalid service channel path");
 
-        //Received message for service registration
-        if(channelParts[1].equals(Constants.CHANNEL_REGISTER_SUFFIX))
-            return new Message(MessageType.SERVICE_REGISTRATION)
-                    .setChannel(channel)
-                    .setPayload(payload); //Payload needs to be service id
-        else if(channelParts[1].equals(Constants.CHANNEL_UNREGISTER_SUFFIX))
-            return new Message(MessageType.SERVICE_UNREGISTRATION)
-                    .setChannel(channel)
-                    .setPayload(payload); //Payload needs to be service id
+        if(channelParts[0].isEmpty()) //means that channel starts with /...
+            System.arraycopy(channelParts, 1, channelParts, 0, channelParts.length - 1); //remove the null string from the beginning
 
-        //Received message with service operation
-        UUID serviceId;
-        try {
-            serviceId = UUID.fromString(channelParts[1]);
-        } catch (IllegalArgumentException serviceIdParseException) {
-            throw new IllegalArgumentException("Message contains a invalid service id in the channel path",
-                    serviceIdParseException);
+        if(!channelParts[0].equals(Constants.CHANNEL_SERVICE_PREFIX))
+            throw new IllegalArgumentException("Message contains a invalid service channel path");
+
+        this.channel = channel;
+        this.payload = payload;
+
+        //Received message for service registration
+        if(channelParts[1].equals(Constants.CHANNEL_REGISTER_SUFFIX)) {
+            this.type = MessageType.SERVICE_REGISTRATION;
+            return; //Message parse is completed according with the type of the message
         }
 
-        //Service user registration
-        if(channelParts[2].equals(Constants.CHANNEL_REGISTER_SUFFIX))
-            return new Message(MessageType.SERVICE_USER_REGISTRATION)
-                    .setChannel(channel)
-                    .setServiceId(serviceId)
-                    .setPayload(payload); //User registration message
+        //Received message with service operation
+        try{
+            this.serviceId = UUID.fromString(channelParts[1]);
+        } catch (IllegalArgumentException serviceIdParseException) {
+        throw new IllegalArgumentException("Message contains a invalid service id in the channel path",
+                serviceIdParseException);
+        }
+
+        //Service user registration/unregistration
+        if(channelParts[2].equals(Constants.CHANNEL_REGISTER_SUFFIX)) {
+            this.type = MessageType.SERVICE_USER_REGISTRATION;
+            return; //Message parse is completed according with the type of the message
+        } else if(channelParts[2].equals(Constants.CHANNEL_UNREGISTER_SUFFIX)) {
+            this.type = MessageType.SERVICE_UNREGISTRATION;
+            return; //Message parse is completed according with the type of the message
+        }
 
         //User operation message
-        UUID userId;
         try {
-            userId = UUID.fromString(channelParts[2]);
+            this.userId = UUID.fromString(channelParts[2]);
         } catch (IllegalArgumentException userIdParseException) {
             throw new IllegalArgumentException("Message contains a invalid user id in the channel path",
                     userIdParseException);
         }
 
-        Message temporaryMessage;
+        //Set the service operation
         if(channelParts[3].equals(Constants.CHANNEL_UNREGISTER_SUFFIX)) //User unregistration
-            temporaryMessage = new Message(MessageType.SERVICE_USER_UNREGISTRATION);
+            this.type = MessageType.SERVICE_USER_UNREGISTRATION;
         else if(channelParts[3].equals(Constants.CHANNEL_UPDATE_SUFFIX)) //User update
-            temporaryMessage = new Message(MessageType.SERVICE_USER_UPDATE);
+            this.type = MessageType.SERVICE_USER_UPDATE;
         else if(channelParts[3].equals(Constants.CHANNEL_PUSH_SUFFIX)) //User push notification
-            temporaryMessage = new Message(MessageType.USER_PUSH);
+            this.type = MessageType.USER_PUSH;
         else if(channelParts[3].equals(Constants.CHANNEL_EMAIL_SUFFIX)) //User email notification
-            temporaryMessage = new Message(MessageType.USER_EMAIL);
+            this.type = MessageType.USER_EMAIL;
         else if(channelParts[3].equals(Constants.CHANNEL_PHONE_SUFFIX)) //User phone notification
-            temporaryMessage = new Message(MessageType.USER_PHONE);
+            this.type = MessageType.USER_PHONE;
         else throw new IllegalArgumentException("Message contains a invalid user operation in the channel path");
-
-        return temporaryMessage.setChannel(channel)
-                .setServiceId(serviceId)
-                .setUserId(userId)
-                .setPayload(payload);
-    }
-
-    private Message setChannel(String channel) {
-        this.channel = channel;
-        return this;
-    }
-
-    private Message setServiceId(UUID serviceId) {
-        this.serviceId = serviceId;
-        return this;
-    }
-
-    private Message setUserId(UUID userId) {
-        this.userId = userId;
-        return this;
-    }
-
-    private Message setPayload(byte[] payload) {
-        this.payload = payload;
-        return this;
     }
 
     public String getChannel() {
@@ -126,3 +102,4 @@ public class Message {
         return payload;
     }
 }
+

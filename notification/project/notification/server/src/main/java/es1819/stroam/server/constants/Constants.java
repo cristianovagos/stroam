@@ -42,10 +42,17 @@ public class Constants {
     public static final String MESSAGE_NAME_JSON_FIELD = "name";
     public static final String MESSAGE_EMAIL_JSON_FIELD = "emailAddress";
     public static final String MESSAGE_PHONE_JSON_FIELD = "phoneNumber";
-    public static final String MESSAGE_PUSH_NOTIFICATION_JSON_FIELD = "pushNotification";
-    public static final String MESSAGE_EMAIL_NOTIFICATION_JSON_FIELD = "emailNotification";
-    public static final String MESSAGE_PHONE_NOTIFICATION_JSON_FIELD = "phoneNotification";
+    public static final String MESSAGE_PUSH_NOTIFICATION_ENABLED_JSON_FIELD = "pushNotificationEnabled";
+    public static final String MESSAGE_PUSH_NOTIFICATION_BODY_JSON_FIELD = "pushNotificationBody";
+    public static final String MESSAGE_EMAIL_NOTIFICATION_ENABLED_JSON_FIELD = "emailNotificationEnabled";
+    public static final String MESSAGE_EMAIL_NOTIFICATION_SUBJECT_JSON_FIELD = "emailNotificationSubject";
+    public static final String MESSAGE_EMAIL_NOTIFICATION_BODY_JSON_FIELD = "emailNotificationBody";
+    public static final String MESSAGE_PHONE_NOTIFICATION_ENABLED_JSON_FIELD = "phoneNotificationEnabled";
+    public static final String MESSAGE_PHONE_NOTIFICATION_BODY_JSON_FIELD = "phoneNotificationBody";
 
     //Managed message queue constants
     public static final int MANAGE_QUEUE_DEFAULT_SIZE_LIMIT = 50;
+
+    //Entity manager constants
+    public static final int TIMED_CLOSE_ENTITY_MANAGER_TIMEOUT = 5000;
 }

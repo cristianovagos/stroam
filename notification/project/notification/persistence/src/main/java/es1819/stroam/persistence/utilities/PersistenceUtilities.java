@@ -10,5 +10,4 @@ public class PersistenceUtilities {
                 .createEntityManagerFactory("NotTheServicePersistenceUnit")
                 .createEntityManager();
     }
-
 }

@@ -13,6 +13,15 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/notification$RegistrationUpdateHandlerTest_generalRightTest.ic" NAME="RegistrationUpdateHandlerTest.generalRightTest Coverage Results" MODIFIED="1540423545001" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>es1819.stroam.server.handlers.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/notification$RegistrationUpdateHandlerTest.ic" NAME="RegistrationUpdateHandlerTest Coverage Results" MODIFIED="1540424698755" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>es1819.stroam.server.handlers.*</FILTER>
+      <FILTER>es1819.stroam.persistence.utilities.PersistenceUtilities</FILTER>
+    </SUITE>
+  </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
     <option name="GROUP_DATA_SOURCES" value="true" />
@@ -47,12 +56,54 @@
     <favorites_list name="notification" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Server.java" pinned="false" current-in-tab="false">
+    <leaf>
+      <file leaf-file-name="ServerOperation.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/ServerOperation.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="8" column="18" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Server.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="158" column="47" selection-start-line="158" selection-start-column="47" selection-end-line="158" selection-end-column="47" />
+            <state relative-caret-position="478">
+              <caret line="203" column="180" selection-start-line="203" selection-start-column="180" selection-end-line="203" selection-end-column="180" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Communication.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/commons/communication/Communication.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="234">
+              <caret line="63" column="100" selection-start-line="63" selection-start-column="100" selection-end-line="63" selection-end-column="100" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Message.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/messages/Message.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="448">
+              <caret line="93" selection-start-line="93" selection-end-line="93" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#4000#4001#0" expanded="true" />
+                <element signature="e#4094#4095#0" expanded="true" />
+                <element signature="e#4124#4125#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MessagePayload.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/messages/MessagePayload.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="440">
+              <caret line="225" selection-start-line="225" selection-end-line="225" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -60,11 +111,26 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="persistence.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/persistence/src/main/resources/META-INF/persistence.xml">
+      <file leaf-file-name="RegistrationUpdateHandlerTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/test/java/es1819/stroam/server/handlers/RegistrationUpdateHandlerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" selection-start-line="11" selection-end-line="11" />
+            <state relative-caret-position="422">
+              <caret line="67" column="36" selection-start-line="67" selection-start-column="36" selection-end-line="67" selection-end-column="36" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Constants.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/constants/Constants.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="322">
+              <caret line="40" column="75" selection-start-line="40" selection-start-column="65" selection-end-line="40" selection-end-column="75" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -72,8 +138,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/main/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+            <state relative-caret-position="163">
+              <caret line="18" column="47" selection-start-line="18" selection-start-column="47" selection-end-line="18" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -81,37 +147,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServiceEntity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/ServiceEntity.java">
+      <file leaf-file-name="RegistrationUpdateHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/handlers/RegistrationUpdateHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="55">
-              <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
+            <state relative-caret-position="185">
+              <caret line="150" column="32" selection-start-line="150" selection-start-column="32" selection-end-line="150" selection-end-column="32" />
               <folding>
-                <element signature="e#399#400#0" expanded="true" />
-                <element signature="e#427#428#0" expanded="true" />
-                <element signature="e#584#585#0" expanded="true" />
-                <element signature="e#616#617#0" expanded="true" />
-                <element signature="e#779#780#0" expanded="true" />
-                <element signature="e#815#816#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LogSeverityEntity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/LogSeverityEntity.java">
+      <file leaf-file-name="NotificationHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/handlers/NotificationHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RegistrationUpdateHandler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/handlers/RegistrationUpdateHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="674">
-              <caret line="70" column="112" selection-start-line="70" selection-start-column="112" selection-end-line="70" selection-end-column="112" />
+            <state relative-caret-position="185">
+              <caret line="69" selection-start-line="69" selection-end-line="69" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -124,10 +176,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
-        <option value="JUnit4 Test Class" />
         <option value="Enum" />
+        <option value="JUnit4 Test Class" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -135,18 +187,12 @@
     <findStrings>
       <find>topic</find>
       <find>_Dummy_</find>
+      <find>append</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/Cenas.java" />
-        <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/Main.java" />
-        <option value="$PROJECT_DIR$/persistence/META-INF/persistence.xml" />
-        <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/Tests.java" />
-        <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/ProducersChannelsEntity.java" />
-        <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/ChannelsEntity.java" />
-        <option value="$PROJECT_DIR$/commons/pom.xml" />
         <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/ChannelEntity.java" />
         <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/ProducerChannelEntityPK.java" />
         <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/views/ProducersChannelsPathsViewEntity.java" />
@@ -154,7 +200,6 @@
         <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/PersistenceUtilities.java" />
         <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/views/SubscribersChannelsPathsEntity.java" />
         <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/views/ProducersChannelsPathsEntity.java" />
-        <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/utilities/QueryUtilities.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/Server1.java" />
         <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/PublishersSubscribersEntity.java" />
         <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/ServicePublisherSubscriberEntity.java" />
@@ -165,32 +210,40 @@
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/Strings.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/SharedMessageQueue.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/Constants.java" />
-        <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/utilities/PersistenceUtilities.java" />
         <option value="$PROJECT_DIR$/commons/src/main/java/es1819/stroam/commons/communication/CommunicationCallback.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/handlers/Handler.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/logs/DatabaseStream.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/main/Main.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/ManagedMessageQueue.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/constants/Strings.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/utilities/GeneralUtilities.java" />
         <option value="$PROJECT_DIR$/server/src/test/java/es1819/stroam/server/logs/LogTest.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/logs/LogSeverity.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/logs/Log.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/MessageChannelPayload.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/Message.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/messages/MessageType.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/handlers/UserRegistrationUpdateHandler.java" />
-        <option value="$PROJECT_DIR$/commons/src/main/java/es1819/stroam/commons/communication/Communication.java" />
         <option value="$PROJECT_DIR$/server/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/Server.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/constants/Constants.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/messages/Message.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/messages/MessagePayload.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/handlers/RegistrationUpdateHandler.java" />
-        <option value="$PROJECT_DIR$/persistence/src/main/resources/META-INF/persistence.xml" />
         <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/ServicesEntity.java" />
         <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/ServiceEntity.java" />
+        <option value="$PROJECT_DIR$/persistence/src/main/resources/META-INF/persistence.xml" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/logs/LogSeverity.java" />
+        <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/utilities/QueryUtilities.java" />
+        <option value="$PROJECT_DIR$/server/src/test/java/es1819/stroam/server/messages/MessageTest.java" />
+        <option value="$PROJECT_DIR$/server/src/test/java/es1819/stroam/server/messages/MessagePayloadTest.java" />
+        <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/Constants.java" />
+        <option value="$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/utilities/PersistenceUtilities.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/ServerSender.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/messages/Message.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/constants/Constants.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/handlers/RegistrationUpdateHandler.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/messages/MessagePayload.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/main/Main.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/ServerOperation.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/handlers/NotificationHandler.java" />
+        <option value="$PROJECT_DIR$/commons/src/main/java/es1819/stroam/commons/communication/Communication.java" />
+        <option value="$PROJECT_DIR$/server/src/test/java/es1819/stroam/server/handlers/RegistrationUpdateHandlerTest.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/Server.java" />
       </list>
     </option>
   </component>
@@ -229,14 +282,16 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="1920" />
-    <option name="height" value="1080" />
+    <option name="y" value="23" />
+    <option name="width" value="1280" />
+    <option name="height" value="731" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -592,13 +647,36 @@
               <item name="es1819" type="462c0819:PsiDirectoryNode" />
               <item name="stroam" type="462c0819:PsiDirectoryNode" />
               <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="handlers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="notification" type="b2602c69:ProjectViewProjectNode" />
+              <item name="notification" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="es1819" type="462c0819:PsiDirectoryNode" />
+              <item name="stroam" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
               <item name="logs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="notification" type="b2602c69:ProjectViewProjectNode" />
+              <item name="notification" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="es1819" type="462c0819:PsiDirectoryNode" />
+              <item name="stroam" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="messages" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -612,16 +690,19 @@
     <property name="com.intellij.database.dataSource.DataSourceTemplate" value="MySQL" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
+    <property name="full.screen.before.presentation.mode" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2229885" />
-    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.runner" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="es1819.stroam.server.messages" />
+      <recent name="es1819.stroam.server.handlers" />
       <recent name="es1819.stroam.server.logs" />
     </key>
     <key name="ImportMappingsDialog.RecentPackages">
@@ -655,8 +736,7 @@
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="es1819.stroam.main.Main" />
       <module name="server" />
-      <option name="VM_PARAMETERS" value="--illegal-access=deny" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="es1819.stroam.main.*" />
@@ -667,19 +747,96 @@
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
-    <configuration name="LogTest.startLog" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MessagePayloadTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="server" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="es1819.stroam.server.logs.*" />
+          <option name="PATTERN" value="es1819.stroam.server.messages.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="es1819.stroam.server.logs" />
-      <option name="MAIN_CLASS_NAME" value="es1819.stroam.server.logs.LogTest" />
-      <option name="METHOD_NAME" value="startLog" />
+      <option name="PACKAGE_NAME" value="es1819.stroam.server.messages" />
+      <option name="MAIN_CLASS_NAME" value="es1819.stroam.server.messages.MessagePayloadTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration name="RegistrationUpdateHandlerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="es1819.stroam.server.handlers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+        <pattern>
+          <option name="PATTERN" value="es1819.stroam.persistence.utilities.PersistenceUtilities" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="es1819.stroam.server.handlers" />
+      <option name="MAIN_CLASS_NAME" value="es1819.stroam.server.handlers.RegistrationUpdateHandlerTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration name="RegistrationUpdateHandlerTest.generalRightTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="es1819.stroam.server.handlers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+        <pattern>
+          <option name="PATTERN" value="es1819.stroam.persistence.utilities.PersistenceUtilities" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="es1819.stroam.server.handlers" />
+      <option name="MAIN_CLASS_NAME" value="es1819.stroam.server.handlers.RegistrationUpdateHandlerTest" />
+      <option name="METHOD_NAME" value="generalRightTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration name="RegistrationUpdateHandlerTest.timerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="es1819.stroam.server.handlers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="es1819.stroam.server.handlers" />
+      <option name="MAIN_CLASS_NAME" value="es1819.stroam.server.handlers.RegistrationUpdateHandlerTest" />
+      <option name="METHOD_NAME" value="timerTest" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
@@ -706,30 +863,6 @@
       </option>
       <patterns />
     </configuration>
-    <configuration name="persistence [install]" type="MavenRunConfiguration" factoryName="Maven" temporary="true">
-      <MavenSettings>
-        <option name="myGeneralSettings" />
-        <option name="myRunnerSettings" />
-        <option name="myRunnerParameters">
-          <MavenRunnerParameters>
-            <option name="profiles">
-              <set />
-            </option>
-            <option name="goals">
-              <list>
-                <option value="install" />
-              </list>
-            </option>
-            <option name="pomFileName" value="pom.xml" />
-            <option name="profilesMap">
-              <map />
-            </option>
-            <option name="resolveToWorkspace" value="false" />
-            <option name="workingDirPath" value="$PROJECT_DIR$/persistence" />
-          </MavenRunnerParameters>
-        </option>
-      </MavenSettings>
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -753,15 +886,19 @@
       <listeners />
     </configuration>
     <list>
+      <item itemvalue="JUnit.MessagePayloadTest" />
+      <item itemvalue="JUnit.RegistrationUpdateHandlerTest.generalRightTest" />
+      <item itemvalue="JUnit.RegistrationUpdateHandlerTest" />
+      <item itemvalue="JUnit.RegistrationUpdateHandlerTest.timerTest" />
       <item itemvalue="Application.Main" />
-      <item itemvalue="Maven.persistence [install]" />
-      <item itemvalue="JUnit.LogTest.startLog" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.LogTest.startLog" />
-        <item itemvalue="Maven.persistence [install]" />
+        <item itemvalue="JUnit.RegistrationUpdateHandlerTest.generalRightTest" />
+        <item itemvalue="JUnit.RegistrationUpdateHandlerTest.timerTest" />
+        <item itemvalue="JUnit.RegistrationUpdateHandlerTest" />
+        <item itemvalue="JUnit.MessagePayloadTest" />
       </list>
     </recent_temporary>
   </component>
@@ -789,44 +926,49 @@
       <workItem from="1539993097043" duration="2960000" />
       <workItem from="1540054194735" duration="10987000" />
       <workItem from="1540159419690" duration="10959000" />
-      <workItem from="1540227986044" duration="14165000" />
+      <workItem from="1540227986044" duration="14286000" />
+      <workItem from="1540282915088" duration="10173000" />
+      <workItem from="1540314522718" duration="42082000" />
+      <workItem from="1540503405817" duration="3731000" />
+      <workItem from="1540585766986" duration="12603000" />
+      <workItem from="1540852866500" duration="7703000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="LogTest_startLog - 2018.10.22 at 02h 16m 29s.xml">
-      <configuration name="LogTest.startLog" configurationId="JUnit" />
+    <history-entry file="RegistrationUpdateHandlerTest_generalRightTest - 2018.10.30 at 00h 26m 42s.xml">
+      <configuration name="RegistrationUpdateHandlerTest.generalRightTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogTest_startLog - 2018.10.22 at 02h 17m 54s.xml">
-      <configuration name="LogTest.startLog" configurationId="JUnit" />
+    <history-entry file="RegistrationUpdateHandlerTest_generalRightTest - 2018.10.30 at 00h 29m 01s.xml">
+      <configuration name="RegistrationUpdateHandlerTest.generalRightTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogTest_startLog - 2018.10.22 at 02h 18m 31s.xml">
-      <configuration name="LogTest.startLog" configurationId="JUnit" />
+    <history-entry file="RegistrationUpdateHandlerTest_generalRightTest - 2018.10.30 at 00h 32m 01s.xml">
+      <configuration name="RegistrationUpdateHandlerTest.generalRightTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogTest_startLog - 2018.10.22 at 02h 19m 39s.xml">
-      <configuration name="LogTest.startLog" configurationId="JUnit" />
+    <history-entry file="RegistrationUpdateHandlerTest_generalRightTest - 2018.10.30 at 00h 32m 28s.xml">
+      <configuration name="RegistrationUpdateHandlerTest.generalRightTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogTest_startLog - 2018.10.22 at 02h 19m 50s.xml">
-      <configuration name="LogTest.startLog" configurationId="JUnit" />
+    <history-entry file="RegistrationUpdateHandlerTest_generalRightTest - 2018.10.30 at 00h 35m 09s.xml">
+      <configuration name="RegistrationUpdateHandlerTest.generalRightTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogTest_startLog - 2018.10.22 at 02h 20m 37s.xml">
-      <configuration name="LogTest.startLog" configurationId="JUnit" />
+    <history-entry file="RegistrationUpdateHandlerTest_generalRightTest - 2018.10.30 at 00h 35m 49s.xml">
+      <configuration name="RegistrationUpdateHandlerTest.generalRightTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogTest_startLog - 2018.10.22 at 02h 21m 45s.xml">
-      <configuration name="LogTest.startLog" configurationId="JUnit" />
+    <history-entry file="RegistrationUpdateHandlerTest_generalRightTest - 2018.10.30 at 00h 44m 10s.xml">
+      <configuration name="RegistrationUpdateHandlerTest.generalRightTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogTest_startLog - 2018.10.22 at 02h 21m 48s.xml">
-      <configuration name="LogTest.startLog" configurationId="JUnit" />
+    <history-entry file="RegistrationUpdateHandlerTest_generalRightTest - 2018.10.30 at 00h 55m 47s.xml">
+      <configuration name="RegistrationUpdateHandlerTest.generalRightTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogTest_startLog - 2018.10.22 at 02h 21m 59s.xml">
-      <configuration name="LogTest.startLog" configurationId="JUnit" />
+    <history-entry file="RegistrationUpdateHandlerTest_generalRightTest - 2018.10.30 at 01h 22m 51s.xml">
+      <configuration name="RegistrationUpdateHandlerTest.generalRightTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LogTest_startLog - 2018.10.22 at 18h 25m 18s.xml">
-      <configuration name="LogTest.startLog" configurationId="JUnit" />
+    <history-entry file="RegistrationUpdateHandlerTest_generalRightTest - 2018.10.30 at 01h 28m 36s.xml">
+      <configuration name="RegistrationUpdateHandlerTest.generalRightTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="104834000" />
+    <option name="totallyTimeSpent" value="181247000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -839,43 +981,80 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Palette" order="4" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5026624" side_tool="true" weight="0.19310345" />
-      <window_info anchor="right" id="Maven Projects" order="5" visible="true" weight="0.1086262" />
+      <window_info active="true" anchor="right" id="Maven Projects" order="6" visible="true" weight="0.108093716" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Designer" order="2" />
-      <window_info anchor="right" id="Database" order="6" weight="0.14749734" />
+      <window_info anchor="right" id="Database" order="7" weight="0.14749734" />
       <window_info id="Structure" order="1" sideWeight="0.5012563" side_tool="true" weight="0.16986156" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.24973376" />
+      <window_info anchor="right" id="Ant Build" order="2" weight="0.24973376" />
       <window_info id="UI Designer" order="3" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32935324" />
       <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.49733758" weight="0.19402985" />
-      <window_info anchor="right" id="Palette&#9;" order="11" />
+      <window_info anchor="right" id="Palette&#9;" order="12" />
       <window_info id="Image Layers" order="6" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.32935324" />
-      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
       <window_info anchor="bottom" id="Version Control" order="10" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49840257" visible="true" weight="0.20497513" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49840257" visible="true" weight="0.29751244" />
       <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49946752" weight="0.32935324" />
-      <window_info id="Persistence" order="7" sideWeight="0.514393" side_tool="true" visible="true" weight="0.22683705" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.485607" visible="true" weight="0.22683705" />
+      <window_info id="Persistence" order="7" sideWeight="0.51586205" side_tool="true" weight="0.23021002" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48557213" visible="true" weight="0.17518637" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32935324" />
-      <window_info anchor="right" id="Theme Preview" order="7" />
-      <window_info id="Favorites" order="4" sideWeight="0.5117241" side_tool="true" weight="0.24878837" />
-      <window_info anchor="right" id="Bean Validation" order="8" />
-      <window_info anchor="right" id="JSF" order="9" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
+      <window_info id="Favorites" order="4" sideWeight="0.51442784" side_tool="true" weight="0.22310969" />
+      <window_info anchor="right" id="Bean Validation" order="9" />
+      <window_info anchor="right" id="JSF" order="10" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32960597" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="right" id="CDI" order="10" />
+      <window_info anchor="right" id="CDI" order="11" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
       <window_info id="JavaEE:App" order="8" side_tool="true" />
     </layout>
+    <layout-to-restore>
+      <window_info anchor="right" id="Ant Build" order="2" weight="0.24973376" />
+      <window_info id="Designer" order="2" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info id="Persistence" order="7" sideWeight="0.51586205" side_tool="true" weight="0.23021002" />
+      <window_info id="Image Layers" order="6" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49840257" weight="0.29751244" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32960597" />
+      <window_info id="UI Designer" order="3" />
+      <window_info id="Favorites" order="4" sideWeight="0.51442784" side_tool="true" weight="0.22310969" />
+      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49946752" weight="0.32935324" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="right" id="JSF" order="10" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5026624" side_tool="true" weight="0.19310345" />
+      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.49733758" weight="0.19402985" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
+      <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.32935324" />
+      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="10" show_stripe_button="false" />
+      <window_info anchor="right" id="Maven Projects" order="6" weight="0.108093716" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32935324" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.48557213" visible="true" weight="0.24588938" />
+      <window_info anchor="right" id="Database" order="7" weight="0.14749734" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info id="JavaEE:App" order="8" side_tool="true" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32935324" />
+      <window_info anchor="right" id="Palette&#9;" order="12" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
+      <window_info id="Structure" order="1" sideWeight="0.5012563" side_tool="true" weight="0.16986156" />
+      <window_info anchor="right" id="CDI" order="11" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="right" id="Bean Validation" order="9" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -885,7 +1064,27 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="27" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/server/src/test/java/es1819/stroam/server/handlers/RegistrationUpdateHandlerTest.java</url>
+          <line>225</line>
+          <properties />
+          <option name="timeStamp" value="86" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/handlers/NotificationHandler.java</url>
+          <line>69</line>
+          <properties />
+          <option name="timeStamp" value="90" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/handlers/RegistrationUpdateHandler.java</url>
+          <line>70</line>
+          <properties />
+          <option name="timeStamp" value="100" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="102" />
     </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
@@ -895,116 +1094,53 @@
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>receivedMessage.getChannelParts()</expression-string>
+        <expression-string>rightUserUnregistrationPayload</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>logFile.createNewFile()</expression-string>
+        <expression-string>jsonData.get(Constants.MESSAGE_PUSH_NOTIFICATION_BODY_JSON_FIELD)</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>!logFile.exists()</expression-string>
+        <expression-string>(byte[])jsonData.get(Constants.MESSAGE_PUSH_NOTIFICATION_BODY_JSON_FIELD)</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>!logFile.exists() &amp;&amp; logFile.createNewFile()</expression-string>
+        <expression-string>o</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>logFile.exists()</expression-string>
+        <expression-string>userEntity.getExternalId()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>logFile.canWrite()</expression-string>
+        <expression-string>rightUserUpdatePayload.getString(Constants.MESSAGE_EXTERNAL_ID_JSON_FIELD)</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>File f = new File(&quot;./Log/Cenas.txt&quot;);</expression-string>
+        <expression-string>userEntity</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>f.isDirectory()</expression-string>
+        <expression-string>jsonData.length()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>f.mkdirs()</expression-string>
+        <expression-string>new Message(&quot;/notTheService/unregister&quot;, new byte[] {1})</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/ServiceProducerEntityPK.java" />
-    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/SubscriberChannelEntityPK.java" />
-    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/views/ProducersChannelsPathsEntity.java" />
-    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/views/SubscribersChannelsPathsEntity.java" />
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/Server.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1320">
-          <caret line="92" column="5" lean-forward="true" selection-start-line="69" selection-start-column="4" selection-end-line="92" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/eclipse/paho/org.eclipse.paho.client.mqttv3/1.2.0/org.eclipse.paho.client.mqttv3-1.2.0.jar!/org/eclipse/paho/client/mqttv3/MqttClient.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="71" selection-start-line="71" selection-end-line="71" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/utilities/QueryUtilities.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="7" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/extensions/com.intellij.database/data/extractors/HTML-JavaScript.html.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/PublisherSubscriberEntity.java" />
-    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/ServicePublisherSubscriberEntityPK.java" />
-    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/ServicePublisherSubscriberEntity.java" />
-    <entry file="file://$PROJECT_DIR$/Notes" />
-    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/ServiceEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="17" column="62" lean-forward="true" selection-start-line="16" selection-start-column="4" selection-end-line="17" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/UserEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="22" column="55" selection-start-line="22" selection-start-column="55" selection-end-line="22" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/LogEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/es1819/stroam/persistence/1.0-SNAPSHOT/persistence-1.0-SNAPSHOT.jar!/es1819/stroam/persistence/entities/ServiceEntity.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/UserEntity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -1013,30 +1149,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/utilities/ChannelUtilities.java" />
-    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/utilities/PersistenceUtilities.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/commons/communication/CommunicationCallback.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="38" selection-start-line="3" selection-start-column="38" selection-end-line="3" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/handlers/Handler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="66" selection-start-line="6" selection-start-column="66" selection-end-line="6" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/systemErr.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -1051,9 +1163,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/Log_Current.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/server/Log_Current.txt" />
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/lib/src.zip!/java.base/java/lang/Object.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
@@ -1082,26 +1192,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/logs/Log.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="67" column="38" selection-start-line="67" selection-start-column="38" selection-end-line="67" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/logs/LogSeverity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="40" column="80" selection-start-line="40" selection-start-column="80" selection-end-line="40" selection-end-column="80" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/src/test/java/es1819/stroam/server/logs/LogTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="646">
@@ -1109,40 +1199,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/utilities/GeneralUtilities.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="40" selection-start-line="40" selection-end-line="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/constants/Strings.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/messages/MessageType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="14" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/commons/communication/Communication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="62" column="25" selection-start-line="62" selection-start-column="25" selection-end-line="62" selection-end-column="25" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1170,90 +1230,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/messages/Message.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="861">
-          <caret line="62" column="20" selection-start-line="62" selection-start-column="20" selection-end-line="62" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/constants/Constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="638">
-          <caret line="39" column="60" selection-start-line="39" selection-start-column="60" selection-end-line="39" selection-end-column="60" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/messages/MessagePayload.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="23" column="52" selection-start-line="23" selection-start-column="52" selection-end-line="23" selection-end-column="52" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3357#3358#0" expanded="true" />
-            <element signature="e#3396#3397#0" expanded="true" />
-            <element signature="e#3440#3441#0" expanded="true" />
-            <element signature="e#3480#3481#0" expanded="true" />
-            <element signature="e#3524#3525#0" expanded="true" />
-            <element signature="e#3564#3565#0" expanded="true" />
-            <element signature="e#3601#3602#0" expanded="true" />
-            <element signature="e#3634#3635#0" expanded="true" />
-            <element signature="e#3665#3666#0" expanded="true" />
-            <element signature="e#3692#3693#0" expanded="true" />
-            <element signature="e#3731#3732#0" expanded="true" />
-            <element signature="e#3766#3767#0" expanded="true" />
-            <element signature="e#3804#3805#0" expanded="true" />
-            <element signature="e#3838#3839#0" expanded="true" />
-            <element signature="e#3865#3866#0" expanded="true" />
-            <element signature="e#3890#3891#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/handlers/RegistrationUpdateHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="674">
-          <caret line="70" column="112" selection-start-line="70" selection-start-column="112" selection-end-line="70" selection-end-column="112" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/persistence/src/main/resources/META-INF/persistence.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/Server.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="158" column="47" selection-start-line="158" selection-start-column="47" selection-end-line="158" selection-end-column="47" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/ServiceEntity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="193">
           <caret line="18" column="11" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/LogSeverityEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -1264,28 +1244,255 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/main/Main.java">
+    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/LogEntity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        <state relative-caret-position="-115">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/persistence/src/main/resources/META-INF/persistence.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="13" column="72" selection-start-line="13" selection-start-column="72" selection-end-line="13" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/LogSeverityEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="78">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/ServiceEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="197">
+          <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/messages/MessageType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="10" column="14" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/logs/Log.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="67" column="38" selection-start-line="67" selection-start-column="38" selection-end-line="67" selection-end-column="38" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/entities/ServiceEntity.java">
+    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/utilities/QueryUtilities.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="55">
-          <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
+        <state>
+          <caret column="44" selection-start-column="44" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/logs/LogSeverity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="366">
+          <caret line="40" column="80" selection-start-line="40" selection-start-column="80" selection-end-line="40" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/lib/src.zip!/java.base/java/lang/String.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="123" column="19" selection-start-line="123" selection-start-column="19" selection-end-line="123" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12-sources.jar!/org/junit/runners/BlockJUnit4ClassRunner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="79" selection-start-line="79" selection-end-line="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12-sources.jar!/org/junit/runners/ParentRunner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="286" selection-start-line="286" selection-end-line="286" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/handlers/BACK_RegistrationUpdateHandler.java.txt" />
+    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12-sources.jar!/org/junit/internal/runners/model/ReflectiveCallable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/es1819/stroam/persistence/1.0-SNAPSHOT/persistence-1.0-SNAPSHOT.jar!/es1819/stroam/persistence/utilities/PersistenceUtilities.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/Constants.java" />
+    <entry file="file://$PROJECT_DIR$/server/src/test/java/es1819/stroam/server/messages/MessagePayloadTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2737">
+          <caret line="208" column="63" selection-start-line="208" selection-start-column="63" selection-end-line="208" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/test/java/es1819/stroam/server/messages/MessageTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="369">
+          <caret line="126" column="76" selection-start-line="126" selection-start-column="76" selection-end-line="126" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/persistence/src/main/java/es1819/stroam/persistence/utilities/PersistenceUtilities.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="44" selection-start-column="44" selection-end-column="44" />
           <folding>
-            <element signature="e#399#400#0" expanded="true" />
-            <element signature="e#427#428#0" expanded="true" />
-            <element signature="e#584#585#0" expanded="true" />
-            <element signature="e#616#617#0" expanded="true" />
-            <element signature="e#779#780#0" expanded="true" />
-            <element signature="e#815#816#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/commons/communication/CommunicationCallback.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="38" selection-start-line="3" selection-start-column="38" selection-end-line="3" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/lib/src.zip!/java.base/java/util/UUID.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-616">
+          <caret line="72" column="19" selection-start-line="72" selection-start-column="19" selection-end-line="72" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/utilities/GeneralUtilities.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="40" selection-start-line="40" selection-end-line="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/json/json/20180130/json-20180130-sources.jar!/org/json/JSONObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="820" selection-start-line="820" selection-end-line="820" />
+          <folding>
+            <element signature="e#28719#28720#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/handlers/Handler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="40" lean-forward="true" selection-start-line="6" selection-start-column="40" selection-end-line="6" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/messages/MessagePayload.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="225" selection-start-line="225" selection-end-line="225" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/commons/communication/Communication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="63" column="100" selection-start-line="63" selection-start-column="100" selection-end-line="63" selection-end-column="100" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/test/java/es1819/stroam/server/handlers/RegistrationUpdateHandlerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="422">
+          <caret line="67" column="36" selection-start-line="67" selection-start-column="36" selection-end-line="67" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/constants/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="40" column="75" selection-start-line="40" selection-start-column="65" selection-end-line="40" selection-end-column="75" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/main/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="163">
+          <caret line="18" column="47" selection-start-line="18" selection-start-column="47" selection-end-line="18" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/messages/Message.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="93" selection-start-line="93" selection-end-line="93" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4000#4001#0" expanded="true" />
+            <element signature="e#4094#4095#0" expanded="true" />
+            <element signature="e#4124#4125#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/handlers/NotificationHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="69" selection-start-line="69" selection-end-line="69" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/ServerOperation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="18" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/handlers/RegistrationUpdateHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="150" column="32" selection-start-line="150" selection-start-column="32" selection-end-line="150" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/server/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="478">
+          <caret line="203" column="180" selection-start-line="203" selection-start-column="180" selection-end-line="203" selection-end-column="180" />
         </state>
       </provider>
     </entry>

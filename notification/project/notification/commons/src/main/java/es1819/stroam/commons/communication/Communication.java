@@ -60,8 +60,8 @@ public class Communication implements MqttCallback {
             client.unsubscribe(channel);
     }
 
-    private synchronized boolean send(String channel, byte[] messageBytes) throws Exception {
-        if(client == null || !client.isConnected() && messageBytes == null || messageBytes.length > 0)
+    public synchronized boolean send(String channel, byte[] messageBytes) throws Exception {
+        if(client == null || !client.isConnected() && messageBytes == null || messageBytes.length == 0)
             return false;
 
         MqttMessage mqttMessage = new MqttMessage();
