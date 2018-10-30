@@ -12,7 +12,8 @@ window.onload=function(e){
     if (Http.readyState == 4 && Http.status == 200){
       // Parsing response
       info = JSON.parse(Http.responseText);
-      if(!"ERROR" in info){
+      
+      if(!('ERROR' in info)){
         // Filling basic information
         document.getElementById("name").value = info['BUYER']['NAME'];
         document.getElementById("email").value = info['BUYER']['EMAIL'];

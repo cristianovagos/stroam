@@ -75,10 +75,10 @@ def exists(table, columns, values):
     '''
         Checks if row exists on Database
     '''
-    if isinstance(columns, str):
+    if not isinstance(columns, list):
         columns = [columns]
 
-    if isinstance(values, str):
+    if not isinstance(values, list):
         values = [values]
 
     cur = get_db().cursor()
@@ -98,10 +98,10 @@ def get(table, columns, values):
     '''
         Returns Row from database
     '''
-    if isinstance(columns, str):
+    if not isinstance(columns, list):
         columns = [columns]
 
-    if isinstance(values, str):
+    if not isinstance(values, list):
         values = [values]
 
     cur = get_db().cursor()
@@ -121,10 +121,10 @@ def get_cc(table, number, columns, values):
     '''
         Returns Row from credit card table
     '''
-    if isinstance(columns, str):
+    if not isinstance(columns, list):
         columns = [columns]
 
-    if isinstance(values, str):
+    if not isinstance(values, list):
         values = [values]
 
     cur = get_db().cursor()
