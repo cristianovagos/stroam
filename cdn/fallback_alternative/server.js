@@ -82,7 +82,10 @@ app.post('closeStream/:id', function (req, res){
 });
 
 app.all('*', function(req, res) {
-    throw new Error("Invalid request")
+	res.writeHead(200, {'Content-Type': 'application/javascript'});
+	res.end(fs.readFileSync('./client.js'));
+	return res;
+	//throw new Error("Invalid request")
 });
 
 var server = app.listen(1935, function () {
