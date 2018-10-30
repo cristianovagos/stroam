@@ -68,3 +68,8 @@ $(document).ready(function () {
       }
     });
 });
+
+function onWatchMovieClick() {
+   streamSetup();
+   $("#watchMovie").modal('show');
+}

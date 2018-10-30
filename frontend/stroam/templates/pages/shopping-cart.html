@@ -23,7 +23,7 @@
                                 </thead>
                                 <tbody>
                                     {% for product in products.items %}
-                                        {% if product.1.seasons|length > 1 %}
+                                        {% if product.1.seasons.0.season %}
                                             {% for productSeason in product.1.seasons %}
                                                 <tr>
                                                     <td scope="row">

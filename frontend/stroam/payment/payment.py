@@ -5,7 +5,7 @@ from django.http import Http404
 from django.shortcuts import redirect
 from urllib.request import urlopen
 
-from ..models import *
+from ..models import Purchase, Purchase_Production
 
 LOGGER = logging.getLogger(__name__)
 PAYMENT_SERVICE_URL = "http://localhost:5000"

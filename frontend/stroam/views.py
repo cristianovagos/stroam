@@ -132,7 +132,7 @@ def singleMovie(request, id):
             'purchased': moviePurchased,
             'seasonsPurchased': seasonsPurchased
         }
-        return render(request, 'base/single-movie.html', tparams)
+        return render(request, 'pages/single-movie.html', tparams)
 
     tparams = {
         'title': MAIN_TITLE + movieTitle,
@@ -142,7 +142,7 @@ def singleMovie(request, id):
         'purchased': moviePurchased,
         'seasonsPurchased': seasonsPurchased
     }
-    return render(request, 'base/single-movie.html', tparams)
+    return render(request, 'pages/single-movie.html', tparams)
 
 def shoppingCart(request):
     title = 'Your shopping cart'
@@ -243,6 +243,7 @@ def checkout(request):
             totalPrice = data.get('CHECKOUT', 0)['AMOUNT']
             products = data.get('ITEMS', [])
             buyerID = data.get('BUYER', {})
+            billingData = data.get('BILLING_ADDRESS', {})
         else:
             LOGGER.error(str(error))
             raise Http404('Bad Request: \n\n' + str(error))
@@ -251,6 +252,7 @@ def checkout(request):
         'title': MAIN_TITLE + title,
         'checkoutToken': checkoutToken,
         'buyerID': buyerID,
+        'billingData': billingData,
         'products': products,
         'totalPrice': totalPrice,
         'cartShowing': False
@@ -284,6 +286,7 @@ def userPanel(request):
     if request.method == 'POST':
         p = Purchase.objects.get(id=request.POST['orderID'])
         p.onOrderCancelled()
+        payment.deleteCheckout(p.token_payment)
         return HttpResponse('')
 
     data = {}
@@ -297,14 +300,14 @@ def userPanel(request):
         data[purchase.id]['date_created'] = purchase.date_created
         data[purchase.id]['date_payment'] = purchase.date_payment
         data[purchase.id]['products'] = {}
-        for production in productions:
-            product = production.getSingleCatalog(production.production_id)
-            data[purchase.id]['products'][production.id] = {}
-            data[purchase.id]['products'][production.id]['production'] = product
+        for prod in productions:
+            product = production.getSingleProduction(prod.production_id)
+            data[purchase.id]['products'][prod.id] = {}
+            data[purchase.id]['products'][prod.id]['production'] = product
             if product.type == 'series':
-                data[purchase.id]['products'][production.id]['season'] = production.season_num
+                data[purchase.id]['products'][prod.id]['season'] = prod.season_num
             else:
-                data[purchase.id]['products'][production.id]['season'] = None
+                data[purchase.id]['products'][prod.id]['season'] = None
 
     tparams = {
         'title': MAIN_TITLE + title,
@@ -312,6 +315,22 @@ def userPanel(request):
         'numCart': request.session.get('cartNumber', 0)
     }
     return render(request, 'pages/user-panel.html', tparams)
+
+def myMovies(request):
+    title = 'My Library'
+    movies = []
+    purchasedProds = Purchase_Production.objects.filter(purchase_id__user_id=1, purchase_id__payment_status=Purchase.PAYMENT_COMPLETED)
+    for prod in purchasedProds:
+        movies.append(production.getSingleProduction(prod.production_id))
+    if movies:
+        shuffle(list(set(movies)))
+
+    tparams = {
+        'title': MAIN_TITLE + title,
+        'movies': movies,
+        'numCart': request.session.get('cartNumber', 0)
+    }
+    return render(request, 'pages/my-movies.html', tparams)
 
 def pay(request, checkout_token):
     return redirect(payment.PAYMENT_SERVICE_URL + "/pay?checkout_token=" + checkout_token)

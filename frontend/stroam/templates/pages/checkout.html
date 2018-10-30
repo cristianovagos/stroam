@@ -14,9 +14,7 @@
                                 </div>
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">
-                                        {{ user }}
-                                    </li>
-                                    <li class="list-group-item">
+                                        {{ user }}<br><br>
                                         NIF: 123456789
                                     </li>
                                 </ul>
@@ -30,10 +28,14 @@
                                 </div>
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">
-                                        {{ buyerID.NAME }}
-                                    </li>
-                                    <li class="list-group-item">
-                                        NIF: {{ buyerID.NIF }}
+                                        {{ billingData.FIRST_NAME }} {{ billingData.LAST_NAME }}<br><br>
+                                        {% if buyerID.NIF %}
+                                        NIF: {{ buyerID.NIF }}<br>
+                                        {% endif %}
+                                        {{ billingData.ADDRESS }}<br>
+                                        {{ billingData.POST_CODE }} - {{ billingData.CITY }}<br>
+                                        {{ billingData.COUNTRY }}<br><br>
+                                        Phone: {{ billingData.PHONE }}
                                     </li>
                                 </ul>
                             </div>

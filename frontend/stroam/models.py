@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils import timezone
-from .payment import payment
 
 class Purchase(models.Model):
     AWAITING_PAYMENT = 1
@@ -28,8 +27,7 @@ class Purchase(models.Model):
 
     def onOrderCancelled(self):
         self.payment_status = self.ORDER_CANCELLED
-        if payment.deleteCheckout(self.token_payment):
-            self.token_isValid = False
+        self.token_isValid = False
         self.save()
 
     def onCompletedPayment(self):

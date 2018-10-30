@@ -32,6 +32,7 @@ urlpatterns = [
     path('checkout/success', views.paymentCompleted, name='paymentCompleted'),
     path('checkout/error', views.paymentError, name='paymentError'),
     path('userpanel/', views.userPanel, name='user-panel'),
+    path('my-movies/', views.myMovies, name='my-movies'),
     path('deleteAll', views.deleteAll, name='deleteAll'),
 ]
 

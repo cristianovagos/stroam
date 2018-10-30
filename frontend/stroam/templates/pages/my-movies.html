@@ -4,20 +4,20 @@
     <section>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'genres' %}">Genres</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{ genreName }}</li>
+                <li class="breadcrumb-item active" aria-current="page">My Library</li>
             </ol>
         </nav>
         {% if not movies %}
             <div style="padding-top: 200px; padding-bottom: 200px;">
                 <h3 class="text-center">
-                    Sorry, there are no Movies or TV series for {{ genreName }}...<br>
-                    Check us out later!
+                    Sorry, you have not purchased any Movies or TV series...<br>
+                    Why don't go buy a few?<br><br>
+                    <a href="{% url 'homepage' %}" class="btn-lg btn-danger">Shop now</a>
                 </h3>
             </div>
         {% else %}
             <div class="container" style="margin-top: 20px">
-                <h4>Check out our handpicked collection of {{ genreName }} productions:</h4>
+                <h4>Here's your personal library:</h4>
             </div>
             {% include 'base/movie-list.html' %}
         {% endif %}
