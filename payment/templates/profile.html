@@ -33,7 +33,7 @@
                       <div>
                         <div style="padding-top:20px" class="label-crud">
                             <span>Name:</span>
-                            <button>Edit</button>
+                            <button onclick="edit('name')">Edit</button>
                         </div>
                         <div class="input">
                             <input id="name" type="text" readonly="readonly" />
@@ -46,12 +46,16 @@
                         </div>
                         <div class="label-crud">
                             <span>NIF:</span>
-                            <button>Edit</button>
+                            <button onclick="edit('nif')">Edit</button>
                         </div>
                         <div class="input">
-                            <input id="nif" type="text" readonly="readonly"/>
+                            <input id="nif" type="number" readonly="readonly"/>
                         </div>
 
+                        <div class="login-button">
+                            <button id="update-button" style="visibility: hidden">Update</button>
+                        </div>
+                        <br/>
                         <hr>
                         <div>
 

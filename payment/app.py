@@ -184,9 +184,69 @@ def get_user():
                             'BILLING_ADDRESS': billing_address },
                 'MERCHANT': {}}
         return jsonify(info);
-    else:
-        return 'Please login' #TODO: fix this
 
+    return jsonify({'SUCCESS': False, 'ERROR': error_message('no_login')}), 200
+
+@app.route('/api/v1/user', methods=['PUT'])
+def update_user():
+    ''' Updates User Information
+    ---
+    put:
+        description: Updates editable user information.
+        tags:
+            - User
+        requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    NAME:
+                      type: string
+                      description: Updated User Name.
+                    NIF:
+                      type: number
+                      description: Updated User NIF.
+        responses:
+            200:
+                description: A JSON containing the result of payment.
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          SUCCESS:
+                            type: boolean
+            400:
+                description: A JSON containing the ERROR that identifies the problem.
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          ERROR:
+                            type: string
+    '''
+
+    if 'user_id' in session and db.exists('USER', 'id', session['user_id']):
+        # request.form looks ugly and takes too much space...
+        param = request.json
+        keys = param.keys()
+        expected_keys = ['NAME', 'NIF']
+
+        # Checking for required parameters
+        if not param or not check_keys(expected_keys, keys):
+            return jsonify({'ERROR': error_message('invalid_request')}), 400
+
+        try:
+            db.update('CLIENT', ['nif', 'name'], [param['NIF'], param['NAME']], 'id', session['user_id'])
+        except Exception as e:
+            print(e)
+            return jsonify({'SUCCESS': False, 'ERROR': error_message('db_error')}), 200
+
+        # Everything went well
+        return jsonify({'SUCCESS': True}), 200
+
+    return jsonify({'SUCCESS': False, 'ERROR': error_message('no_login')}), 200
 
 @app.route('/api/v1/Checkout', methods=['GET'])
 def get_checkout():
@@ -794,6 +854,7 @@ with app.test_request_context():
     spec.add_path(view=execute_checkout)
     spec.add_path(view=delete_checkout)
     spec.add_path(view=get_user)
+    spec.add_path(view=update_user)
 
 with open('static/swagger.json', 'w') as f:
     json.dump(spec.to_dict(), f)

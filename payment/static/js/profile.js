@@ -4,15 +4,15 @@ var info = {};
 
 window.onload=function(e){
 
-  const Http = new XMLHttpRequest();
-  const url='http://127.0.0.1:5000/api/v1/user';
+  var Http = new XMLHttpRequest();
+  var url='http://127.0.0.1:5000/api/v1/user';
   Http.open("GET", url);
   Http.send();
   Http.onreadystatechange=(e)=>{
     if (Http.readyState == 4 && Http.status == 200){
       // Parsing response
       info = JSON.parse(Http.responseText);
-      
+
       if(!('ERROR' in info)){
         // Filling basic information
         document.getElementById("name").value = info['BUYER']['NAME'];
@@ -55,13 +55,29 @@ window.onload=function(e){
 
 }
 
+document.getElementById("update-button").onclick = function(){
+  var name = document.getElementById("name").value;
+  var nif = document.getElementById("nif").value;
+
+  var Http = new XMLHttpRequest();
+  var url='http://127.0.0.1:5000/api/v1/user';
+  Http.open("PUT", url);
+  Http.setRequestHeader("Content-Type", "application/json");
+  Http.send(JSON.stringify({ "NAME": name, "NIF": parseInt(nif) }));
+
+  document.getElementById("update-button").style.visibility = "hidden";
+  document.getElementById("name").readonly = true;
+  document.getElementById("nif").readonly = true;
+
+}
+
 function cc_changed(elmnt) {
-    // Filling inputs with the Credit Card Selected
-    var card_number = document.getElementsByName("card_number")[0];
-    var expiration = document.getElementsByName("card_exp")[0];
-    cc = info['BUYER']['CREDIT_CARDS'][parseInt(elmnt.getAttribute("index"))]
-    card_number.value = cc['NUMBER'];
-    expiration.value = cc['EXP'];
+  // Filling inputs with the Credit Card Selected
+  var card_number = document.getElementsByName("card_number")[0];
+  var expiration = document.getElementsByName("card_exp")[0];
+  cc = info['BUYER']['CREDIT_CARDS'][parseInt(elmnt.getAttribute("index"))]
+  card_number.value = cc['NUMBER'];
+  expiration.value = cc['EXP'];
 };
 
 function ba_changed(elmnt) {
@@ -82,6 +98,16 @@ function ba_changed(elmnt) {
   address.value = ba['ADDRESS'];
   post_code.value = ba['POST_CODE'];
   phone.value = ba['PHONE'];
+}
+
+function edit(element_id){
+  element = document.getElementById(element_id);
+  element.readOnly = false;
+  showUpdateButton();
+}
+
+function showUpdateButton(){
+  document.getElementById("update-button").style.visibility = "visible";
 }
 
 // Function based on "How to create tabs" from w3schools

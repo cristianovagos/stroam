@@ -46,7 +46,8 @@ def error_message(error):
         "db_error" : "An error ocurred on the Database.",
         "not_logged" : "You must be logged in for this operation.",
         "checkout_not_ready" : "Checkout wasn't set ready by the buyer yet.",
-        "add_items" : "Error adding the items, please check their format"
+        "add_items" : "Error adding the items, please check their format",
+        "no_login" : "You must be logged in to perform this action."
     }
 
     return errors.get(error)
