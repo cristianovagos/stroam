@@ -27,12 +27,13 @@ CREATE TABLE CLIENT(
 );
 
 CREATE TABLE CREDIT_CARD(
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
   cc_number   INT NOT NULL,
   csv         INT NOT NULL,
   expiration  TEXT NOT NULL,
   owner_name  TEXT NOT NULL,
   user_id     TEXT NOT NULL,
-  PRIMARY KEY (cc_number),
+  visibility  INT CHECK( visibility IN (0,1) ) NOT NULL DEFAULT 1,
   FOREIGN KEY (user_id) REFERENCES USER(id)
 );
 

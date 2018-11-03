@@ -29,39 +29,45 @@ function updateData(){
         var ccDiv = document.getElementById("cc_div");
         ccDiv.innerHTML = '';
         if (info['BUYER']['CREDIT_CARDS'].length == 0) document.getElementById("cc-div").style.display = "none";
-        else document.getElementById("cc-div").style.display = "block";
-        info['BUYER']['CREDIT_CARDS'].forEach(function(element, i) {
-          var ccInfo = document.createElement("A");
-          ccInfo.setAttribute('class', 'credit_card');
-          ccInfo.setAttribute('href', '#');
-          ccInfo.setAttribute('onclick', 'cc_changed(this)');
-          ccInfo.setAttribute('index', i);
-          ccInfo.innerHTML = element['NUMBER'] + ' | ' + element['EXP'];
-          ccDiv.appendChild(ccInfo);
-        });
+        else{
+          document.getElementById("cc-div").style.display = "block";
+          info['BUYER']['CREDIT_CARDS'].forEach(function(element, i) {
+            var ccInfo = document.createElement("A");
+            ccInfo.setAttribute('class', 'credit_card');
+            ccInfo.setAttribute('href', '#');
+            ccInfo.setAttribute('onclick', 'cc_changed(this)');
+            ccInfo.setAttribute('index', i);
+            ccInfo.innerHTML = element['NUMBER'] + ' | ' + element['EXP'];
+            ccDiv.appendChild(ccInfo);
+          });
+          document.getElementsByClassName("credit_card")[0].click();
+        }
 
         // Filling Billing Address List
         var baDiv = document.getElementById("ba_div");
         baDiv.innerHTML = '';
         if (info['BUYER']['BILLING_ADDRESS'].length == 0) document.getElementById("ba-div").style.display = "none";
-        else document.getElementById("ba-div").style.display = "block";
+        else{
 
-        info['BUYER']['BILLING_ADDRESS'].forEach(function(element, i) {
-          var baInfo = document.createElement("A");
-          baInfo.setAttribute('class', 'billing_address');
-          baInfo.setAttribute('href', '#');
-          baInfo.setAttribute('onclick', 'ba_changed(this)');
-          baInfo.setAttribute('index', i);
-          baInfo.innerHTML = [[element['FIRST_NAME'], element['LAST_NAME']].join(' '),
-                              [element['ADDRESS'], element['COUNTRY']].join(', ')].join(', ');
-          baDiv.appendChild(baInfo);
-        });
+          document.getElementById("ba-div").style.display = "block";
+
+          info['BUYER']['BILLING_ADDRESS'].forEach(function(element, i) {
+            var baInfo = document.createElement("A");
+            baInfo.setAttribute('class', 'billing_address');
+            baInfo.setAttribute('href', '#');
+            baInfo.setAttribute('onclick', 'ba_changed(this)');
+            baInfo.setAttribute('index', i);
+            baInfo.innerHTML = [[element['FIRST_NAME'], element['LAST_NAME']].join(' '),
+                                [element['ADDRESS'], element['COUNTRY']].join(', ')].join(', ');
+            baDiv.appendChild(baInfo);
+          });
+          document.getElementsByClassName("billing_address")[0].click();
+        }
 
 
         // Selecting the first credit card and billing address
         document.getElementById("defaultOpen").click();
-        document.getElementsByClassName("credit_card")[0].click();
-        document.getElementsByClassName("billing_address")[0].click();
+
       }
     }
   }
@@ -139,6 +145,16 @@ document.getElementById("delete-ba").onclick = function(){
   updateData();
 }
 
+document.getElementById("delete-cc").onclick = function(){
+  var Http = new XMLHttpRequest();
+  var url='http://127.0.0.1:5000/api/v1/user/credit_card';
+  Http.open("DELETE", url);
+  Http.setRequestHeader("Content-Type", "application/json");
+  Http.send(JSON.stringify({ "ID": selected_cc }));
+
+  updateData();
+}
+
 function cc_changed(elmnt) {
   // Filling inputs with the Credit Card Selected
   var card_number = document.getElementsByName("card_number")[0];
@@ -146,6 +162,8 @@ function cc_changed(elmnt) {
   cc = info['BUYER']['CREDIT_CARDS'][parseInt(elmnt.getAttribute("index"))]
   card_number.value = cc['NUMBER'];
   expiration.value = cc['EXP'];
+
+  selected_cc = cc['ID'];
 };
 
 function ba_changed(elmnt) {

@@ -168,10 +168,11 @@ def get_user():
         cc_wallet = []
         cc_db = db.get_all('CREDIT_CARD', 'user_id', session['user_id'])
         for cc in cc_db:
-            cc_wallet.append({'NUMBER': '*' * 12 + str(cc['cc_number'])[-4:], 'EXP': cc['expiration']})
+            if cc['visibility']:
+                cc_wallet.append({'NUMBER': '*' * 12 + str(cc['cc_number'])[-4:], 'EXP': cc['expiration'], 'ID' : cc['id']})
         # Getting Billing Address info
         billing_address_db = db.get_all('BILLING_ADDRESS', 'user_id', session['user_id'])
-        billing_address = [ dict(i) for i in billing_address_db if i['visibility'] == 1]
+        billing_address = [ dict(i) for i in billing_address_db if i['visibility']]
         for i in billing_address:
             i.pop('user_id')
             i.pop('visibility')
@@ -335,7 +336,7 @@ def update_billing_address():
 def delete_billing_address():
     ''' Turns Billing Address invisible for the user
     ---
-    put:
+    delete:
         description: Deletes billing address for the user (invisible)
         tags:
             - User
@@ -380,6 +381,64 @@ def delete_billing_address():
 
         try:
             db.update('BILLING_ADDRESS', ['visibility'], [0], 'id', param['ID'])
+        except Exception as e:
+            print(e)
+            return jsonify({'SUCCESS': False, 'ERROR': error_message('db_error')}), 200
+
+        # Everything went well
+        return jsonify({'SUCCESS': True}), 200
+
+    return jsonify({'SUCCESS': False, 'ERROR': error_message('no_login')}), 200
+
+@app.route('/api/v1/user/credit_card', methods=['DELETE'])
+def delete_credit_card():
+    ''' Turns Credit Card invisible for the user
+    ---
+    delete:
+        description: Deletes credit card for the user (invisible)
+        tags:
+            - User
+        requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    ID:
+                      type: number
+                      description: ID of credit card to delete
+        responses:
+            200:
+                description: A JSON containing the result of payment.
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          SUCCESS:
+                            type: boolean
+            400:
+                description: A JSON containing the ERROR that identifies the problem.
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          ERROR:
+                            type: string
+    '''
+
+    if 'user_id' in session and db.exists('USER', 'id', session['user_id']):
+        # request.form looks ugly and takes too much space...
+        param = request.json
+        keys = param.keys()
+        expected_keys = ['ID']
+
+        # Checking for required parameters
+        if not param or not check_keys(expected_keys, keys):
+            return jsonify({'ERROR': error_message('invalid_request')}), 400
+
+        try:
+            db.update('CREDIT_CARD', ['visibility'], [0], 'id', param['ID'])
         except Exception as e:
             print(e)
             return jsonify({'SUCCESS': False, 'ERROR': error_message('db_error')}), 200
@@ -998,6 +1057,7 @@ with app.test_request_context():
     spec.add_path(view=update_client)
     spec.add_path(view=update_billing_address)
     spec.add_path(view=delete_billing_address)
+    spec.add_path(view=delete_credit_card)
 
 with open('static/swagger.json', 'w') as f:
     json.dump(spec.to_dict(), f)

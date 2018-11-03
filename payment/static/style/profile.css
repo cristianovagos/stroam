@@ -75,7 +75,19 @@
   border: none;
 }
 
-
+.label-crud-button{
+  border : none;
+  position: relative;
+  float: right;
+  height: 27px;
+  font-family: Arimo;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #fff;
+  border-radius: 25px;
+  background: #f0ad4e;
+  padding: 0 15px;
+}
 
 .label-crud{
   padding: 0 30px 10px 30px;
