@@ -969,12 +969,6 @@ def pay():
 
     # Checking if user is already logged in
     login_form = False if 'user_id' in session and db.exists('CLIENT', 'id', session['user_id']) else True
-    cc_wallet = []
-
-    if not login_form:
-        cc_db = db.get_all('CREDIT_CARD', 'user_id', session['user_id'])
-        for cc in cc_db:
-            cc_wallet.append('*' * 12 + str(cc['cc_number'])[-4:] + ' | ' + cc['expiration'])
 
     # Checking if there is error message to be shown
     error = False if not request.args.get('error') else request.args.get('error')
@@ -983,7 +977,6 @@ def pay():
                                        items = items,
                                        currency = checkout['currency'] if  checkout['currency'] else 'EUR',
                                        login_form = login_form,
-                                       cc_wallet = cc_wallet,
                                        error = error_message(error) ), 200
 
 @app.route('/proccess_payment', methods=['POST'])
@@ -1013,7 +1006,7 @@ def proccess_payment():
     param = request.form.to_dict()
     keys = param.keys()
     required_keys = ['card-number', 'exp', 'cvc', 'card-owner', 'first_name', \
-                    'old-card-number', 'old-exp', 'using-old', \
+                    'old-id', 'using-old', 'old-id-ba', 'using-old-ba',\
                     'last_name', 'country', 'city', 'address', 'post_code', 'phone']
 
     # Checking for required parameters
@@ -1027,15 +1020,19 @@ def proccess_payment():
             return redirect(url_for('pay', checkout_token = args['checkout'], error = "db_error" ))
     # Else find the old credit card
     else:
-        cc = db.get_cc('CREDIT_CARD', '%'+param['old-card-number'].replace("*", "") \
-                                    ,['expiration', 'user_id'], \
-                                    [ param['old-exp'], session['user_id'] ])
+        cc = db.get('CREDIT_CARD',['id', 'user_id'], [ param['old-id'], session['user_id'] ])
         param['card-number'] = cc['cc_number']
 
-    # Create a relation of the billing address with the user
-    billing_id = add_address_to_user(param, session['user_id'])
-    if not billing_id:
-        return redirect(url_for('pay', checkout_token = args['checkout'], error = "db_error" ))
+    # If using a new billing address add it to database
+    billing_id = None
+    if ( param['using-old-ba'] == "false" ):
+        # Create a relation of the billing address with the user
+        billing_id = add_address_to_user(param, session['user_id'])
+        if not billing_id:
+            return redirect(url_for('pay', checkout_token = args['checkout'], error = "db_error" ))
+    # Else use old billing address
+    else:
+        billing_id = param['old-id-ba']
 
     # Save information about payment in the checkout
     return_url = prepare_checkout(args['checkout'], param['card-number'], billing_id, session['user_id'])

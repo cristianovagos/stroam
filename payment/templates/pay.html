@@ -84,20 +84,19 @@
                         <span class="payment-title"> Payment Details</span>
                         <img src="{{ url_for('static',filename='images/credit.png') }}" alt="StrongPay"/>
 
-                        {% if cc_wallet != [] %}
+                        <div id="cc-div">
                         <div class="payment-input" id="dropdown">
                           <button id="wallet" type="button" class="dropbtn">Credit Card Wallet</button>
-                          <div class="dropdown-content">
+                          <div id="cc_div" class="dropdown-content">
                               <a href="#" onclick="cc_changed(this, true)">New Card</a>
-                            {% for cc in cc_wallet %}
-                              <a href="#" onclick="cc_changed(this, false)">{{cc}}</a>
-                            {% endfor %}
                           </div>
                         </div>
-                        {% endif %}
+                        </div>
+
 
                         <div id="oldCredit" style="display:none">
                           <input type="hidden" id="using-old" name="using-old" value="false">
+                          <input type="hidden" id="old-id" name="old-id" value="0">
                           <div class="payment-input">
                               <input readonly="readonly" name="old-card-number" placeholder="Card Number" maxlength="16"/>
                               <span> <i class="fa fa-credit-card" aria-hidden="true"></i> </span>
@@ -139,6 +138,18 @@
 
                       <div id="content-2" style="display: None;">
                         <span class="payment-title">Your Billing Address</span>
+
+                        <div id="ba-div">
+                        <div class="payment-input" id="dropdown">
+                          <button id="ba-button" type="button" class="dropbtn">Your Billing Address's</button>
+                          <div id="ba_div" class="dropdown-content">
+                              <a href="#" onclick="ba_changed(this, true)">New Billing Address</a>
+                          </div>
+                        </div>
+                        </div>
+
+                        <input type="hidden" id="using-old-ba" name="using-old-ba" value="false">
+                        <input type="hidden" id="old-id-ba" name="old-id-ba" value="0">
 
                         <div class="payment-input">
                             <input type="text" name="first_name" placeholder="First Name"/>
@@ -204,7 +215,7 @@
     </div>
 
     <script src="{{ url_for('static',filename='js/validation.js') }}"></script>
-
+    <script src="{{ url_for('static',filename='js/pay.js') }}"></script>
 </body>
 
 </html>

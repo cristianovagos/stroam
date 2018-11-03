@@ -187,19 +187,21 @@ function cc_changed(elmnt, newcard) {
   var oldCredit = document.getElementById("oldCredit");
   var wallet = document.getElementById("wallet");
   var using_old = document.getElementById("using-old");
+  var old_id = document.getElementById("old-id");
 
   if(!newcard){
     newCredit.style.display = "none";
 
     var card_number = document.getElementsByName("old-card-number")[0];
     var expiration = document.getElementsByName("old-exp")[0];
-    cc = elmnt.innerHTML.split(" | ");
-    card_number.value = cc[0];
-    expiration.value = cc[1];
+    cc = info['BUYER']['CREDIT_CARDS'][parseInt(elmnt.getAttribute("index"))]
+    card_number.value = cc['NUMBER'];
+    expiration.value = cc['EXP'];
 
     oldCredit.style.display = "block";
     wallet.innerHTML = "Using Credit Card From Wallet";
     using_old.value = true;
+    old_id.value = cc['ID'];
   }
   else
   {
@@ -207,6 +209,62 @@ function cc_changed(elmnt, newcard) {
     oldCredit.style.display = "none";
     wallet.innerHTML = "Credit Card Wallet"
     using_old.value = false;
+  }
+};
+
+function ba_changed(elmnt, newAddress) {
+  var using_old = document.getElementById("using-old-ba");
+  var old_id = document.getElementById("old-id-ba");
+
+  var first_name = document.getElementsByName("first_name")[0];
+  var last_name = document.getElementsByName("last_name")[0];
+  var country = document.getElementsByName("country")[0];
+  var city = document.getElementsByName("city")[0];
+  var address = document.getElementsByName("address")[0];
+  var post_code = document.getElementsByName("post_code")[0];
+  var phone = document.getElementsByName("phone")[0];
+
+
+  if(!newAddress){
+
+    ba = info['BUYER']['BILLING_ADDRESS'][parseInt(elmnt.getAttribute("index"))]
+    first_name.value = ba['FIRST_NAME'];
+    last_name.value = ba['LAST_NAME'];
+    country.value = ba['COUNTRY'];
+    city.value = ba['CITY'];
+    address.value = ba['ADDRESS'];
+    post_code.value = ba['POST_CODE'];
+    phone.value = ba['PHONE'];
+
+    first_name.readOnly = true;
+    last_name.readOnly = true;
+    country.readOnly =true;
+    city.readOnly = true;
+    address.readOnly =true;
+    post_code.readOnly = true;
+    phone.readOnly = true;
+
+    using_old.value = true;
+    old_id.value = ba['ID'];
+  }
+  else
+  {
+    using_old.value = false;
+    first_name.value = "";
+    last_name.value = "";
+    country.value = "";
+    city.value = "";
+    address.value = "";
+    post_code.value = "";
+    phone.value = "";
+
+    first_name.readOnly = false;
+    last_name.readOnly = false;
+    country.readOnly =false;
+    city.readOnly = false;
+    address.readOnly =false;
+    post_code.readOnly = false;
+    phone.readOnly = false;
   }
 };
 
