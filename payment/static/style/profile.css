@@ -75,6 +75,8 @@
   border: none;
 }
 
+
+
 .label-crud{
   padding: 0 30px 10px 30px;
 }
@@ -132,6 +134,11 @@
 .login-button button{
   font-size: 20px;
   text-transform: none;
+}
+
+#half{
+  width: 49%;
+  display: inline-block;
 }
 
 /* Links inside the dropdown */

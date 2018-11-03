@@ -1,8 +1,14 @@
 
 
 var info = {};
+var selected_ba = 0;
+var selected_cc = 0;
 
-window.onload=function(e){
+window.onload = updateData;
+
+
+
+function updateData(){
 
   var Http = new XMLHttpRequest();
   var url='http://127.0.0.1:5000/api/v1/user';
@@ -21,6 +27,9 @@ window.onload=function(e){
 
         // Filling Credit Card List
         var ccDiv = document.getElementById("cc_div");
+        ccDiv.innerHTML = '';
+        if (info['BUYER']['CREDIT_CARDS'].length == 0) document.getElementById("cc-div").style.display = "none";
+        else document.getElementById("cc-div").style.display = "block";
         info['BUYER']['CREDIT_CARDS'].forEach(function(element, i) {
           var ccInfo = document.createElement("A");
           ccInfo.setAttribute('class', 'credit_card');
@@ -33,6 +42,10 @@ window.onload=function(e){
 
         // Filling Billing Address List
         var baDiv = document.getElementById("ba_div");
+        baDiv.innerHTML = '';
+        if (info['BUYER']['BILLING_ADDRESS'].length == 0) document.getElementById("ba-div").style.display = "none";
+        else document.getElementById("ba-div").style.display = "block";
+
         info['BUYER']['BILLING_ADDRESS'].forEach(function(element, i) {
           var baInfo = document.createElement("A");
           baInfo.setAttribute('class', 'billing_address');
@@ -52,7 +65,6 @@ window.onload=function(e){
       }
     }
   }
-
 }
 
 document.getElementById("update-button").onclick = function(){
@@ -60,15 +72,71 @@ document.getElementById("update-button").onclick = function(){
   var nif = document.getElementById("nif").value;
 
   var Http = new XMLHttpRequest();
-  var url='http://127.0.0.1:5000/api/v1/user';
+  var url='http://127.0.0.1:5000/api/v1/user/client';
   Http.open("PUT", url);
   Http.setRequestHeader("Content-Type", "application/json");
   Http.send(JSON.stringify({ "NAME": name, "NIF": parseInt(nif) }));
 
   document.getElementById("update-button").style.visibility = "hidden";
-  document.getElementById("name").readonly = true;
-  document.getElementById("nif").readonly = true;
+  document.getElementById("name").readOnly = true;
+  document.getElementById("nif").readOnly = true;
 
+}
+
+document.getElementById("edit-ba").onclick = function(){
+  document.getElementsByName("first_name")[0].readOnly = false;
+  document.getElementsByName("last_name")[0].readOnly = false;
+  document.getElementsByName("country")[0].readOnly = false;
+  document.getElementsByName("city")[0].readOnly = false;
+  document.getElementsByName("address")[0].readOnly = false;
+  document.getElementsByName("post_code")[0].readOnly = false;
+  document.getElementsByName("phone")[0].readOnly = false;
+
+  document.getElementById("edit-ba").style.display = "none";
+  document.getElementById("update-ba").style.display = "block";
+}
+
+document.getElementById("update-ba").onclick = function(){
+  var first_name = document.getElementsByName("first_name")[0].value;
+  var last_name = document.getElementsByName("last_name")[0].value;
+  var country = document.getElementsByName("country")[0].value;
+  var city = document.getElementsByName("city")[0].value;
+  var address = document.getElementsByName("address")[0].value;
+  var post_code = document.getElementsByName("post_code")[0].value;
+  var phone = document.getElementsByName("phone")[0].value;
+
+  var Http = new XMLHttpRequest();
+  var url='http://127.0.0.1:5000/api/v1/user/billing_address';
+  Http.open("PUT", url);
+  Http.setRequestHeader("Content-Type", "application/json");
+  Http.send(JSON.stringify({ "ID": selected_ba, "FIRST_NAME": first_name,
+                            "LAST_NAME": last_name, "COUNTRY": country,
+                            "CITY": city, "ADDRESS" : address, "POST_CODE": post_code,
+                            "PHONE" : parseInt(phone)}));
+
+  document.getElementById("edit-ba").style.display = "block";
+  document.getElementById("update-ba").style.display = "none";
+
+  document.getElementsByName("first_name")[0].readOnly = true;
+  document.getElementsByName("last_name")[0].readOnly = true;
+  document.getElementsByName("country")[0].readOnly = true;
+  document.getElementsByName("city")[0].readOnly = true;
+  document.getElementsByName("address")[0].readOnly = true;
+  document.getElementsByName("post_code")[0].readOnly = true;
+  document.getElementsByName("phone")[0].readOnly = true;
+  updateData();
+}
+
+document.getElementById("delete-ba").onclick = function(){
+  var Http = new XMLHttpRequest();
+  var url='http://127.0.0.1:5000/api/v1/user/billing_address';
+  Http.open("DELETE", url);
+  Http.setRequestHeader("Content-Type", "application/json");
+  Http.send(JSON.stringify({ "ID": selected_ba }));
+
+  document.getElementById("edit-ba").style.display = "block";
+  document.getElementById("update-ba").style.display = "none";
+  updateData();
 }
 
 function cc_changed(elmnt) {
@@ -98,6 +166,8 @@ function ba_changed(elmnt) {
   address.value = ba['ADDRESS'];
   post_code.value = ba['POST_CODE'];
   phone.value = ba['PHONE'];
+
+  selected_ba = ba['ID'];
 }
 
 function edit(element_id){

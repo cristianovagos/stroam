@@ -46,6 +46,7 @@ CREATE TABLE BILLING_ADDRESS(
   post_code      TEXT NOT NULL,
   phone          INT NOT NULL,
   user_id        TEXT NOT NULL,
+  visibility     INT CHECK( visibility IN (0,1) ) NOT NULL DEFAULT 1,
   FOREIGN KEY (user_id) REFERENCES USER(id)
 );
 

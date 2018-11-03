@@ -171,10 +171,10 @@ def get_user():
             cc_wallet.append({'NUMBER': '*' * 12 + str(cc['cc_number'])[-4:], 'EXP': cc['expiration']})
         # Getting Billing Address info
         billing_address_db = db.get_all('BILLING_ADDRESS', 'user_id', session['user_id'])
-        billing_address = [ dict(i) for i in billing_address_db]
+        billing_address = [ dict(i) for i in billing_address_db if i['visibility'] == 1]
         for i in billing_address:
-            i.pop('id')
             i.pop('user_id')
+            i.pop('visibility')
             for k in list(i):
                 i[k.upper()] = i.pop(k)
 
@@ -187,12 +187,12 @@ def get_user():
 
     return jsonify({'SUCCESS': False, 'ERROR': error_message('no_login')}), 200
 
-@app.route('/api/v1/user', methods=['PUT'])
-def update_user():
-    ''' Updates User Information
+@app.route('/api/v1/user/client', methods=['PUT'])
+def update_client():
+    ''' Updates Client Information
     ---
     put:
-        description: Updates editable user information.
+        description: Updates editable client information.
         tags:
             - User
         requestBody:
@@ -239,6 +239,147 @@ def update_user():
 
         try:
             db.update('CLIENT', ['nif', 'name'], [param['NIF'], param['NAME']], 'id', session['user_id'])
+        except Exception as e:
+            print(e)
+            return jsonify({'SUCCESS': False, 'ERROR': error_message('db_error')}), 200
+
+        # Everything went well
+        return jsonify({'SUCCESS': True}), 200
+
+    return jsonify({'SUCCESS': False, 'ERROR': error_message('no_login')}), 200
+
+@app.route('/api/v1/user/billing_address', methods=['PUT'])
+def update_billing_address():
+    ''' Updates Client Billing Address Information
+    ---
+    put:
+        description: Updates editable billing address information.
+        tags:
+            - User
+        requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                     ID:
+                        type : number
+                        description : ID of the billing address to be updated
+                     FIRST_NAME:
+                        type : string
+                        description : First Name of the billing address.
+                     LAST_NAME:
+                        type : string
+                        description : Last Name of the billing address.
+                     COUNTRY:
+                        type : string
+                        description : Country of the billing address.
+                     ADDRESS:
+                        type : string
+                        description : Street name and number of the billing address.
+                     POST_CODE:
+                        type : string
+                        description : Post code of the billing address.
+                     CITY:
+                        type : string
+                        description : City of the billing address.
+                     PHONE:
+                        type : number
+                        description : Phone of the billing address.
+        responses:
+            200:
+                description: A JSON containing the result of payment.
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          SUCCESS:
+                            type: boolean
+            400:
+                description: A JSON containing the ERROR that identifies the problem.
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          ERROR:
+                            type: string
+    '''
+
+    if 'user_id' in session and db.exists('USER', 'id', session['user_id']):
+        # request.form looks ugly and takes too much space...
+        param = request.json
+        keys = param.keys()
+        expected_keys = ['ID', 'FIRST_NAME', 'LAST_NAME', 'COUNTRY', 'ADDRESS', \
+                            'POST_CODE', 'CITY', 'PHONE']
+
+        # Checking for required parameters
+        if not param or not check_keys(expected_keys, keys):
+            return jsonify({'ERROR': error_message('invalid_request')}), 400
+
+        try:
+            db.update('BILLING_ADDRESS',\
+                ['first_name', 'last_name', 'country', 'city', 'address', 'post_code', 'phone'] \
+                ,[param['FIRST_NAME'], param['LAST_NAME'], param['COUNTRY'], param['CITY'], \
+                    param['ADDRESS'], param['POST_CODE'], param['PHONE'] ], 'id', param['ID'])
+        except Exception as e:
+            print(e)
+            return jsonify({'SUCCESS': False, 'ERROR': error_message('db_error')}), 200
+
+        # Everything went well
+        return jsonify({'SUCCESS': True}), 200
+
+    return jsonify({'SUCCESS': False, 'ERROR': error_message('no_login')}), 200
+
+@app.route('/api/v1/user/billing_address', methods=['DELETE'])
+def delete_billing_address():
+    ''' Turns Billing Address invisible for the user
+    ---
+    put:
+        description: Deletes billing address for the user (invisible)
+        tags:
+            - User
+        requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    ID:
+                      type: number
+                      description: ID of billing address to delete
+        responses:
+            200:
+                description: A JSON containing the result of payment.
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          SUCCESS:
+                            type: boolean
+            400:
+                description: A JSON containing the ERROR that identifies the problem.
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          ERROR:
+                            type: string
+    '''
+
+    if 'user_id' in session and db.exists('USER', 'id', session['user_id']):
+        # request.form looks ugly and takes too much space...
+        param = request.json
+        keys = param.keys()
+        expected_keys = ['ID']
+
+        # Checking for required parameters
+        if not param or not check_keys(expected_keys, keys):
+            return jsonify({'ERROR': error_message('invalid_request')}), 400
+
+        try:
+            db.update('BILLING_ADDRESS', ['visibility'], [0], 'id', param['ID'])
         except Exception as e:
             print(e)
             return jsonify({'SUCCESS': False, 'ERROR': error_message('db_error')}), 200
@@ -854,7 +995,9 @@ with app.test_request_context():
     spec.add_path(view=execute_checkout)
     spec.add_path(view=delete_checkout)
     spec.add_path(view=get_user)
-    spec.add_path(view=update_user)
+    spec.add_path(view=update_client)
+    spec.add_path(view=update_billing_address)
+    spec.add_path(view=delete_billing_address)
 
 with open('static/swagger.json', 'w') as f:
     json.dump(spec.to_dict(), f)

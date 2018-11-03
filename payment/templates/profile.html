@@ -57,7 +57,7 @@
                         </div>
                         <br/>
                         <hr>
-                        <div>
+                        <div id="cc-div">
 
                           <div class="input" id="dropdown">
                             <button id="wallet" type="button" class="dropbtn">Credit Card Wallet</button>
@@ -82,7 +82,7 @@
                       </div>
 
 
-                      <div>
+                      <div id="ba-div">
 
                         <div class="input" id="dropdown">
                           <button id="wallet" type="button" class="dropbtn">Your Billing Address's</button>
@@ -93,39 +93,50 @@
 
                         <div>
                           <div class="input">
-                              <input id="has-icon" type="text" name="first_name" placeholder="First Name"/>
+                              <input id="has-icon" type="text" readonly="readonly" name="first_name" placeholder="First Name"/>
                               <span> <i class="fa fa-user" aria-hidden="true"></i> </span>
                           </div>
 
                           <div class="input">
-                              <input id="has-icon" type="text" name="last_name" placeholder="Last Name" />
+                              <input id="has-icon" type="text" readonly="readonly" name="last_name" placeholder="Last Name" />
                               <span> <i class="fa fa-user" aria-hidden="true"></i> </span>
                           </div>
 
                           <div class="input">
-                              <input id="has-icon" type="text" name="country" placeholder="Country" />
+                              <input id="has-icon" type="text" readonly="readonly" name="country" placeholder="Country" />
                               <span> <i class="fa fa-flag" aria-hidden="true"></i> </span>
                           </div>
 
                           <div class="input">
-                              <input id="has-icon" type="text" name="city" placeholder="Town / City" />
+                              <input id="has-icon" type="text" readonly="readonly" name="city" placeholder="Town / City" />
                               <span> <i class="fa fa-map-marker" aria-hidden="true"></i> </span>
                           </div>
 
                           <div class="input">
-                              <input id="has-icon" type="text" name="address" placeholder="Address" />
+                              <input id="has-icon" type="text" readonly="readonly" name="address" placeholder="Address" />
                               <span> <i class="fa fa-home" aria-hidden="true"></i> </span>
                           </div>
 
                           <div class="input">
-                              <input id="has-icon" type="text" name="post_code" placeholder="Post Code" />
+                              <input id="has-icon" type="text" readonly="readonly" name="post_code" placeholder="Post Code" />
                               <span> <i class="fa fa-map-pin" aria-hidden="true"></i> </span>
                           </div>
 
                           <div class="input">
-                              <input id="has-icon" type="number" name="phone" placeholder="Phone" />
+                              <input id="has-icon" type="number" readonly="readonly" name="phone" placeholder="Phone" />
                               <span> <i class="fa fa-phone" aria-hidden="true"></i> </span>
                           </div>
+
+                          <div id="half" class="login-button">
+                              <button id="delete-ba" style="background: #dc3545; border: none;">Delete</button>
+                          </div>
+
+                          <div id="half"  class="login-button">
+                              <button id="edit-ba" style="background: #f0ad4e; border: none;">Edit</button>
+                              <button id="update-ba" style="display: none">Update</button>
+                          </div>
+
+
                         </div>
 
                       </div>
