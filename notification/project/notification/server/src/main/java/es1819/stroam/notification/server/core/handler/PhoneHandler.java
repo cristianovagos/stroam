@@ -40,15 +40,23 @@ public class PhoneHandler extends Handler {
                 continue;
             }
 
-            byte[] decodedPhoneMessageBytes = Base64.getDecoder().decode(phoneMessageBody); //TODO: pode dar excepção. Ver tambem que o byte array pode ser nulo (se calhar)
-            String decodedPhoneMessage = new String(decodedPhoneMessageBytes);
-            if(decodedPhoneMessage.isEmpty()) {
+
+            String decodedPhoneMessageBody;
+            try {
+                decodedPhoneMessageBody = new String(Base64.getDecoder().decode(phoneMessageBody));
+            } catch (IllegalArgumentException messageDecodeException) {
+                //TODO: enviar resposta com o request id a dizer que ocorreu um erro ao fazer o decode da mensagem de telefone e que nao sera enviada
+                System.out.println("received a phone message to process with an invalid encoded body"); //TODO: debug
+                continue;
+            }
+
+            if(decodedPhoneMessageBody.isEmpty()) {
                 //TODO: enviar resposta com o request id a dizer que a mensagem de telefone é nula ou vazia e que nao sera enviada
                 System.out.println("received a phone message to process with a null or empty decoded body"); //TODO: debug
                 continue;
             }
 
-            if(decodedPhoneMessage.length() > Constants.PHONE_MESSAGE_MAX_CHARACTERS) {
+            if(decodedPhoneMessageBody.length() > Constants.PHONE_MESSAGE_MAX_CHARACTERS) {
                 //TODO: enviar resposta com o request id a dizer que a mensagem de telefone é demasiado comprida e que nao sera enviada
                 System.out.println("received a phone message to " +
                         "process with more than " + Constants.PHONE_MESSAGE_MAX_CHARACTERS + "characters long"); //TODO: debug
@@ -56,6 +64,8 @@ public class PhoneHandler extends Handler {
             }
 
             //TODO: envia a mensagem
+            System.out.println("Message sended for: " + message.getPhoneNumber());
+            System.out.println("Message body: " + decodedPhoneMessageBody);
         }
     }
 }

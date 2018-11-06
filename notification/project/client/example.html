@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="./paho-mqtt-min.js" type="text/javascript"></script>
+        <script src="./NotTheServiceClient.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            // create a client instance
+            client = new Paho.MQTT.Client("localhost", 1884, randomUniqueIdentifier());
+
+            // set callback functions
+            client.onConnectionLost = onConnectionLost;
+            client.onMessageArrived = onMessageArrived;
+
+            // connect the client
+            client.connect({ onSuccess: onConnect });
+
+            // when the client connects
+            function onConnect() {
+            // when a connection has been made subscribe the request response channel
+                console.log("onConnect");
+                client.subscribe("/notTheService/requestResponse");
+            }
+
+            // when the client loses its connection
+            function onConnectionLost(responseObject) {
+                if (responseObject.errorCode !== 0)
+                    console.log("Connection losted! Cause: " + responseObject.errorMessage);
+            }
+
+            // called when a message arrives
+            function onMessageArrived(message) {
+                console.log("Message received: " + message.payloadString);
+            }
+            
+            function sendEmail() {
+                address = document.getElementById("emailAddress").value;
+                subject = document.getElementById("emailSubject").value;
+                body = document.getElementById("emailBody").value;
+                requestId = randomUniqueIdentifier();
+
+                var jsonMessageData = {};
+                jsonMessageData["requestId"] = requestId;
+                jsonMessageData["subject"] = btoa(subject);
+                jsonMessageData["body"] = btoa(body);
+        
+                var message = new Paho.MQTT.Message(JSON.stringify(jsonMessageData));
+                message.destinationName = "/notTheService/email/" + address;
+                client.send(message)
+
+                console.log("Email sended to: " + address); //debug only
+                return requestId;
+            }
+
+            function sendPhone() {
+                number = document.getElementById("phoneNumber").value;
+                body = document.getElementById("phoneBody").value;
+                requestId = randomUniqueIdentifier();
+
+                var jsonMessageData = {};
+                jsonMessageData["requestId"] = requestId;
+                jsonMessageData["body"] = btoa(body);
+        
+                var message = new Paho.MQTT.Message(JSON.stringify(jsonMessageData));
+                message.destinationName = "/notTheService/phone/" + number;
+                client.send(message)
+
+                console.log("Phone sended to: " + number); //debug only
+                return requestId;
+            }
+
+            //solução sucateira
+            function randomUniqueIdentifier() {
+                function randomUIpart() {
+                    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+                }
+                return randomUIpart() + randomUIpart() + 
+                "-" + randomUIpart() + 
+                "-" + randomUIpart() + 
+                "-" + randomUIpart() +
+                "-" + randomUIpart() + randomUIpart() + randomUIpart();
+            }
+        </script>
+    </head>
+    <body>
+        <div>
+            <table>
+                <tr>
+                    <td>Send email:</td>
+                </tr>
+                <tr>
+                    <td>Email address:</td>
+                    <td><input id="emailAddress" type="text"></td>
+                </tr>
+                <tr>
+                    <td>Email subject</td>
+                    <td><input id="emailSubject" type="text"></td>
+                </tr>
+                <tr>
+                    <td>Email body</td>
+                    <td><textarea id="emailBody"></textarea></td>
+                </tr>
+                <tr>
+                    <td><input type="button" onclick="sendEmail();" value="Send email"></td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <table>
+                <tr>
+                    <td>Send phone:</td>
+                </tr>
+                <tr>
+                    <td>Phone number:</td>
+                    <td><input id="phoneNumber" type="text"></td>
+                </tr>
+                <tr>
+                    <td>Phone body</td>
+                    <td><input id="phoneBody" type="text"></td>
+                </tr>
+                <tr>
+                    <td><input type="button" onclick="sendPhone();" value="Send phone message"></td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

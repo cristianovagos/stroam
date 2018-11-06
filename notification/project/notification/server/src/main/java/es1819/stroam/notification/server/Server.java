@@ -110,7 +110,7 @@ public class Server implements Runnable, CommunicationCallback {
         } finally {
             messageQueueAccessControllerMutex.release();
         }
-        threadRunController.release();
+        threadRunController.release(); //TODO: ### se o parse da mensagem der erro a thread é solta na mesma
     }
 
     @Override

@@ -2,6 +2,9 @@ package es1819.stroam.notification.server;
 
 public class Constants {
 
+    //General constants
+    public static final boolean DEBUG_MODE = true; //TODO mudar conforme parametros de arranque do programa
+
     //Channel constants
     public static final String CHANNEL_SEPARATOR = "/";
     public static final String CHANNEL_SERVICE_PREFIX = "notTheService";
