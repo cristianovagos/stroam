@@ -2,125 +2,115 @@
 <html>
     <head>
         <script src="./paho-mqtt-min.js" type="text/javascript"></script>
-        <script src="./NotTheServiceClient.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            // create a client instance
-            client = new Paho.MQTT.Client("localhost", 1884, randomUniqueIdentifier());
+        <script src="./notTheServiceClient.js" type="text/javascript"></script>
+        <script>
+            let client = new NotTheServiceClient("localhost", 1884);
 
-            // set callback functions
-            client.onConnectionLost = onConnectionLost;
-            client.onMessageArrived = onMessageArrived;
-
-            // connect the client
-            client.connect({ onSuccess: onConnect });
-
-            // when the client connects
             function onConnect() {
-            // when a connection has been made subscribe the request response channel
-                console.log("onConnect");
-                client.subscribe("/notTheService/requestResponse");
+                client.subscribe("/requestResponse"); //if have interest in receive the requests responses
             }
 
-            // when the client loses its connection
-            function onConnectionLost(responseObject) {
-                if (responseObject.errorCode !== 0)
-                    console.log("Connection losted! Cause: " + responseObject.errorMessage);
+            function onResponseRequestArrived(requestId, errorCode, message) {
+                console.log(requestId + " -> " + errorCode + ": " + message);
             }
 
-            // called when a message arrives
-            function onMessageArrived(message) {
-                console.log("Message received: " + message.payloadString);
-            }
-            
-            function sendEmail() {
-                address = document.getElementById("emailAddress").value;
-                subject = document.getElementById("emailSubject").value;
-                body = document.getElementById("emailBody").value;
-                requestId = randomUniqueIdentifier();
-
-                var jsonMessageData = {};
-                jsonMessageData["requestId"] = requestId;
-                jsonMessageData["subject"] = btoa(subject);
-                jsonMessageData["body"] = btoa(body);
-        
-                var message = new Paho.MQTT.Message(JSON.stringify(jsonMessageData));
-                message.destinationName = "/notTheService/email/" + address;
-                client.send(message)
-
-                console.log("Email sended to: " + address); //debug only
-                return requestId;
+            function onPushArrived(topic, payload) {
+                var ta_pushNotification = document.getElementById('pushNotification');
+                ta_pushNotification.value += topic + " -> " + payload + "\n"; 
             }
 
-            function sendPhone() {
-                number = document.getElementById("phoneNumber").value;
-                body = document.getElementById("phoneBody").value;
-                requestId = randomUniqueIdentifier();
-
-                var jsonMessageData = {};
-                jsonMessageData["requestId"] = requestId;
-                jsonMessageData["body"] = btoa(body);
-        
-                var message = new Paho.MQTT.Message(JSON.stringify(jsonMessageData));
-                message.destinationName = "/notTheService/phone/" + number;
-                client.send(message)
-
-                console.log("Phone sended to: " + number); //debug only
-                return requestId;
+            function sendEmail_buttonClick() {
+                console.log("email sended with request id: " +
+                client.sendEmail(
+                            undefined, //or you can put you request id here
+                            document.getElementById('emailAddress').value,
+                            document.getElementById('emailSubject').value,
+                            document.getElementById('emailBody').value));
             }
 
-            //solução sucateira
-            function randomUniqueIdentifier() {
-                function randomUIpart() {
-                    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-                }
-                return randomUIpart() + randomUIpart() + 
-                "-" + randomUIpart() + 
-                "-" + randomUIpart() + 
-                "-" + randomUIpart() +
-                "-" + randomUIpart() + randomUIpart() + randomUIpart();
+            function sendPhone_buttonClick() {
+                console.log("phone message sended with request id: " +
+                client.sendPhone(
+                            undefined, //or you can put you request id here
+                            document.getElementById('phoneNumber').value,
+                            document.getElementById('phoneBody').value));
             }
+
+            function sendPush_buttonClick() {
+                var pushTopic = document.getElementById('pushTopic').value;
+                client.subscribe(pushTopic); //subscribe the topic to receive notifications
+
+                client.sendPush(pushTopic, document.getElementById('pushBody').value); 
+                //client.unsubscribe(pushTopic); to unsubscribe an topic
+            }
+
         </script>
     </head>
     <body>
         <div>
-            <table>
-                <tr>
-                    <td>Send email:</td>
-                </tr>
-                <tr>
-                    <td>Email address:</td>
-                    <td><input id="emailAddress" type="text"></td>
-                </tr>
-                <tr>
-                    <td>Email subject</td>
-                    <td><input id="emailSubject" type="text"></td>
-                </tr>
-                <tr>
-                    <td>Email body</td>
-                    <td><textarea id="emailBody"></textarea></td>
-                </tr>
-                <tr>
-                    <td><input type="button" onclick="sendEmail();" value="Send email"></td>
-                </tr>
-            </table>
+            <form>
+                <table>
+                    <tr>
+                        <td>Send email:</td>
+                    </tr>
+                    <tr>
+                        <td>Email address:</td>
+                        <td><input id="emailAddress" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>Email subject:</td>
+                        <td><input id="emailSubject" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>Email body:</td>
+                        <td><textarea id="emailBody"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><input type="button" onclick="sendEmail_buttonClick();" value="Send email"></td>
+                    </tr>
+                </table>
+            </form>
         </div>
         <div>
-            <table>
-                <tr>
-                    <td>Send phone:</td>
-                </tr>
-                <tr>
-                    <td>Phone number:</td>
-                    <td><input id="phoneNumber" type="text"></td>
-                </tr>
-                <tr>
-                    <td>Phone body</td>
-                    <td><input id="phoneBody" type="text"></td>
-                </tr>
-                <tr>
-                    <td><input type="button" onclick="sendPhone();" value="Send phone message"></td>
-                </tr>
-            </table>
+            <form>
+                <table>
+                    <tr>
+                        <td>Send phone:</td>
+                    </tr>
+                    <tr>
+                        <td>Phone number:</td>
+                        <td><input id="phoneNumber" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>Phone body</td>
+                        <td><textarea id="phoneBody"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><input type="button" onclick="sendPhone_buttonClick();" value="Send phone message"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div>
+            <form>
+                <table>
+                    <tr>
+                        <td>Push notification:</td>
+                    </tr>
+                    <tr>
+                        <td>Push topic:</td>
+                        <td><input id="pushTopic" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>Push body:</td>
+                        <td><textarea id="pushBody"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><input type="button" onclick="sendPush_buttonClick();" value="Send phone message"></td>
+                    </tr>
+                </table>
+            </form>
+            <textarea id="pushNotification"></textarea>
         </div>
     </body>
 </html>
