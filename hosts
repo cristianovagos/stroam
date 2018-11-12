@@ -1,0 +1,2 @@
+[es-vm]
+192.168.85.71 ansible_user=engserv ansible_ssh_pass=qwerty00

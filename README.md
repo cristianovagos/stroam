@@ -50,5 +50,40 @@ _Auth_
 * **João Amaral** ([GitHub](https://github.com/joaoamaral28) / [joaop.amaral@ua.pt](mailto:joaop.amaral@ua.pt))  
 _Streaming CDN_
 
-* **João Verdasca** ([GitHub](https://github.com/jfrverdasca) / [jfrverdasca@ua.pt](mailto:jfrverdasca@ua.pt))
+* **João Verdasca** ([GitHub](https://github.com/jfrverdasca) / [jfrverdasca@ua.pt](mailto:jfrverdasca@ua.pt))  
 _Notification_
+
+
+
+
+## How to run STROAM
+
+There is a docker-compose file available with all services and containers for STROAM deployment, 
+as well as a Ansible playbook file available for quick remote installation of the deployment environment.
+
+#### Requirements
+* **_Ansible_** must be installed on YOUR machine, and Python must be installed on the REMOTE machine (later described as host)
+* In our case, the machine where the deployment is done is on a Ubuntu Server 18.04
+* It may be required UA/IT VPN access into the deployment host
+
+The Ansible playbook will install all software and packages needed for the Dockerized environment, such as Docker and Docker Compose
+as well as pull the code from our repository (code.ua.pt), build and run the containers described in the Docker Compose file.
+
+#### Usage
+On **YOUR** machine, copy and paste the hosts file on Ansible config folder ( _/etc/ansible/_ ):
+```
+$ sudo cp hosts /etc/ansible/hosts
+```
+
+(_**OR**, if you already have Ansible hosts installed, just append the contents from this hosts file into your Ansible hosts_):
+```
+$ sudo cat hosts >> /etc/ansible/hosts
+```
+
+Then run the Ansible playbook, requesting password prompts:
+```
+$ ansible-playbook vm-playbook.yml --ask-pass --ask-become-pass
+```
+The user password and sudo password of the REMOTE machine will be prompted, as well as YOUR user and password from git repository.
+
+Enjoy STROAM!
