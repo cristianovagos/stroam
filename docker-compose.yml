@@ -5,9 +5,9 @@ services:
     restart: always
     image: postgres:latest
     environment:
-      - POSTGRES_DB: stroamdb
-      - POSTGRES_USER: stroamuser
-      - POSTGRES_PASSWORD: stroam
+      POSTGRES_DB: stroamdb
+      POSTGRES_USER: stroamuser
+      POSTGRES_PASSWORD: stroam
   
   frontend-redis:
     restart: always

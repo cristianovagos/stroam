@@ -84,10 +84,15 @@
 
   - block:
     - name: Build docker-compose file
-      command: docker-compose build
+      command: chdir=./stroam docker-compose build
       become: yes
 
     - name: Run all containers in docker-compose file detached
-      command: docker-compose run -d
+      command: chdir=./stroam docker-compose run -d
       become: yes
-    when: (docker_running.stderr != "") and (docker_compose_installed is not failed)
+
+    - debug:
+        var: docker_running
+    - debug:
+        var: docker_compose_installed
+    when: (docker_running) and (docker_compose_installed)
