@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  frontend-db:
+    restart: always
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB: stroamdb
+      - POSTGRES_USER: stroamuser
+      - POSTGRES_PASSWORD: stroam
+  
+  frontend-redis:
+    restart: always
+    image: redis:latest
+  
+  frontend:
+    restart: always
+    build: ./frontend
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - frontend-db
+      - frontend-redis
+  
+  catalog:
+    restart: always
+    build: ./catalog
+    image: stroam-catalog
+    ports:
+      - "4000:8080"
