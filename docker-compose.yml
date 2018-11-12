@@ -28,6 +28,7 @@ services:
   catalog:
     restart: always
     build: ./catalog
-    image: stroam-catalog
+    volumes:
+      - ./catalog:/app
     ports:
       - "4000:8080"
