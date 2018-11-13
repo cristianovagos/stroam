@@ -100,7 +100,7 @@ public class EmailHandler extends Handler {
 
         String username = outgoingEmailServerProperties.getProperty("mail.username");
 
-        Session session = null;
+        Session session;
         if((boolean)outgoingEmailServerProperties.get("mail.smtp.auth"))
             session = Session.getInstance(outgoingEmailServerProperties, new Authenticator() {
                 @Override

@@ -107,10 +107,11 @@ public class Server implements Runnable, CommunicationCallback {
             /*Se calhar criar um novo tipo de mensagens (resposta ou erro) e neste caso colocar-la na fila na mesma
             a diferenca é que ela deve ser logo enviada nao chegando a ir para as threads de processamento
              */
+            return;
         } finally {
-            messageQueueAccessControllerMutex.release();
+            messageQueueAccessControllerMutex.release(); //always executed even with the return in catch block
         }
-        threadRunController.release(); //TODO: ### se o parse da mensagem der erro a thread é solta na mesma
+        threadRunController.release(); //means that the message as been successfully parsed
     }
 
     @Override
