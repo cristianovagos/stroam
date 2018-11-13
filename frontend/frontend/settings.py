@@ -75,10 +75,11 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [('frontend-redis', 6379)],
         },
     },
 }
+# ON LOCAL DEVELOPMENT CHANGE HOSTS TO '127.0.0.1'
 
 
 # Database
@@ -90,11 +91,11 @@ DATABASES = {
         'NAME': 'stroamdb',
         'USER': 'stroamuser',
         'PASSWORD': 'stroam',
-        'HOST': '127.0.0.1',
+        'HOST': 'frontend-db',
         'PORT': '5432',
     }
 }
-
+# ON LOCAL DEVELOPMENT CHANGE HOST TO '127.0.0.1'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
