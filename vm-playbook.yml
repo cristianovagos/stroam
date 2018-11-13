@@ -88,7 +88,7 @@
       become: yes
 
     - name: Run all containers in docker-compose file detached
-      command: chdir=./stroam docker-compose run -d
+      command: chdir=./stroam docker-compose up -d
       become: yes
 
     - debug:
