@@ -17,13 +17,27 @@ const offerOptions = {
   offerToReceiveVideo: 1
 };
 
+/*
+const offerOptions = {
+    video: true,
+    audio: true,
+};
+*/
+
 uuid = createUUID(); // unique identifier to distinguish users at the server
 console.log("User UUID: " + uuid);
+
+/*
+if(navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia(constraints).then(getUserMediaSuccess).catch(errorHandler);
+}else {
+    alert('Your browser does not support getUserMedia API');
+}
+*/
 
 function showPlayer(){
     var playerDiv = document.getElementById("playerDiv");
     if (playerDiv.style.display === "none") {
-        console.log("block");
         playerDiv.style.display = "block";
     } else {
         playerDiv.style.display = "none";
@@ -55,7 +69,7 @@ function checkMovieAvailable(movie_id){
             if(xmlHttp.status == 200){
                 console.log("Response: " + xmlHttp.response);
                 showPlayer();
-                // initWebRTCPeerSession(); ------------------------------------------------------------------------------
+                initWebRTCPeerSession();
             }
             else{
                 alert("Movie not found!");
@@ -78,56 +92,46 @@ function initWebRTCPeerSession(){
 
     peerConnection = new RTCPeerConnection(peerConnectionConfig);
 
+    peerConnection.onicecandidate = gotIceCandidate;
+    peerConnection.onTrack = gotRemoteTrack;
+    peerConnection.onaddstream = gotRemoteStream; /**** Deprecated */
+
     serverConnection.onopen = async function(){ 
     
         const offer = await peerConnection.createOffer(offerOptions);
+
         await onCreateOfferSuccess(offer);
-
-
-        // peerConnection.createOffer().then(createdDescription);//.catch(errorHandler);
-
-        /*
-        peerConnection.createOffer().then(function(offer) {
-            return myPeerConnection.setLocalDescription(offer);
-        }).then(function() { 
-            serverConnection.send(JSON.stringify({'sdp': peerConnection.localDescription, 'uuid': uuid}));
-        }).catch(errorHandler);
-        */
     
     };
 
-    //serverConnection.onmessage = processServerMessage;
-    //serverConnection.onclose = function() { console.log("Socket closed"); };
-    //serverConnection.onerror = function() { console.log("Socket error"); };
+    serverConnection.onmessage = processServerMessage;
 
-    //serverConnection.onopen = function() { console.log('Socket connection with server established') };
-    //serverConnection.onmessage = processServerMessage;
+    /*
+    var dataChannel = peerConnection.createDataChannel("client_channel");
 
-    /*peerConnection.onicecandidate = gotIceCandidate;
-    peerConnection.ontrack = gotRemoteStream;
-    peerConnection.addStream(localStream);
-
-    if(isCaller) {
-        peerConnection.createOffer().then(createdDescription).catch(errorHandler);
+    dataChannel.onmessage = function(event){
+        console.log("new message");
+        console.log(event);
     }
     */
 
-    /*
-    var constraints = {
-        video: true,
-        audio: true,
-    };
 
-    if(navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia(constraints).then(getUserMediaSuccess).catch(errorHandler);
-    } else {
-        alert('Your browser does not support getUserMedia API');
-    }
-    */ 
+     /*
+    player.addEventListener('resize', () => {
+      console.log(`Player size changed to ${player.videoWidth}x${player.videoHeight}`);
+      // We'll use the first onsize callback as an indication that video has started
+      // playing out.
+      if (start_time) {
+        const elapsedTime = window.performance.now() - start_time;
+        console.log('Setup time: ' + elapsedTime.toFixed(3) + 'ms');
+        startTime = null;
+      }
+    }); 
+    */
 }
 
 async function onCreateOfferSuccess(desc) {
-    console.log(`Offer from pc1\n${desc.sdp}`);
+    //console.log(`Offer from pc1\n${desc.sdp}`);
     console.log('pc1 setLocalDescription start');
     try {
         await peerConnection.setLocalDescription(desc);
@@ -137,17 +141,38 @@ async function onCreateOfferSuccess(desc) {
     }
 }
 
+function gotIceCandidate(event) {
+    console.log("got ice candidate");
+    if(event.candidate != null) {
+        serverConnection.send(JSON.stringify({'ice': event.candidate, 'uuid': uuid}));
+    }
+}
+
 function onSetLocalSuccess(pc) {
     console.log("setLocalDescription complete");
     serverConnection.send(JSON.stringify({'sdp' : peerConnection.localDescription, 'uuid': uuid}));
 }
 
+function gotRemoteStream(event) {
+  console.log('got remote stream!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+  console.log(event);
+  player.srcObject = event.stream;
+  player.play();
+}
+
+function gotRemoteTrack(event) {
+  console.log('got remote track!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+  player.srcObject = event.streams[0];
+}
+
+/*
 function createdDescription(description) {
     console.log('got description');
     peerConnection.setLocalDescription(description).then(function() {
         serverConnection.send(JSON.stringify({'sdp': peerConnection.localDescription, 'uuid': uuid}));
     }).catch(errorHandler);
 }
+*/
 
 function processServerMessage(message){
  
@@ -160,46 +185,42 @@ function processServerMessage(message){
 
     if(signal.sdp) {
         peerConnection.setRemoteDescription(new RTCSessionDescription(signal.sdp)).then(function() {
+
+            start_time = window.performance.now();
         // Only create answers in response to offers
+        /*
             if(signal.sdp.type == 'offer') {
                 peerConnection.createAnswer().then(createdDescription).catch(errorHandler);
             }
+        */
         }).catch(errorHandler);
     }else if(signal.ice) {
+        console.log("New message: new ICE candidate");
+        console.log(signal.ice);
         peerConnection.addIceCandidate(new RTCIceCandidate(signal.ice)).catch(errorHandler);
     }
 
 }
 
-/*
-
-function start(isCaller) {
-
-    peerConnection = new RTCPeerConnection(peerConnectionConfig);
-    peerConnection.onicecandidate = gotIceCandidate;
-    peerConnection.ontrack = gotRemoteStream;
-    peerConnection.addStream(localStream);
-
-    if(isCaller) {
-        peerConnection.createOffer().then(createdDescription).catch(errorHandler);
-    }
-}
-
-*/
-
 function errorHandler(error) {
   console.log(error);
 }
 
+/*
 function getUserMediaSuccess(stream) {
     localStream = stream;
     player.srcObject = stream;
+    console.log(player.src);
+    console.log(player.srcObject);
 }
+*/
 
+/*
 function gotRemoteStream(event) {
     console.log('got remote stream');
-    player.srcObject = event.streams[0];
+    player.srcObject = event.streams;
 }
+*/
 
 // Taken from http://stackoverflow.com/a/105074/515584
 // Strictly speaking, it's not a real UUID, but it gets the job done here

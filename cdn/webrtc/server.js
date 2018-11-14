@@ -82,20 +82,56 @@ wss.on("connection", (ws) => {
 	console.log("Websocket connection open!");
 	ws.on('message', function(message) {
 		var msg = JSON.parse(message);
+
 		console.log(msg);
-		//console.log('received: %s', message);
-		if(msg['sdp']){
-			if(usersID.has(msg['uuid'])){
-				console.log(msg['uuid']);
-				clients.push({ 'uuid' : msg['uuid'], 'ws' : ws});
+
+		if(msg['sdp']){  
+			if(msg.uuid === 0){ // message from server peer
+				if(msg.sdp === 'server_peer_online'){
+					console.log("Server peer added to client list");
+					usersID.add(msg['uuid']);
+					clients[msg['uuid']] = ws;
+				}
+				if(msg.sdp.type === 'answer'){
+					console.log("Got server answer");
+					var dst_uuid = msg.dst_uuid
+					var src_uuid = msg.uuid;
+					clients[dst_uuid].send(JSON.stringify({"sdp":msg.sdp, "uuid":src_uuid})); 
+
+					console.log("Sent answer to client peer!");
+
+				}
+
 			}
-			if(msg['uuid'] === 0){ // server id
-				console.log("Server peer added to client list");
-				usersID.add(msg['uuid']);
-				clients[msg['uuid']] = ws;
+			else if(usersID.has(msg['uuid'])){ // if request from user 
+
+				if(msg.sdp.type='offer'){ // if received offer 
+					if(msg.uuid != 0){ // offer client => server
+						usersID.add(msg['uuid']);	
+						clients[msg['uuid']] = ws; // add client socket 
+						// relay offer to the server peer
+						clients[0].send(JSON.stringify(msg));
+					}else{ // offer server => client 
+
+					}
+				}
 			}
+		}else if(msg.ice) { 
+			//console.log("Msg uuid: " + msg.uuid);
+			if(msg.uuid !== undefined){
+				if(msg.uuid === 0){ // server message => client peer
+					clients[msg.dst_uuid].send(JSON.stringify({'ice' : msg.ice, 'uuid' : msg.uuid})); 
+				}else{ // client => server peer
+					clients[0].send(JSON.stringify(msg)); 
+					console.log("client => server peer");
+					console.log(JSON.stringify(msg));
+				}		
+			}else{
+				console.log("Error: No UUID in ICE message. Aborting...");
+			}
+			
 		}else{
-			console.log("No uuid in sdp message. Aborting...");
+			console.log("Message not of SDP type. Aborting...");
 			return;
 		}
 	});
