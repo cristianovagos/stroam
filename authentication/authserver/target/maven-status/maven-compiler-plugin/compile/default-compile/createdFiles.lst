@@ -1,0 +1,7 @@
+es\stroam\authserver\model\User.class
+es\stroam\authserver\reposiroties\UserRepo.class
+es\stroam\authserver\AuthServer$1.class
+es\stroam\authserver\model\Login.class
+es\stroam\authserver\controllers\LoginController.class
+es\stroam\authserver\controllers\UserController.class
+es\stroam\authserver\AuthServer.class
