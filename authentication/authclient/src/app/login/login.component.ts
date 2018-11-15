@@ -1,59 +1,85 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { LoginService } from '../services/login/login.service';
+﻿import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { User } from '../models/user.model';
+import { StorageData } from '../models/storage.model';
 
 @Component({
-  selector: 'login',
-  templateUrl: './login.component.html'
+    selector: 'login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
 
-    username: string;
-    password: string;
-    rememberMe: boolean;
-    authenticationError: boolean;
+export class LoginComponent implements OnInit {
+
+    model: any = {};
+    failLogin: boolean;
 
     constructor(
-        private loginService: LoginService,
-        private router: Router
-    ){}
+        public router: Router,
+        private activatedRoute: ActivatedRoute,
+        private http: HttpClient,
+        private storage: StorageData
+    ) { 
+        this.failLogin = false;
+    }
+
+    ngOnInit() {
+        //sessionStorage.setItem('token', '');
+        this.activatedRoute.queryParams.subscribe(params => {
+            let urlRedirect = params['url'];
+            console.log(urlRedirect);
+            console.log(atob(urlRedirect));
+        });
+    }
+
+    goToLogin() {
+        this.router.navigate(["/login"]);
+    }
+
+    goToRegister() {
+        this.router.navigate(["/register"]);
+    }
 
     login() {
-        this.loginService
-            .login({
-                username: this.username,
-                password: this.password,
-                rememberMe: this.rememberMe
-            })
-            .then(() => {
-                this.authenticationError = false;
-                this.router.navigate(['welcome']);
 
-                /* this.eventManager.broadcast({
-                    name: 'authenticationSuccess',
-                    content: 'Sending Authentication Success'
-                }); */
+        let url = 'http://localhost:3000/api/v1/login';
 
-                // previousState was set in the authExpiredInterceptor before being redirected to login modal.
-                // since login is succesful, go to stored previousState and clear previousState
-                /* const redirect = this.stateStorageService.getUrl();
-                if (redirect) {
-                    this.stateStorageService.storeUrl(null);
-                    this.router.navigate([redirect]);
-                } */
-            })
-            .catch(() => {
-                this.authenticationError = true;
-            });
+        this.http.post<User>(url, {
+            username: this.model.username,
+            password: this.model.password
+        }).subscribe( 
+            resp => {
+                console.log(resp);
+                if (resp.id != null) {
+                    console.log("nova pagina");
+                    this.storage.data = resp;
+                    this.router.navigate(['/welcome']);
+
+                } else {
+                    console.log("fail");
+                    this.failLogin = true;
+                }
+            },
+            err => {
+                console.log(err.error.status, err.error.error);
+            }
+        );
     }
 
-    register() {
-        this.router.navigate(['/register']);
-    }
+    getAllUsers() {
 
-    requestResetPassword() {
-        this.router.navigate(['/resetpassword']);
-        /* this.router.navigate(['/reset', 'request']); */
+        let url = 'http://localhost:3000/api/all';
+
+        this.http.get(url).subscribe(
+            res => {
+                console.log(res);
+            },
+            err => {
+                console.log(err);
+            }
+        );
     }
+    
 }

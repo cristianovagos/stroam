@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "authclient": {
+    "AuthClient": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/authclient",
+            "outputPath": "dist/AuthClient",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -23,7 +23,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.css"
             ],
             "scripts": []
           },
@@ -57,18 +58,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "authclient:build"
+            "browserTarget": "AuthClient:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "authclient:build:production"
+              "browserTarget": "AuthClient:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "authclient:build"
+            "browserTarget": "AuthClient:build"
           }
         },
         "test": {
@@ -102,7 +103,7 @@
         }
       }
     },
-    "authclient-e2e": {
+    "AuthClient-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -111,11 +112,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "authclient:serve"
+            "devServerTarget": "AuthClient:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "authclient:serve:production"
+              "devServerTarget": "AuthClient:serve:production"
             }
           }
         },
@@ -131,5 +132,5 @@
       }
     }
   },
-  "defaultProject": "authclient"
+  "defaultProject": "AuthClient"
 }

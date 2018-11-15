@@ -49,3 +49,21 @@ services:
       - ./catalog:/app
     ports:
       - "4000:4000"
+
+  authserver:
+    container_name: authserver
+    restart: always
+    build: ./authentication/authserver
+    volumes:
+      - ./authentication/authserver:/app
+    ports:
+      - "3000:3000"
+
+  authclient:
+    container_name: authclient
+    restart: always
+    build: ./authentication/authclient
+    volumes:
+      - ./authentication/authclient:/app
+    ports:
+      - "3200:4200"
