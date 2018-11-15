@@ -15,6 +15,7 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
     user: User;
     url: string;
     sec: any;
+    token: string;
 
     public constructor(
         @Inject(DOCUMENT) private document: any,
@@ -43,7 +44,17 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
                 //         console.log(err);
                 //     }
                 // );
-                this.document.location.href = this.url + '?id=' + this.user.id.toString();
+                // this.document.location.href = this.url + '?id=' + this.user.id.toString();
+
+                this.http.post(this.url, {'ids': this.user.id.toString()}, {responseType: 'text'})
+                .subscribe( 
+                    resp => {
+                        this.document.location.href = this.url;
+                    },
+                    err => {
+                        console.error(err);
+                    }
+                );
             }
         }, 1000);
     }

@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
     model: any = {};
     failLogin: boolean;
     urlRedirect: string;
+    token: string;
 
     constructor(
         public router: Router,
@@ -30,6 +31,7 @@ export class LoginComponent implements OnInit {
         //sessionStorage.setItem('token', '');
         this.activatedRoute.queryParams.subscribe(params => {
             this.urlRedirect = params['url'];
+            this.token = params['token'];
             // console.log(urlRedirect);
             // console.log(atob(urlRedirect));
         });
@@ -57,7 +59,8 @@ export class LoginComponent implements OnInit {
                     console.log("nova pagina");
                     this.storage.data = JSON.stringify({
                         'user': resp, 
-                        'url': this.urlRedirect
+                        'url': this.urlRedirect,
+                        'token': this.token
                     });
                     this.router.navigate(['/welcome']);
 

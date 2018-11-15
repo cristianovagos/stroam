@@ -1,8 +1,10 @@
 import logging
+import json
 import base64
 from random import shuffle
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpRequest, HttpResponse, Http404
+from django.views.decorators.csrf import csrf_exempt
 
 from .catalog import production, season, genre
 from .payment import payment
@@ -17,15 +19,17 @@ MAIN_TITLE = WEBSITE_TITLE + SPACING + WEBSITE_SEPARATOR + SPACING
 
 LOGGER = logging.getLogger(__name__)
 
+@csrf_exempt
 def home(request):
     title = 'Stream strong, anytime and anywhere.'
     movies = production.getAllProduction()
     if movies:
         shuffle(movies)
 
-    print(request.GET)
-    # if request.method == 'POST':
-    #     print(request.POST)
+    if request.method == 'POST':
+        body_decoded = request.body.decode('utf-8')
+        body = json.loads(body_decoded)
+        print(body)
 
     tparams = {
         'title': MAIN_TITLE + title,
@@ -346,11 +350,16 @@ def pay(request, checkout_token):
     return redirect(payment.PAYMENT_SERVICE_URL + "/pay?checkout_token=" + checkout_token)
 
 def makeauth(request):
+    token = request.POST.get('csrfmiddlewaretoken', None)
+    # print(token)
+
     # notifications.subscribe(user_id=1)
     homeUrl = request.build_absolute_uri(reverse('homepage')).encode("utf-8")
     # return redirect('http://authclient:3200?url=' + base64.b64encode(homeUrl))
     homeEncoded = base64.b64encode(homeUrl)
-    return redirect('http://localhost:4200?url=' + str(homeEncoded).replace('b\'', '').replace('\'', ''))
+    # return redirect('http://localhost:4200?url=' + str(homeEncoded).replace('b\'', '').replace('\'', ''))
+    return redirect('http://localhost:4200?url=' + str(homeEncoded).replace('b\'', '').replace('\'', '') +
+                    '&token=' + token)
 
 # def subscribeGenre(request, genre_name):
 #     if production.getGenreByName(genre_name) is None:
