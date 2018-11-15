@@ -3,5 +3,5 @@ from django.conf.urls import url
 from . import consumers
 
 websocket_urlpatterns = [
-    url(r'^ws/cart/$', consumers.CartConsumer),
+    url(r'^ws/subscribe/$', consumers.SubscribeConsumer),
 ]

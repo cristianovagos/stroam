@@ -34,6 +34,11 @@ urlpatterns = [
     path('userpanel/', views.userPanel, name='user-panel'),
     path('my-movies/', views.myMovies, name='my-movies'),
     path('deleteAll', views.deleteAll, name='deleteAll'),
+    path('auth/', views.makeauth, name='makeauth'),
+    # path('subscribe/genre/<slug:genre_name>', views.subscribeGenre, name='subscribeGenre'),
+    # path('unsubscribe/genre/<slug:genre_name>', views.unsubscribeGenre, name='unsubscribeGenre'),
+    # path('subscribe/movie/<int:movie_id>', views.subscribeMovie, name='subscribeMovie'),
+    # path('unsubscribe/movie/<int:movie_id>', views.unsubscribeMovie, name='unsubscribeMovie'),
 ]
 
 # DELETE ALL IS ONLY FOR DEBUGGING PURPOSES, IT DELETES ALL DATA FROM FRONTEND DATABASE + SESSION DATA

@@ -73,3 +73,32 @@ function onWatchMovieClick() {
    streamSetup();
    $("#watchMovie").modal('show');
 }
+
+// NOTIFICATION HANDLERS
+
+var subscribeSocket = new WebSocket(
+    'ws://' + window.location.host + '/ws/subscribe/'
+);
+
+subscribeSocket.onopen = function (e) {
+    console.log("subscribe socket opened");
+};
+
+subscribeSocket.onerror = function (e) {
+    console.error("subscribe socket error", e);
+};
+
+subscribeSocket.onmessage = function (e) {
+    var data = JSON.parse(e.data);
+    console.log("data received on socket: ", data);
+};
+
+subscribeSocket.onclose = function (e) {
+    console.error("Subscribe socket closed unexpectedly", e);
+};
+
+function subscribeToChannel(channel_name) {
+    subscribeSocket.send(JSON.stringify({
+        'channel': channel_name
+    }));
+}

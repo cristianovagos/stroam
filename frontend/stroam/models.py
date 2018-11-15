@@ -40,3 +40,10 @@ class Purchase_Production(models.Model):
     production_id = models.IntegerField()
     purchase_id = models.ManyToManyField(Purchase)
     season_num = models.IntegerField(blank=True, null=True)
+
+class Notification_Channels(models.Model):
+    channel_name = models.CharField(unique=True, max_length=150)
+
+class Notification_Subscription(models.Model):
+    user_id = models.IntegerField()
+    channel_id = models.ManyToManyField(Notification_Channels)

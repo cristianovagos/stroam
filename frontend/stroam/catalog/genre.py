@@ -2,7 +2,9 @@ import json
 import requests
 from urllib.request import urlopen
 
-BASE_CATALOG_URL = "http://localhost:4000/api"
+# ON LOCAL DEVELOPMENT CHANGE THIS
+#BASE_CATALOG_URL = "http://localhost:4000/api"
+BASE_CATALOG_URL = "http://catalog:4000/api"
 
 class Genre:
     def __init__(self, id, name):

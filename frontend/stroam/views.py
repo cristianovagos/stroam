@@ -1,10 +1,12 @@
 import logging
+import base64
 from random import shuffle
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpRequest, HttpResponse, Http404
 
 from .catalog import production, season, genre
 from .payment import payment
+from .notifications import notifications
 from .models import *
 from .utils import *
 
@@ -20,6 +22,11 @@ def home(request):
     movies = production.getAllProduction()
     if movies:
         shuffle(movies)
+
+    print(request.GET)
+    # if request.method == 'POST':
+    #     print(request.POST)
+
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
@@ -81,7 +88,8 @@ def genreMovies(request, genre):
         'title': MAIN_TITLE + title,
         'movies': movies,
         'genreName': genreName,
-        'numCart': request.session.get('cartNumber', 0)
+        'numCart': request.session.get('cartNumber', 0),
+        'subscribed': notifications.is_user_subscribed(user_id=1, channel_name=('stroam-' + genreName))
     }
     return render(request, 'pages/genre.html', tparams)
 
@@ -130,7 +138,8 @@ def singleMovie(request, id):
             'addedToCart': True,
             'numCart': request.session.get('cartNumber', 0),
             'purchased': moviePurchased,
-            'seasonsPurchased': seasonsPurchased
+            'seasonsPurchased': seasonsPurchased,
+            'subscribed': notifications.is_user_subscribed(user_id=1, channel_name=('stroam-movie' + id))
         }
         return render(request, 'pages/single-movie.html', tparams)
 
@@ -140,7 +149,8 @@ def singleMovie(request, id):
         'addedToCart': False,
         'numCart': request.session.get('cartNumber', 0),
         'purchased': moviePurchased,
-        'seasonsPurchased': seasonsPurchased
+        'seasonsPurchased': seasonsPurchased,
+        'subscribed': notifications.is_user_subscribed(user_id=1, channel_name=('stroam-movie' + id))
     }
     return render(request, 'pages/single-movie.html', tparams)
 
@@ -334,6 +344,29 @@ def myMovies(request):
 
 def pay(request, checkout_token):
     return redirect(payment.PAYMENT_SERVICE_URL + "/pay?checkout_token=" + checkout_token)
+
+def makeauth(request):
+    # notifications.subscribe(user_id=1)
+    homeUrl = request.build_absolute_uri(reverse('homepage')).encode("utf-8")
+    # return redirect('http://authclient:3200?url=' + base64.b64encode(homeUrl))
+    homeEncoded = base64.b64encode(homeUrl)
+    return redirect('http://localhost:4200?url=' + str(homeEncoded).replace('b\'', '').replace('\'', ''))
+
+# def subscribeGenre(request, genre_name):
+#     if production.getGenreByName(genre_name) is None:
+#         return
+#     notifications.subscribe(user_id=1, channel_name=('stroam-' + genre_name))
+#
+# def unsubscribeGenre(request, genre_name):
+#     notifications.unsubscribe(user_id=1, channel_name=('stroam-' + genre_name))
+#
+# def subscribeMovie(request, movie_id):
+#     if production.getSingleProduction(movie_id) is None:
+#         return
+#     notifications.subscribe(user_id=1, channel_name=('stroam-movie' + movie_id))
+#
+# def unsubscribeMovie(request, movie_id):
+#     notifications.unsubscribe(user_id=1, channel_name=('stroam-movie' + movie_id))
 
 # FOR DEBUGGING PURPOSES! THIS WILL DELETE ALL STUFF (SESSIONS + FRONTEND DATABASE DATA)
 def deleteAll(request):

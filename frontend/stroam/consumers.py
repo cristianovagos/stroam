@@ -1,29 +1,29 @@
-from asgiref.sync import async_to_sync
-from channels.generic.websocket import WebsocketConsumer
 import json
 
-class CartConsumer(WebsocketConsumer):
+from asgiref.sync import async_to_sync
+from channels.generic.websocket import WebsocketConsumer
+from .notifications import notifications
+
+class SubscribeConsumer(WebsocketConsumer):
     def connect(self):
-        async_to_sync(self.channel_layer.group_add)(
-            'cart',
-            self.channel_name
-        )
         self.accept()
 
     def disconnect(self, code):
-        async_to_sync(self.channel_layer.group_discard)(
-            'cart',
-            self.channel_name
-        )
+        pass
 
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
+        channel = text_data_json['channel']
+        user_id = text_data_json['user_id']
+
         print(text_data_json)
 
-        async_to_sync(self.channel_layer.group_send)(
-            'cart',
-            {
-                'message': 'hello'
-            }
-        )
+        if notifications.is_user_subscribed(user_id, channel):
+            notifications.unsubscribe(user_id, channel)
+        else:
+            notifications.subscribe(user_id, channel)
+
+        # self.send(text_data=json.dumps({
+        #     'channel': message
+        # }))
 

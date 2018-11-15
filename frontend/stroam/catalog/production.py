@@ -4,7 +4,9 @@ from urllib.request import urlopen
 from .genre import *
 from .season import *
 
-BASE_CATALOG_URL = "http://localhost:4000/api"
+# ON LOCAL DEVELOPMENT CHANGE THIS
+#BASE_CATALOG_URL = "http://localhost:4000/api"
+BASE_CATALOG_URL = "http://catalog:4000/api"
 
 class Production:
     def __init__(self, id, title, releaseDate, year, genres, director, type, poster, description, runtime, price, seasons=None, seasonList=None):

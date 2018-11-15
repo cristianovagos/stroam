@@ -25,7 +25,7 @@ SECRET_KEY = 'y-)41h@l&*l)*0zdzbf2a@ljjxi-x=-48a$xc8hv4a1w_2%j5m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -39,11 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'stroam',
     'channels',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -75,10 +77,11 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('frontend-redis', 6379)],
+            "hosts": [('127.0.0.1', 6379)],
         },
     },
 }
+# frontend-redis
 # ON LOCAL DEVELOPMENT CHANGE HOSTS TO '127.0.0.1'
 
 
@@ -91,10 +94,11 @@ DATABASES = {
         'NAME': 'stroamdb',
         'USER': 'stroamuser',
         'PASSWORD': 'stroam',
-        'HOST': 'frontend-db',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
+# frontend-db
 # ON LOCAL DEVELOPMENT CHANGE HOST TO '127.0.0.1'
 
 # Password validation
@@ -156,3 +160,7 @@ LOGGING = {
         },
     },
 }
+
+#
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
