@@ -31,7 +31,7 @@ def index():
     ''' Index page, simply returns a login form for now '''
     # Checking if it came from a error redirect
     if request.args.get('error'):
-        return render_template('index.html', error = error_message(request.args.get('error'))), 400
+        return render_template('index.html', error = error_message(request.args.get('error'))), 200
 
     if 'user_id' in session and db.exists('CLIENT', 'id', session['user_id']):
         return render_template('profile.html'), 200
@@ -96,6 +96,21 @@ def get_user():
                       schema:
                         type: object
                         properties:
+                          MERCHANT:
+                            type: object
+                            properties:
+                                NAME:
+                                    type : string
+                                    description : Name of the merchant company.
+                                DOMAIN:
+                                    type : string
+                                    description : Web domain of the merchant. Used for validation of items URL.
+                                LOGO:
+                                    type : string
+                                    description : URI for merchant logo.
+                                TOKEN:
+                                    type : string
+                                    description : Token for API access of merchant.
                           BUYER:
                             type: object
                             properties:
@@ -182,8 +197,12 @@ def get_user():
         # Building info
         info = {'BUYER' : { 'NAME': client['name'], 'EMAIL': user['email'], 'NIF': client['nif'],
                             'CREDIT_CARDS': cc_wallet,
-                            'BILLING_ADDRESS': billing_address },
-                'MERCHANT': {}}
+                            'BILLING_ADDRESS': billing_address } }
+
+        if merchant :
+            info['MERCHANT'] = { 'NAME' : merchant['name'], 'DOMAIN' : merchant['domain'],
+                          'LOGO' : merchant['logo'], 'TOKEN' : merchant['id'] }
+
         return jsonify(info);
 
     return jsonify({'SUCCESS': False, 'ERROR': error_message('no_login')}), 200
@@ -240,6 +259,69 @@ def update_client():
 
         try:
             db.update('CLIENT', ['nif', 'name'], [param['NIF'], param['NAME']], 'id', session['user_id'])
+        except Exception as e:
+            print(e)
+            return jsonify({'SUCCESS': False, 'ERROR': error_message('db_error')}), 200
+
+        # Everything went well
+        return jsonify({'SUCCESS': True}), 200
+
+    return jsonify({'SUCCESS': False, 'ERROR': error_message('no_login')}), 200
+
+@app.route('/api/v1/user/merchant', methods=['PUT'])
+def update_merchant():
+    ''' Updates Merchant Information
+    ---
+    put:
+        description: Updates editable client information.
+        tags:
+            - User
+        requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    NAME:
+                      type: string
+                      description: Updated Merchant Name.
+                    DOMAIN:
+                      type: string
+                      description: Updated Merchant Domain.
+                    LOGO:
+                      type: string
+                      description: Updated Merchant Logo URI.
+        responses:
+            200:
+                description: A JSON containing the result of payment.
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          SUCCESS:
+                            type: boolean
+            400:
+                description: A JSON containing the ERROR that identifies the problem.
+                content:
+                    application/json:
+                      schema:
+                        properties:
+                          ERROR:
+                            type: string
+    '''
+    if 'user_id' in session and db.exists('USER', 'id', session['user_id']):
+        # request.form looks ugly and takes too much space...
+        param = request.json
+        keys = param.keys()
+        expected_keys = ['NAME', 'DOMAIN', 'LOGO']
+
+        # Checking for required parameters
+        if not param or not check_keys(expected_keys, keys):
+            return jsonify({'ERROR': error_message('invalid_request')}), 400
+
+        try:
+            db.update('MERCHANT', ['name', 'domain', 'logo'], [param['NAME'], param['DOMAIN'], param['LOGO'] ], 'id', session['user_id'])
         except Exception as e:
             print(e)
             return jsonify({'SUCCESS': False, 'ERROR': error_message('db_error')}), 200
@@ -1055,6 +1137,7 @@ with app.test_request_context():
     spec.add_path(view=update_billing_address)
     spec.add_path(view=delete_billing_address)
     spec.add_path(view=delete_credit_card)
+    spec.add_path(view=update_merchant)
 
 with open('static/swagger.json', 'w') as f:
     json.dump(spec.to_dict(), f)

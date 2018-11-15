@@ -16,6 +16,7 @@ CREATE TABLE MERCHANT(
   id        TEXT PRIMARY KEY,
   name      TEXT NOT NULL,
   domain    TEXT,
+  logo      TEXT,
   FOREIGN KEY (id) REFERENCES USER(id)
 );
 

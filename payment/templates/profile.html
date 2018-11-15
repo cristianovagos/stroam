@@ -149,7 +149,50 @@
                 </div>
 
                 <div id="Merchant" class="tabcontent">
+                    <div class="wrap-tabcontent">
+                        <div style="width:49%">
+                            <img style="padding-top:100px; max-height: 400px;" id="logo-img" width="100%" src="http://mayorsgolf.com/wp-content/uploads/2014/10/Your-Logo-here-300x193.png" />
+                        </div>
+                        <div>
 
+                          <div style="padding-top:20px" class="label-crud">
+                              <span>Name:</span>
+                              <button onclick="edit('name-merchant', true)">Edit</button>
+                          </div>
+                          <div class="input">
+                              <input id="name-merchant" type="text" readonly="readonly" />
+                          </div>
+
+                          <div class="label-crud">
+                              <span>Domain:</span>
+                              <button onclick="edit('domain', true)">Edit</button>
+                          </div>
+                          <div class="input">
+                              <input id="domain" type="text" readonly="readonly" />
+                          </div>
+
+                          <div class="label-crud">
+                              <span>Logo URI:</span>
+                              <button onclick="edit('logo', true)">Edit</button>
+                          </div>
+                          <div class="input">
+                              <input id="logo" type="text" readonly="readonly" />
+                          </div>
+
+                          <div class="label-crud">
+                              <span>Your Token:</span>
+                          </div>
+                          <div class="input">
+                              <input id="token" type="text" readonly="readonly"/>
+                          </div>
+
+                          <div class="login-button">
+                              <button id="update-button-merchant" style="visibility: hidden">Update</button>
+                          </div>
+
+                        </div>
+
+                    </div>
                 </div>
 
                 {% if error %}

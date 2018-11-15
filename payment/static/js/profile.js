@@ -64,6 +64,17 @@ function updateData(){
           document.getElementsByClassName("billing_address")[0].click();
         }
 
+        // Filling merchant info if exists
+        if('MERCHANT' in info){
+            document.getElementById("name-merchant").value = info['MERCHANT']['NAME'];
+            document.getElementById("domain").value = info['MERCHANT']['DOMAIN'];
+            document.getElementById("logo").value = info['MERCHANT']['LOGO'];
+            document.getElementById("token").value = info['MERCHANT']['TOKEN'];
+            if(info['MERCHANT']['LOGO'] != null)
+            {
+              document.getElementById("logo-img").src = info['MERCHANT']['LOGO'];
+            }
+        }
 
         // Selecting the first credit card and billing address
         document.getElementById("defaultOpen").click();
@@ -87,6 +98,24 @@ document.getElementById("update-button").onclick = function(){
   document.getElementById("name").readOnly = true;
   document.getElementById("nif").readOnly = true;
 
+}
+
+document.getElementById("update-button-merchant").onclick = function(){
+  var name = document.getElementById("name-merchant").value;
+  var domain = document.getElementById("domain").value;
+  var logo = document.getElementById("logo").value;
+
+  var Http = new XMLHttpRequest();
+  var url='http://127.0.0.1:5000/api/v1/user/merchant';
+  Http.open("PUT", url);
+  Http.setRequestHeader("Content-Type", "application/json");
+  Http.send(JSON.stringify({ "NAME": name, "DOMAIN": domain, "LOGO": logo }));
+
+  document.getElementById("update-button-merchant").style.visibility = "hidden";
+  document.getElementById("name-merchant").readOnly = true;
+  document.getElementById("domain").readOnly = true;
+  document.getElementById("logo").readOnly = true;
+  document.getElementById("logo-img").src = logo;
 }
 
 document.getElementById("edit-ba").onclick = function(){
@@ -188,14 +217,15 @@ function ba_changed(elmnt) {
   selected_ba = ba['ID'];
 }
 
-function edit(element_id){
+function edit(element_id, isMerchant = false){
   element = document.getElementById(element_id);
   element.readOnly = false;
-  showUpdateButton();
+  showUpdateButton(isMerchant);
 }
 
-function showUpdateButton(){
-  document.getElementById("update-button").style.visibility = "visible";
+function showUpdateButton(isMerchant){
+  if(isMerchant) document.getElementById("update-button-merchant").style.visibility = "visible";
+  else document.getElementById("update-button").style.visibility = "visible";
 }
 
 // Function based on "How to create tabs" from w3schools
