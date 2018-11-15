@@ -1040,6 +1040,7 @@ def pay():
     # Getting row from database of the checkout
     checkout = db.get('CHECKOUT', 'id', args['checkout_token']);
     items = db.get_all('ITEM', 'checkout', args['checkout_token']);
+    merchant = db.get('MERCHANT', 'id', checkout['merchant'])
 
     # Checking if checkout is valid
     if not checkout:
@@ -1059,6 +1060,8 @@ def pay():
                                        items = items,
                                        currency = checkout['currency'] if  checkout['currency'] else 'EUR',
                                        login_form = login_form,
+                                       merchant_logo = merchant['logo'],
+                                       merchant_name = merchant['name'],
                                        error = error_message(error) ), 200
 
 @app.route('/proccess_payment', methods=['POST'])
