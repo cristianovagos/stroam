@@ -23,4 +23,14 @@ public class MessageTest {
         System.out.println("Decoded value is " + new String(valueDecoded));
     }
 
+    @Test
+    public void messageRequestIdTest() {
+        JSONObject m = new JSONObject().put(Constants.JSON_REQUEST_ID_KEY, "0123456789");
+                //.put(Constants.JSON_EMAIL_SUBJECT_KEY, Base64.getEncoder().encode("email".getBytes()).toString())
+                //.put(Constants.JSON_EMAIL_PHONE_BODY_KEY, Base64.getEncoder().encode("ola pessoas".getBytes()).toString());
+
+        RequestMessage rm = new RequestMessage("/notTheService/email/test@stroam.com", m.toString().getBytes());
+        System.out.println(rm.getRequestId());
+    }
+
 }

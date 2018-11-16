@@ -7,6 +7,7 @@ import org.junit.Test;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.File;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Properties;
@@ -16,7 +17,7 @@ import static junit.framework.TestCase.fail;
 
 public class ServerTest {
 
-    @Test
+    /*@Test
     public void generalTest() {
         Communication communication = new Communication("ws://localhost:1884");
         Server server = new Server(communication);
@@ -44,7 +45,7 @@ public class ServerTest {
         }
 
         try {
-            Thread.sleep(15000);
+            Thread.sleep(30000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -53,20 +54,20 @@ public class ServerTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void mailSendTest() {
         //https://stackoverflow.com/questions/18778240/solve-error-javax-mail-authenticationfailedexception
 
 
-        /*25 receiving email from other mailservers
-        465 SSL Client email submission
-        587 TLS Client email submission
-        143 StartTLS IMAP client
-        993 TLS/SSL IMAP client
-        110 POP3 client
-        995 TLS/SSL POP3 client*/
+        //25 receiving email from other mailservers
+        //465 SSL Client email submission
+        //587 TLS Client email submission
+        //143 StartTLS IMAP client
+        //993 TLS/SSL IMAP client
+        //110 POP3 client
+        //995 TLS/SSL POP3 client
 
 
         boolean auth = true;
@@ -95,7 +96,7 @@ public class ServerTest {
 
         MimeMessage message = new MimeMessage(session);
         try {
-            message.setFrom(new InternetAddress("noreplay@stroam.com"));
+            message.setFrom(new InternetAddress("noreply@stroam.com"));
             InternetAddress[] address = {new InternetAddress("test@stroam.com")};
             message.setRecipients(Message.RecipientType.TO, address);
             message.setSubject("email de teste");
@@ -106,7 +107,20 @@ public class ServerTest {
             ex.printStackTrace();
             fail("Mail send fail");
         }
+    }*/
 
+    @Test
+    public void propertiesFileTest() {
+        File configurationFile = new File(System.getProperty("user.dir"));
 
+        if(!configurationFile.isFile()) {
+            File[] matchingFiles = configurationFile.listFiles(
+                    (dir, name) -> name.matches(Constants.CONFIGURATION_FILE_NAME));
+
+            if(matchingFiles != null && matchingFiles.length > 0)
+                configurationFile = matchingFiles[0];
+        }
+
+        System.out.println("File path: " + configurationFile.getAbsolutePath());
     }
 }

@@ -28,7 +28,7 @@ class NotTheServiceClient {
                 if(typeof payload == "undefined" || payload == null || payload == "")
                     return;
                 
-                onResponseRequestArrived(jsonData["requestId"], jsonData["errorCode"], jsonData["message"]);
+                onResponseRequestArrived(jsonData["requestId"], jsonData["resultCode"], jsonData["reason"]);
             } else if(typeof onPushArrived != "undefined") {
                 onPushArrived(message.destinationName, message.payloadString);
             }

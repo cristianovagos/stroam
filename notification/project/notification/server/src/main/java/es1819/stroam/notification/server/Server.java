@@ -3,22 +3,27 @@ package es1819.stroam.notification.server;
 import es1819.stroam.notification.commons.communication.Communication;
 import es1819.stroam.notification.commons.communication.CommunicationCallback;
 import es1819.stroam.notification.server.core.handler.EmailHandler;
+import es1819.stroam.notification.server.core.handler.HandleResultType;
 import es1819.stroam.notification.server.core.handler.PhoneHandler;
-import es1819.stroam.notification.server.core.message.Message;
+import es1819.stroam.notification.server.core.handler.ResponseSenderHandler;
+import es1819.stroam.notification.server.core.message.MessageUtilities;
+import es1819.stroam.notification.server.core.message.RequestMessage;
+import es1819.stroam.notification.server.core.message.ResponseMessage;
 import es1819.stroam.notification.server.utilities.ChannelUtilities;
 
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.Semaphore;
 
-public class Server implements Runnable, CommunicationCallback {
+public class Server implements Runnable, CommunicationCallback, ServerSender {
 
     private boolean keepRunning;
     private Communication communication;
+    private ResponseSenderHandler responseSenderHandler;
     private EmailHandler emailHandler;
     private PhoneHandler phoneHandler;
-    private Queue<Message> messageQueue = new LinkedList<>();
-    private Semaphore messageQueueAccessControllerMutex = new Semaphore(1);
+    private Queue<RequestMessage> receivedRequestMessageQueue = new LinkedList<>();
+    private Semaphore receivedMessageQueueAccessControllerMutex = new Semaphore(1);
     private static Semaphore threadRunController = new Semaphore(0);
 
     public Server(Communication communication) {
@@ -42,10 +47,13 @@ public class Server implements Runnable, CommunicationCallback {
                         Constants.CHANNEL_SERVICE_PREFIX,
                         Constants.CHANNEL_ALL_PREFIX));
 
-        emailHandler = new EmailHandler();
+        responseSenderHandler = new ResponseSenderHandler(this);
+        responseSenderHandler.start();
+
+        emailHandler = new EmailHandler(responseSenderHandler);
         emailHandler.start();
 
-        phoneHandler = new PhoneHandler();
+        phoneHandler = new PhoneHandler(responseSenderHandler);
         phoneHandler.start();
 
         //Starts the server
@@ -64,6 +72,7 @@ public class Server implements Runnable, CommunicationCallback {
         //Do all the procedures after server stops
         emailHandler.stop();
         phoneHandler.stop();
+        responseSenderHandler.stop();
 
         communication.disconnect();
     }
@@ -76,42 +85,62 @@ public class Server implements Runnable, CommunicationCallback {
             if(!keepRunning)
                 break;
 
-            try { messageQueueAccessControllerMutex.acquire(); } catch (InterruptedException ignored) { continue; }
+            try { receivedMessageQueueAccessControllerMutex.acquire(); } catch (InterruptedException ignored) { continue; }
             //Mutual exclusion access
-            Message message = messageQueue.poll();
-            messageQueueAccessControllerMutex.release();
+            RequestMessage requestMessage = receivedRequestMessageQueue.poll();
+            receivedMessageQueueAccessControllerMutex.release();
 
-            switch (message.getType()) {
+            switch (requestMessage.getType()) {
                 case MAIL:
-                    emailHandler.handle(message); break;
+                    emailHandler.handle(requestMessage); break;
                 case PHONE:
-                    phoneHandler.handle(message); break;
+                    phoneHandler.handle(requestMessage); break;
                 case RESPONSE:
             }
         }
     }
 
     @Override
-    public void messageArrived(String channel, byte[] payload) {
-        try { messageQueueAccessControllerMutex.acquire(); } catch (InterruptedException ignored) { return; }
-        //Mutual exclusion access
+    public void send(ResponseMessage message) throws Exception {
+        if(message == null)
+            throw new IllegalArgumentException("received a null message to send");
 
-        Message message;
+        String channel = message.getChannel();
+        if(channel == null || channel.isEmpty())
+            throw new IllegalArgumentException("received a message to send with a null or empty destination channel");
+
+        byte[] payload = message.getPayload();
+        if(payload == null || payload.length == 0)
+            throw new IllegalArgumentException("received a message to send with a null or empty payload");
+
+        communication.send(channel, payload);
+    }
+
+    @Override
+    public void messageArrived(String channel, byte[] payload) {
+        if(!channel.contains(Constants.CHANNEL_EMAIL_PREFIX) && !channel.contains(Constants.CHANNEL_PHONE_PREFIX))
+            return; //push notification message or other type of non request message
+
+        //Mutual exclusion access
+        try { receivedMessageQueueAccessControllerMutex.acquire(); } catch (InterruptedException ignored) { return; }
+
+        RequestMessage requestMessage;
         try {
-            message = new Message(channel, payload);
-            messageQueue.offer(message);
+            requestMessage = new RequestMessage(channel, payload);
+            receivedRequestMessageQueue.offer(requestMessage);
         } catch (IllegalArgumentException messageParseException) {
-            messageParseException.printStackTrace(); //TODO: debug
-            //TODO: registar no log que ocorreu um erro ao fazer parse de uma mensagem recebida
-            //TODO: deve ser enviada resposta (ler linhas abaixo)
-            /*Se calhar criar um novo tipo de mensagens (resposta ou erro) e neste caso colocar-la na fila na mesma
-            a diferenca é que ela deve ser logo enviada nao chegando a ir para as threads de processamento
-             */
+            messageParseException.printStackTrace(); //TODO: logar excepçao
+
+            String requestId = MessageUtilities.recoverMalformedMessageRequestId(payload); //even if the message is malformed try recover request id
+            responseSenderHandler.handle(
+                    new ResponseMessage(
+                            HandleResultType.UNKNOWN_ERROR, requestId)
+                            .setReason(messageParseException.getMessage()));
             return;
         } finally {
-            messageQueueAccessControllerMutex.release(); //always executed even with the return in catch block
+            receivedMessageQueueAccessControllerMutex.release(); //always executed even with the return in catch block
         }
-        threadRunController.release(); //means that the message as been successfully parsed
+        threadRunController.release(); //means that the requestMessage as been successfully parsed
     }
 
     @Override

@@ -1,11 +1,11 @@
 package es1819.stroam.notification.main;
 
 import es1819.stroam.notification.commons.communication.Communication;
+import es1819.stroam.notification.server.Constants;
 import es1819.stroam.notification.server.Server;
+import es1819.stroam.notification.server.utilities.GeneralUtilities;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
+import java.io.*;
 
 public class Main {
 
@@ -29,7 +29,20 @@ public class Main {
                 "##################  The simplest way of stay updated  ##################\n");
 
         System.out.println("Starting the server... ");
-        Communication communication = new Communication("ws://localhost:1884");
+        try { //TODO: optimizar este codigo. informar se forem carregadas as propriedades padão
+            Constants.loadConfigurationFile(new File(Constants.currentWorkingDirectoryPath));
+        } catch (IOException configurationFileReadException) {
+            configurationFileReadException.printStackTrace(); //TODO: debug
+        }
+
+        String brokerAddress = Constants.runtimeProperties.getProperty(Constants.PROPERTY_BROKER_ADDRESS_NAME);
+        if(brokerAddress == null || brokerAddress.isEmpty()) {
+            System.out.println(Constants.PROPERTY_BROKER_ADDRESS_NAME + " not found in the configuration file \"" +
+                    Constants.CONFIGURATION_FILE_NAME + "\" or the property does not contain any endpoint specified ");
+            return;
+        }
+
+        Communication communication = new Communication(brokerAddress);
         Server server = new Server(communication);
 
         //Shutdown hook used to stop all the running threads before program stops

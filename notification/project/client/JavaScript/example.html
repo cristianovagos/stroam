@@ -30,8 +30,8 @@
                 client.subscribe("/requestResponse"); //if have interest in receive the requests responses
             }
 
-            function onResponseRequestArrived(requestId, errorCode, message) {
-                console.log(requestId + " -> " + errorCode + ": " + message);
+            function onResponseRequestArrived(requestId, resultCode, reason) {
+                console.log(requestId + " -> " + resultCode + ": " + reason);
             }
 
             function onPushArrived(topic, payload) {

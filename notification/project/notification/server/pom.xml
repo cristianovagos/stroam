@@ -19,13 +19,6 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>es1819.stroam</groupId>
-            <artifactId>persistence</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.json/json -->
         <dependency>
             <groupId>org.json</groupId>
