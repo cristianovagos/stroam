@@ -39,7 +39,7 @@
                     </div>
 
                     <div class="create-account">
-                        <a href="new_account" >Create your Account ⭬</a>
+                        <a href="{{ url_for('new_account', next=request.endpoint, **request.args) }}" >Create your Account ⭬</a>
                     </div>
 
                 </form>

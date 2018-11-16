@@ -47,7 +47,9 @@ def error_message(error):
         "not_logged" : "You must be logged in for this operation.",
         "checkout_not_ready" : "Checkout wasn't set ready by the buyer yet.",
         "add_items" : "Error adding the items, please check their format",
-        "no_login" : "You must be logged in to perform this action."
+        "no_login" : "You must be logged in to perform this action.",
+        "register_fails" : "Registration failed, please try again...",
+        "user_exists" : "E-mail is already registered."
     }
 
     return errors.get(error)

@@ -21,7 +21,7 @@
                     <img src="{{ url_for('static',filename='images/logo.png') }}" alt="StrongPay"/>
                 </div>
 
-                <form class="register-form" method='POST' action="{{ url_for('register', next=request.endpoint, **request.args) }}">
+                <form class="register-form" method='POST' action="{{ url_for('register', **request.args) }}">
                     <span class="login-title"> New Account </span>
 
                     <div class="login-input">

@@ -49,9 +49,51 @@ def new_account():
 
     return render_template('create.html'), 200
 
-@app.route('/register')
+@app.route('/register', methods=['POST'])
 def register():
-    pass
+    # Cleaning URL to get args being used by the next url
+    args = request.args.to_dict()
+    args.pop('error', None)
+
+    # Checking if there is already a valid session
+    if 'user_id' in session and db.exists('CLIENT', 'id', session['user_id']):
+        redirect(url_for(request.args.get('next'), **args))
+
+    # request.form looks ugly and takes too much space...
+    param = request.form
+    keys = param.keys()
+    required_keys = ['name', 'email', 'pass']
+
+    # Checking for required parameters
+    if not param or not check_keys(required_keys, keys):
+        return redirect(url_for('new_account', \
+                                error = 'register_fails',
+                                **args))
+
+    # Super insecure authentication, don't try this outside localhost kids
+    if db.exists('USER', ['email'], [param['email']]):
+        return redirect(url_for('new_account', \
+                                error = 'user_exists',
+                                **args))
+    else:
+        try:
+            token = None
+            while True:
+                token = secrets.token_urlsafe(16)
+                if not db.exists('USER', 'id', token):
+                    break
+
+            db.insert('USER', \
+                ('id', 'email', 'password'), \
+                ( token, param['email'], param['pass']) )
+            db.insert('CLIENT', ('id', 'name'), (token, param['name']))
+        except:
+            return redirect(url_for('new_account'), \
+                                    error = 'db_error',
+                                    **args)
+    # Returning to origin
+    args.pop('next', None)
+    return redirect(url_for(request.args.get('next'), **args))
 
 @app.route('/docs')
 def docs():
@@ -92,6 +134,13 @@ def login():
 
     # Returning to origin
     return redirect(url_for(request.args.get('next'), **args))
+
+@app.route('/api/v1/user/become_merchant', methods=['GET'])
+def become_merchant():
+    if 'user_id' in session and db.exists('USER', 'id', session['user_id']):
+        client = db.get('CLIENT', 'id', session['user_id']);
+        db.insert('MERCHANT', ('id', 'name'), (session['user_id'], client['name']))
+    return jsonify({'SUCCESS': True}), 200
 
 @app.route('/api/v1/user', methods=['GET'])
 def get_user():

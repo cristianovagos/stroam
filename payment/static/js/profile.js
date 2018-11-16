@@ -5,7 +5,8 @@ var selected_ba = 0;
 var selected_cc = 0;
 
 window.onload = updateData;
-
+// Selecting the first credit card and billing address
+document.getElementById("defaultOpen").click();
 
 
 function updateData(){
@@ -70,18 +71,13 @@ function updateData(){
             document.getElementById("domain").value = info['MERCHANT']['DOMAIN'];
             document.getElementById("logo").value = info['MERCHANT']['LOGO'];
             document.getElementById("token").value = info['MERCHANT']['TOKEN'];
-            if(info['MERCHANT']['LOGO'] != null)
-            {
-              document.getElementById("logo-img").src = info['MERCHANT']['LOGO'];
-            }
+
+            document.getElementById("logo-img").src = info['MERCHANT']['LOGO'];
+
             document.getElementById("become-merchant-div").style.display = "none";
             document.getElementById("logo-img-div").style.display = "flex";
             document.getElementById("merchant-content").style.display = "block";
         }
-
-        // Selecting the first credit card and billing address
-        document.getElementById("defaultOpen").click();
-
       }
     }
   }
@@ -166,6 +162,12 @@ document.getElementById("update-ba").onclick = function(){
 }
 
 document.getElementById("become-merchant").onclick = function(){
+  var Http = new XMLHttpRequest();
+  var url='http://127.0.0.1:5000/api/v1/user/become_merchant';
+  Http.open("GET", url);
+  Http.send();
+  Http.onreadystatechange=(e)=>{if (Http.readyState == 4 && Http.status == 200){ updateData(); document.getElementById("merchantOpen").click(); }  }
+
   document.getElementById("become-merchant-div").style.display = "none";
   document.getElementById("logo-img-div").style.display = "flex";
   document.getElementById("merchant-content").style.display = "block";
