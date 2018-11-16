@@ -38,10 +38,10 @@ StrongPay is a payment gateway service based on PayPal. It's composed of a front
 - Private API Calls for user management
 - Ability to store used Credit Card and Billing Address
 - Profile Management for the Client and Merchant
+- Register for Client and Merchant
 
 ## What is left
 
-- Register for Client and Merchant
 - Improve JavaScript validation of payment form
 - Minor security features
 
