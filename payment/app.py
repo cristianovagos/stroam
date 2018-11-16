@@ -38,12 +38,10 @@ def index():
 
     return render_template('index.html'), 200
 
-
 @app.route('/docs')
 def docs():
     ''' Docs page '''
     return render_template('doc.html'), 200
-
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -66,7 +64,7 @@ def login():
     # Checking for required parameters
     if not param or not check_keys(required_keys, keys):
         return redirect(url_for(request.args.get('next'), \
-                                error = error_message('login_fails'),
+                                error = 'login_fails',
                                 **args))
 
     # Super insecure authentication, don't try this outside localhost kids
@@ -74,7 +72,7 @@ def login():
         session['user_id'] = db.get('USER', 'email', param['email'])['id']
     else:
         return redirect(url_for(request.args.get('next'), \
-                            error = error_message('wrong_pass'), \
+                            error = 'wrong_pass', \
                             **args))
 
     # Returning to origin
@@ -273,7 +271,7 @@ def update_merchant():
     ''' Updates Merchant Information
     ---
     put:
-        description: Updates editable client information.
+        description: Updates editable merchant information.
         tags:
             - User
         requestBody:
@@ -752,7 +750,6 @@ def execute_checkout():
     # Everything went well, informing the merchant
     return jsonify({'SUCCESS': True}), 200
 
-
 @app.route('/api/v1/Checkout', methods=['DELETE'])
 def delete_checkout():
     ''' EditCheckout
@@ -809,13 +806,12 @@ def delete_checkout():
     # Everything went well
     return jsonify({'SUCCESS': True}), 200
 
-
 @app.route('/api/v1/Checkout', methods=['POST','PUT'])
 def create_checkout():
     ''' Create/Update Checkout
     ---
     put:
-        description: Creates/Updates the Checkout information. Updating the information will replace all the original information.
+        description: Updates the Checkout information. Updating the information will replace all the original information.
         tags:
             - Payment
         parameters:
@@ -893,7 +889,7 @@ def create_checkout():
                           ERROR:
                             type: string
     post:
-        description: Creates a checkout
+        description: Creates a checkout.
         tags:
             - Payment
         requestBody:
@@ -1131,16 +1127,16 @@ def proccess_payment():
 
 ### Generating openapi json file for swagger
 with app.test_request_context():
-    spec.add_path(view=create_checkout)
     spec.add_path(view=get_checkout)
+    spec.add_path(view=create_checkout)
     spec.add_path(view=execute_checkout)
     spec.add_path(view=delete_checkout)
     spec.add_path(view=get_user)
     spec.add_path(view=update_client)
+    spec.add_path(view=update_merchant)
     spec.add_path(view=update_billing_address)
     spec.add_path(view=delete_billing_address)
     spec.add_path(view=delete_credit_card)
-    spec.add_path(view=update_merchant)
 
 with open('static/swagger.json', 'w') as f:
     json.dump(spec.to_dict(), f)

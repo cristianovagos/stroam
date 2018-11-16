@@ -74,6 +74,9 @@ function updateData(){
             {
               document.getElementById("logo-img").src = info['MERCHANT']['LOGO'];
             }
+            document.getElementById("become-merchant-div").style.display = "none";
+            document.getElementById("logo-img-div").style.display = "flex";
+            document.getElementById("merchant-content").style.display = "block";
         }
 
         // Selecting the first credit card and billing address
@@ -160,6 +163,16 @@ document.getElementById("update-ba").onclick = function(){
   document.getElementsByName("post_code")[0].readOnly = true;
   document.getElementsByName("phone")[0].readOnly = true;
   updateData();
+}
+
+document.getElementById("become-merchant").onclick = function(){
+  document.getElementById("become-merchant-div").style.display = "none";
+  document.getElementById("logo-img-div").style.display = "flex";
+  document.getElementById("merchant-content").style.display = "block";
+  document.getElementById("update-button-merchant").style.visibility = "visible";
+  document.getElementById("name-merchant").readOnly = false;
+  document.getElementById("domain").readOnly = false;
+  document.getElementById("logo").readOnly = false;
 }
 
 document.getElementById("delete-ba").onclick = function(){

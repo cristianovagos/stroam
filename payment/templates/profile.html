@@ -15,7 +15,7 @@
 
 <body>
     <div class="background">
-        <div class="container">
+        <div class="container" style="justify-content: start; flex-direction:column">
             <div class="wrap-login">
 
                 <div class="image-div">
@@ -150,10 +150,19 @@
 
                 <div id="Merchant" class="tabcontent">
                     <div class="wrap-tabcontent">
-                        <div style="width:40%; display: flex; flex-direction: column; justify-content: center;">
+
+                        <div id="become-merchant-div" style="padding-top:20px;">
+                            <span style="padding-bottom:10px;" class="login-title"> You are not a Merchant yet.</span>
+                            <div class="login-button">
+                                <button id="become-merchant">Become Now</button>
+                            </div>
+                        </div>
+
+                        <div id="logo-img-div" style="width:40%; display: none; flex-direction: column; justify-content: center;">
                             <img style="margin: auto; padding-bottom: 20px; max-width: 400px; max-height: 400px;" id="logo-img" width="100%" onerror="this.onerror=null;this.src='{{ url_for('static',filename='images/your-logo-here.png') }}';"/>
                         </div>
-                        <div>
+
+                        <div id="merchant-content" style="display:none">
 
                           <div style="padding-top:20px" class="label-crud">
                               <span>Name:</span>
