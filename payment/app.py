@@ -38,6 +38,21 @@ def index():
 
     return render_template('index.html'), 200
 
+@app.route('/new_account')
+def new_account():
+    # Checking if it came from a error redirect
+    if request.args.get('error'):
+        return render_template('create.html', error = error_message(request.args.get('error'))), 200
+
+    if 'user_id' in session and db.exists('CLIENT', 'id', session['user_id']):
+        return render_template('profile.html'), 200
+
+    return render_template('create.html'), 200
+
+@app.route('/register')
+def register():
+    pass
+
 @app.route('/docs')
 def docs():
     ''' Docs page '''

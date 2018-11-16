@@ -21,8 +21,13 @@
                     <img src="{{ url_for('static',filename='images/logo.png') }}" alt="StrongPay"/>
                 </div>
 
-                <form class="login-form" method='POST' action="{{ url_for('login', next=request.endpoint, **request.args) }}">
-                    <span class="login-title"> Login </span>
+                <form class="register-form" method='POST' action="{{ url_for('register', next=request.endpoint, **request.args) }}">
+                    <span class="login-title"> New Account </span>
+
+                    <div class="login-input">
+                        <input type="text" name="name" placeholder="Your Name" />
+                        <span> <i class="fa fa-user" aria-hidden="true"></i> </span>
+                    </div>
 
                     <div class="login-input">
                         <input type="text" name="email" placeholder="Email" />
@@ -34,12 +39,13 @@
                         <span> <i class="fa fa-lock" aria-hidden="true"></i> </span>
                     </div>
 
-                    <div class="login-button">
-                        <button>Login</button>
+                    <div class="login-input">
+                        <input type="password" name="re-pass" placeholder="Repeat Password" />
+                        <span> <i class="fa fa-lock" aria-hidden="true"></i> </span>
                     </div>
 
-                    <div class="create-account">
-                        <a href="new_account" >Create your Account ⭬</a>
+                    <div class="login-button">
+                        <button>Create Account</button>
                     </div>
 
                 </form>
@@ -55,7 +61,7 @@
         </div>
     </div>
 
-    <script src="{{ url_for('static',filename='js/validation.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/register.js') }}"></script>
 
 </body>
 
