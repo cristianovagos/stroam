@@ -76,3 +76,54 @@ services:
         - ./payment:/app
     ports:
         - "5000:5000"
+
+  #notification - notTheService services
+  mosquitto:
+    image: eclipse-mosquitto:1.4.12
+    container_name: mosquittoserver
+    restart: always
+    ports:
+      - "1884:1884"
+    volumes:
+      - ./notification/configurations/mosquitto.conf:/mosquitto/config/mosquitto.conf
+  
+  tvialmail:
+    image: tvial/docker-mailserver:latest #release-v6.1.0
+    hostname: tvialmail
+    domainname: nottheservice.com
+    container_name: tvialmailserver
+    restart: always
+    ports:
+      - "587:587"
+      - "993:993"
+    volumes:
+      - maildata:/var/mail
+      - mailstate:/var/mail-state
+      - ./config/:/tmp/docker-mailserver/
+    environment:
+      - ENABLE_SPAMASSASSIN=1
+      - ENABLE_CLAMAV=1
+      - ENABLE_FAIL2BAN=1
+      - ENABLE_POSTGREY=1
+      - ONE_DIR=1
+      - DMS_DEBUG=0
+    cap_add:
+      - NET_ADMIN
+      - SYS_PTRACE
+
+  nottheservice:
+    image: nottheservice
+    container_name: nottheserviceserver
+    restart: always
+    build: ./notification
+    volumes:
+      - ./notification/configurations/nottheservice.conf:/usr/src/notification/nottheservice.conf
+    depends_on:
+      - mosquitto
+      - tvialmail
+
+volumes:
+  maildata:
+    driver: local
+  mailstate:
+    driver: local
