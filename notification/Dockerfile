@@ -1,5 +1,6 @@
 FROM maven:3.6.0-jdk-10
 COPY ./project/notification /usr/src/notification
+COPY ./project/client /usr/src/notification/client
 WORKDIR /usr/src/notification
 RUN mvn clean install -DskipTests
 
