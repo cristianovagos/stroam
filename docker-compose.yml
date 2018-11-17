@@ -88,7 +88,7 @@ services:
       - ./notification/configurations/mosquitto.conf:/mosquitto/config/mosquitto.conf
   
   tvialmail:
-    image: tvial/docker-mailserver:latest #release-v6.1.0
+    image: tvial/docker-mailserver:release-v6.1.0
     hostname: tvialmail
     domainname: nottheservice.com
     container_name: tvialmailserver
