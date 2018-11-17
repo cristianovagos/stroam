@@ -67,3 +67,12 @@ services:
       - ./authentication/authclient:/app
     ports:
       - "3200:4200"
+
+  payment:
+    container_name: payment
+    restart: always
+    build: ./payment
+    volumes:
+        - ./payment:/app
+    ports:
+        - "5000:5000"

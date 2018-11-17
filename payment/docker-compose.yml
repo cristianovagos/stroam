@@ -1,0 +1,10 @@
+version: '2'
+services:
+    payment:
+      container_name: payment
+      restart: always
+      build: .
+      volumes:
+          - .:/app
+      ports:
+          - "5000:5000"
