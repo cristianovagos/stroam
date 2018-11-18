@@ -18,4 +18,16 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        let notificationClient = new NotTheServiceClient("127.0.0.1", 1884);
+
+        function onConnect() {
+            notificationClient.subscribe('/requestResponse'); //if have interest in receive the requests responses
+            notificationClient.subscribe('/stroam-general');
+            {% for channel in subscribed_channels %}
+                notificationClient.subscribe('/{{ channel }}');
+            {% endfor %}
+            console.log("connected to notification service");
+        }
+    </script>
 </footer>

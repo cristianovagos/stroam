@@ -22,8 +22,9 @@
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="http://localhost:1884/paho-mqtt-min.js" type="text/javascript"></script>
-    <script src="http://localhost:1884/notTheServiceClient.js" type="text/javascript"></script>
+    <script src="{% static 'js/bootstrap-notify.min.js' %}"></script>
+    <script src="{% static 'js/paho-mqtt-min.js' %}"></script>
+    <script src="{% static 'js/notTheServiceClient.js' %}"></script>
     <script src="{% static 'js/notification.js' %}"></script>
     {% if purchased %}
         <script src="http://localhost:1935/client.js"></script>

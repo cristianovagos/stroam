@@ -22,74 +22,126 @@
                 </div>
                 <div class="col-10">
                     <div class="card">
-                        {% if data.items|length == 0 %}
-                            <div class="card-body">
-                                <h4 class="card-title text-center">
+                        <div class="card-body" style="padding: 0">
+                            <div class="card-header"><span class="fas fa-shopping-cart"></span>&nbsp;&nbsp;My Orders</div>
+                            {% if purchaseData.items|length == 0 %}
+                                <h4 class="card-title text-center" style="padding: 15px">
                                     Looks like you have no orders yet...<br><br>
                                     <a href="{% url 'homepage' %}" class="btn-lg btn-danger">Shop now</a>
                                 </h4>
-                            </div>
-                        {% else %}
-                            <div class="card-body">
-                                <h5 class="card-title">Your orders:</h5>
-                                <div class="float-right" style="margin-bottom: 10px">
-                                    <a class="btn btn-secondary btn-filter" data-target="all" style="color: white; font-size: 14px">All</a>
-                                    <a class="btn btn-secondary btn-filter" data-target="1" style="color: white; font-size: 14px">Awaiting payment</a>
-                                    <a class="btn btn-secondary btn-filter" data-target="2" style="color: white; font-size: 14px">Error</a>
-                                    <a class="btn btn-secondary btn-filter" data-target="3" style="color: white; font-size: 14px">Cancelled</a>
-                                    <a class="btn btn-secondary btn-filter" data-target="4" style="color: white; font-size: 14px">Completed</a>
-                                </div>
-                                <table class="table">
-                                    <thead>
-                                        <tr class="d-flex">
-                                            <th scope="col" class="col-1">Order No.</th>
-                                            <th scope="col" class="col-5">Items</th>
-                                            <th scope="col" class="col-2">Ordered on</th>
-                                            <th scope="col" class="col-2">Paid on</th>
-                                            <th scope="col" class="col-2"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for order in data.items %}
-                                            <tr class="d-flex" data-status="{{ order.1.payment_status }}">
-                                                <th scope="row" class="col-1">{{ order.0 }}</th>
-                                                <td class="col-5">
-                                                    <div>
-                                                        {% for items in order.1.products.items %}
-                                                            <a href="{% url 'movie-single' id=items.1.production.id %}">
-                                                                {% if not items.1.season %}
-                                                                    <p>{{ items.1.production.title }}</p>
-                                                                {% else %}
-                                                                    <p>{{ items.1.production.title }} - Season {{ items.1.season }}</p>
-                                                                {% endif %}
-                                                            </a>
-                                                        {% endfor %}
-                                                    </div>
-                                                </td>
-                                                <td class="col-2">{{ order.1.date_created|date:"d/m/Y H:i:s" }}</td>
-                                                <td class="col-2">
-                                                    {% if order.1.date_payment %}
-                                                        {{ order.1.date_payment|date:"d/m/Y H:i:s" }}
-                                                    {% elif order.1.payment_status == 3 %}
-                                                        Order cancelled
-                                                    {% else %}
-                                                        Not paid
-                                                    {% endif %}
-                                                </td>
-                                                <td class="col-2 text-right">
-                                                    {% if order.1.payment_status < 3 and order.1.token_isValid %}
-                                                        <a class="btn btn-danger col-8" style="margin: 2px; color: white; font-size: 14px"
-                                                            href="{% url 'pay' checkout_token=order.1.token_payment %}">Pay Now</a><br>
-                                                        <a class="btn btn-danger col-8" data-toggle="modal" data-target="#cancelModal" data-orderid="{{ order.0 }}"
-                                                           style="margin: 2px; color: white; font-size: 14px">Cancel order</a>
-                                                    {% endif %}
-                                                </td>
+                            {% else %}
+                                <div style="padding: 15px;">
+                                    <h5 class="card-title">Your orders:</h5>
+                                    <div class="float-right" style="margin-bottom: 10px">
+                                        <a class="btn btn-secondary btn-filter" data-target="all" style="color: white; font-size: 14px">All</a>
+                                        <a class="btn btn-secondary btn-filter" data-target="1" style="color: white; font-size: 14px">Awaiting payment</a>
+                                        <a class="btn btn-secondary btn-filter" data-target="2" style="color: white; font-size: 14px">Error</a>
+                                        <a class="btn btn-secondary btn-filter" data-target="3" style="color: white; font-size: 14px">Cancelled</a>
+                                        <a class="btn btn-secondary btn-filter" data-target="4" style="color: white; font-size: 14px">Completed</a>
+                                    </div>
+                                    <table class="table">
+                                        <thead>
+                                            <tr class="d-flex">
+                                                <th scope="col" class="col-1">Order No.</th>
+                                                <th scope="col" class="col-5">Items</th>
+                                                <th scope="col" class="col-2">Ordered on</th>
+                                                <th scope="col" class="col-2">Paid on</th>
+                                                <th scope="col" class="col-2"></th>
                                             </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        {% endif %}
+                                        </thead>
+                                        <tbody>
+                                            {% for order in purchaseData.items %}
+                                                <tr class="d-flex" data-status="{{ order.1.payment_status }}">
+                                                    <th scope="row" class="col-1">{{ order.0 }}</th>
+                                                    <td class="col-5">
+                                                        <div>
+                                                            {% for items in order.1.products.items %}
+                                                                <a href="{% url 'movie-single' id=items.1.production.id %}">
+                                                                    {% if not items.1.season %}
+                                                                        <p>{{ items.1.production.title }}</p>
+                                                                    {% else %}
+                                                                        <p>{{ items.1.production.title }} - Season {{ items.1.season }}</p>
+                                                                    {% endif %}
+                                                                </a>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-2">{{ order.1.date_created|date:"d/m/Y H:i:s" }}</td>
+                                                    <td class="col-2">
+                                                        {% if order.1.date_payment %}
+                                                            {{ order.1.date_payment|date:"d/m/Y H:i:s" }}
+                                                        {% elif order.1.payment_status == 3 %}
+                                                            Order cancelled
+                                                        {% else %}
+                                                            Not paid
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="col-2 text-right">
+                                                        {% if order.1.payment_status < 3 and order.1.token_isValid %}
+                                                            <a class="btn btn-danger col-8" style="margin: 2px; color: white; font-size: 14px"
+                                                                href="{% url 'pay' checkout_token=order.1.token_payment %}">Pay Now</a><br>
+                                                            <a class="btn btn-danger col-8" data-toggle="modal" data-target="#cancelModal" data-orderid="{{ order.0 }}"
+                                                               style="margin: 2px; color: white; font-size: 14px">Cancel order</a>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card" style="margin-top: 20px">
+                        <div class="card-body" style="padding: 0">
+                            <div class="card-header"><span class="fas fa-bell"></span>&nbsp;&nbsp;My Subscriptions</div>
+                            {% if subscriptionsData.items|length == 0 %}
+                                <h5 class="card-title text-center" style="padding: 15px">
+                                    You have no subscriptions yet...<br>
+                                    Receive notifications for movies and genres!<br><br>
+                                    <a href="{% url 'homepage' %}" class="btn-lg btn-danger">Let's go!</a>
+                                </h5>
+                            {% else %}
+                                <div style="padding: 15px;">
+                                    <table class="table">
+                                        <thead>
+                                            <tr class="d-flex">
+                                                <th scope="col" class="col-6">Title</th>
+                                                <th scope="col" class="col-4">Type</th>
+                                                <th scope="col" class="col-2"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for subscription in subscriptionsData.items %}
+                                                <tr class="d-flex">
+                                                    {% if subscription.1.type == 'Genre' %}
+                                                        <th scope="row" class="col-6">
+                                                            <a href="{% url 'genre-movies' genre=subscription.1.strip %}">{{ subscription.1.strip }}</a>
+                                                        </th>
+                                                    {% else %}
+                                                        <th scope="row" class="col-6">
+                                                            <a href="{% url 'movie-single' id=subscription.1.strip %}">{{ subscription.1.production.title }}</a>
+                                                        </th>
+                                                    {% endif %}
+                                                    <td class="col-4">{{ subscription.1.type }}</td>
+                                                    <td class="col-2">
+                                                        <form action="{% url 'user-panel' %}" method="post">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" value="{{ subscription.1.channel_name }}" name="channel_name">
+                                                            <button class="btn btn-secondary col-10" style="margin: 2px; color: white; font-size: 14px"
+                                                                type="submit">
+                                                                <span class="fas fa-bell-slash"></span>
+                                                                &nbsp;Unsubscribe
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>

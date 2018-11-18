@@ -1,9 +1,8 @@
 import json
+from django.conf import settings
 from urllib.request import urlopen
 
-# ON LOCAL DEVELOPMENT CHANGE THIS
-#BASE_CATALOG_URL = "http://localhost:4000/api"
-BASE_CATALOG_URL = "http://catalog:4000/api"
+BASE_CATALOG_URL = "http://catalog:4000/api" if settings.USE_DOCKER else "http://localhost:4000/api"
 
 class Season:
     def __init__(self, id, seasonNum, episodes):

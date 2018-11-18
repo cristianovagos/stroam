@@ -27,14 +27,20 @@ def home(request):
         shuffle(movies)
 
     if request.method == 'POST':
+        # TODO - add returned user data to Django session
         body_decoded = request.body.decode('utf-8')
         body = json.loads(body_decoded)
         print(body)
 
+    subscribedChannels = [ch['channel_name'] for ch in
+                          Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
+                              'channel_name')]
+
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
-        'numCart': request.session.get('cartNumber', 0)
+        'numCart': request.session.get('cartNumber', 0),
+        'subscribedChannels': subscribedChannels
     }
     return render(request, 'pages/index.html', tparams)
 
@@ -45,10 +51,14 @@ def homeMovies(request):
         shuffle(movies)
     except Exception:
         movies = None
+    subscribedChannels = [ch['channel_name'] for ch in
+                          Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
+                              'channel_name')]
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
-        'numCart': request.session.get('cartNumber', 0)
+        'numCart': request.session.get('cartNumber', 0),
+        'subscribedChannels': subscribedChannels
     }
     return render(request, 'pages/index.html', tparams)
 
@@ -59,10 +69,14 @@ def homeSeries(request):
         shuffle(movies)
     except Exception:
         movies = None
+    subscribedChannels = [ch['channel_name'] for ch in
+                          Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
+                              'channel_name')]
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
-        'numCart': request.session.get('cartNumber', 0)
+        'numCart': request.session.get('cartNumber', 0),
+        'subscribedChannels': subscribedChannels
     }
     return render(request, 'pages/index.html', tparams)
 
@@ -71,10 +85,14 @@ def genreList(request):
     genres = genre.getAllGenres()
     if genres:
         shuffle(genres)
+    subscribedChannels = [ch['channel_name'] for ch in
+                          Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
+                              'channel_name')]
     tparams = {
         'title': MAIN_TITLE + title,
         'genres': genres,
-        'numCart': request.session.get('cartNumber', 0)
+        'numCart': request.session.get('cartNumber', 0),
+        'subscribedChannels': subscribedChannels
     }
     return render(request, 'pages/genre-list.html', tparams)
 
@@ -88,12 +106,17 @@ def genreMovies(request, genre):
         if movies:
             shuffle(movies)
 
+    subscribedChannels = [ch['channel_name'] for ch in
+                          Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
+                              'channel_name')]
+
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
         'genreName': genreName,
         'numCart': request.session.get('cartNumber', 0),
-        'subscribed': notifications.is_user_subscribed(user_id=1, channel_name=('stroam-' + genreName))
+        'subscribed': notifications.is_user_subscribed(user_id=1, channel_name=('stroam-' + genreName)),
+        'subscribedChannels': subscribedChannels
     }
     return render(request, 'pages/genre.html', tparams)
 
@@ -111,6 +134,10 @@ def singleMovie(request, id):
 
         if movie.type == 'series' and moviePurchased:
             seasonsPurchased = list(p.all().values_list('season_num', flat=True).distinct())
+
+    subscribedChannels = [ch['channel_name'] for ch in
+                          Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
+                              'channel_name')]
 
     if request.method == 'POST':
         auxDict = {}
@@ -143,7 +170,8 @@ def singleMovie(request, id):
             'numCart': request.session.get('cartNumber', 0),
             'purchased': moviePurchased,
             'seasonsPurchased': seasonsPurchased,
-            'subscribed': notifications.is_user_subscribed(user_id=1, channel_name=('stroam-movie' + id))
+            'subscribed': notifications.is_user_subscribed(user_id=1, channel_name=('stroam-movie' + str(id))),
+            'subscribedChannels': subscribedChannels
         }
         return render(request, 'pages/single-movie.html', tparams)
 
@@ -154,7 +182,8 @@ def singleMovie(request, id):
         'numCart': request.session.get('cartNumber', 0),
         'purchased': moviePurchased,
         'seasonsPurchased': seasonsPurchased,
-        'subscribed': notifications.is_user_subscribed(user_id=1, channel_name=('stroam-movie' + id))
+        'subscribed': notifications.is_user_subscribed(user_id=1, channel_name=('stroam-movie' + str(id))),
+        'subscribedChannels': subscribedChannels
     }
     return render(request, 'pages/single-movie.html', tparams)
 
@@ -198,11 +227,16 @@ def shoppingCart(request):
             else:
                 deleteProductListFromSession(request)
 
+    subscribedChannels = [ch['channel_name'] for ch in
+                          Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
+                              'channel_name')]
+
     tparams = {
         'title': MAIN_TITLE + title,
         'products': products,
         'totalPrice': price,
-        'numCart': request.session.get('cartNumber', 0)
+        'numCart': request.session.get('cartNumber', 0),
+        'subscribedChannels': subscribedChannels
     }
     return render(request, 'pages/shopping-cart.html', tparams)
 
@@ -262,6 +296,10 @@ def checkout(request):
             LOGGER.error(str(error))
             raise Http404('Bad Request: \n\n' + str(error))
 
+    subscribedChannels = [ch['channel_name'] for ch in
+                          Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
+                              'channel_name')]
+
     tparams = {
         'title': MAIN_TITLE + title,
         'checkoutToken': checkoutToken,
@@ -269,7 +307,8 @@ def checkout(request):
         'billingData': billingData,
         'products': products,
         'totalPrice': totalPrice,
-        'cartShowing': False
+        'cartShowing': False,
+        'subscribedChannels': subscribedChannels
     }
     return render(request, 'pages/checkout.html', tparams)
 
@@ -277,8 +316,13 @@ def paymentCompleted(request):
     title = 'Payment Completed'
     deleteProductListFromSession(request)
 
+    subscribedChannels = [ch['channel_name'] for ch in
+                          Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
+                              'channel_name')]
+
     tparams = {
         'title': MAIN_TITLE + title,
+        'subscribedChannels': subscribedChannels
     }
     return render(request, 'pages/payment-completed.html', tparams)
 
@@ -286,11 +330,16 @@ def paymentError(request):
     title = 'Payment Canceled'
     deleteProductListFromSession(request)
 
+    subscribedChannels = [ch['channel_name'] for ch in
+                          Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
+                              'channel_name')]
+
     print("checkoutError")
     print(request.body)
 
     tparams = {
         'title': MAIN_TITLE + title,
+        'subscribedChannels': subscribedChannels
     }
     return render(request, 'pages/payment-error.html', tparams)
 
@@ -298,34 +347,61 @@ def userPanel(request):
     title = 'User Panel'
 
     if request.method == 'POST':
-        p = Purchase.objects.get(id=request.POST['orderID'])
-        p.onOrderCancelled()
-        payment.deleteCheckout(p.token_payment)
-        return HttpResponse('')
+        if request.POST.get('orderID', False):
+            p = Purchase.objects.get(id=request.POST['orderID'])
+            p.onOrderCancelled()
+            payment.deleteCheckout(p.token_payment)
+            return HttpResponse('')
+        else:
+            notifications.unsubscribe(user_id=1, channel_name=request.POST['channel_name'])
+            return redirect('user-panel')
 
-    data = {}
+    purchaseData = {}
     allPurchases = Purchase.objects.filter(user_id=1)
     for purchase in allPurchases:
         productions = Purchase_Production.objects.filter(purchase_id=purchase.id)
-        data[purchase.id] = {}
-        data[purchase.id]['payment_status'] = purchase.payment_status
-        data[purchase.id]['token_isValid'] = purchase.token_isValid
-        data[purchase.id]['token_payment'] = purchase.token_payment
-        data[purchase.id]['date_created'] = purchase.date_created
-        data[purchase.id]['date_payment'] = purchase.date_payment
-        data[purchase.id]['products'] = {}
+        purchaseData[purchase.id] = {}
+        purchaseData[purchase.id]['payment_status'] = purchase.payment_status
+        purchaseData[purchase.id]['token_isValid'] = purchase.token_isValid
+        purchaseData[purchase.id]['token_payment'] = purchase.token_payment
+        purchaseData[purchase.id]['date_created'] = purchase.date_created
+        purchaseData[purchase.id]['date_payment'] = purchase.date_payment
+        purchaseData[purchase.id]['products'] = {}
         for prod in productions:
             product = production.getSingleProduction(prod.production_id)
-            data[purchase.id]['products'][prod.id] = {}
-            data[purchase.id]['products'][prod.id]['production'] = product
+            purchaseData[purchase.id]['products'][prod.id] = {}
+            purchaseData[purchase.id]['products'][prod.id]['production'] = product
             if product.type == 'series':
-                data[purchase.id]['products'][prod.id]['season'] = prod.season_num
+                purchaseData[purchase.id]['products'][prod.id]['season'] = prod.season_num
             else:
-                data[purchase.id]['products'][prod.id]['season'] = None
+                purchaseData[purchase.id]['products'][prod.id]['season'] = None
+
+    subscribedChannels = []
+    subscriptionsData = {}
+    allSubscriptions = Notification_Subscription.objects.filter(user_id=1)
+    for subscription in allSubscriptions:
+        channels = Notification_Channels.objects.filter(notification_subscription=subscription.pk)
+        for ch in channels:
+            subscriptionsData[subscription.id] = {}
+            subscriptionsData[subscription.id]['channel_name'] = ch.channel_name
+            subscribedChannels.append(ch.channel_name)
+
+            if ch.channel_name.strip('stroam-movie').isnumeric():
+                pr = production.getSingleProduction(int(ch.channel_name.strip('stroam-movie')))
+                subscriptionsData[subscription.id]['production'] = pr
+                subscriptionsData[subscription.id]['type'] = str(pr.type).capitalize()
+            else:
+                subscriptionsData[subscription.id]['type'] = 'Genre'
+
+            subscriptionsData[subscription.id]['strip'] = ch.channel_name.strip('stroam-movie')
+
+    # print(subscriptionsData)
 
     tparams = {
         'title': MAIN_TITLE + title,
-        'data': data,
+        'purchaseData': purchaseData,
+        'subscriptionsData': subscriptionsData,
+        'subscribedChannels': subscribedChannels,
         'numCart': request.session.get('cartNumber', 0)
     }
     return render(request, 'pages/user-panel.html', tparams)
@@ -339,9 +415,14 @@ def myMovies(request):
     if movies:
         shuffle(list(set(movies)))
 
+    subscribedChannels = [ch['channel_name'] for ch in
+                          Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
+                              'channel_name')]
+
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
+        'subscribedChannels': subscribedChannels,
         'numCart': request.session.get('cartNumber', 0)
     }
     return render(request, 'pages/my-movies.html', tparams)
@@ -350,32 +431,21 @@ def pay(request, checkout_token):
     return redirect(payment.PAYMENT_SERVICE_URL + "/pay?checkout_token=" + checkout_token)
 
 def makeauth(request):
-    token = request.POST.get('csrfmiddlewaretoken', None)
-    # print(token)
-
     # notifications.subscribe(user_id=1)
     homeUrl = request.build_absolute_uri(reverse('homepage')).encode("utf-8")
-    # return redirect('http://authclient:3200?url=' + base64.b64encode(homeUrl))
     homeEncoded = base64.b64encode(homeUrl)
-    # return redirect('http://localhost:4200?url=' + str(homeEncoded).replace('b\'', '').replace('\'', ''))
-    return redirect('http://localhost:4200?url=' + str(homeEncoded).replace('b\'', '').replace('\'', '') +
-                    '&token=' + token)
+    return redirect('http://localhost:4200?url=' + str(homeEncoded).replace('b\'', '').replace('\'', ''))
 
-# def subscribeGenre(request, genre_name):
-#     if production.getGenreByName(genre_name) is None:
-#         return
-#     notifications.subscribe(user_id=1, channel_name=('stroam-' + genre_name))
-#
-# def unsubscribeGenre(request, genre_name):
-#     notifications.unsubscribe(user_id=1, channel_name=('stroam-' + genre_name))
-#
-# def subscribeMovie(request, movie_id):
-#     if production.getSingleProduction(movie_id) is None:
-#         return
-#     notifications.subscribe(user_id=1, channel_name=('stroam-movie' + movie_id))
-#
-# def unsubscribeMovie(request, movie_id):
-#     notifications.unsubscribe(user_id=1, channel_name=('stroam-movie' + movie_id))
+def logout(request):
+    # TODO delete user session
+    return redirect('homepage')
+
+def pushtest(request):
+    title = 'Send a push notification'
+    tparams = {
+        'title': MAIN_TITLE + title,
+    }
+    return render(request, 'pages/push.html', tparams)
 
 # FOR DEBUGGING PURPOSES! THIS WILL DELETE ALL STUFF (SESSIONS + FRONTEND DATABASE DATA)
 def deleteAll(request):
@@ -383,6 +453,8 @@ def deleteAll(request):
     request.session.flush()
     Purchase.objects.all().delete()
     Purchase_Production.objects.all().delete()
+    Notification_Subscription.objects.all().delete()
+    Notification_Channels.objects.all().delete()
 
     tparams = {
         'title': MAIN_TITLE + title,

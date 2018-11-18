@@ -15,6 +15,12 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Docker
+USE_DOCKER = bool(os.getenv('USE_DOCKER', False))
+if USE_DOCKER:
+    print('USING DOCKER')
+else:
+    print('NOT USING DOCKER')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -73,31 +79,51 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'frontend.wsgi.application'
 ASGI_APPLICATION = 'frontend.routing.application'
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
-        },
-    },
-}
-# frontend-redis
-# ON LOCAL DEVELOPMENT CHANGE HOSTS TO '127.0.0.1'
 
+if USE_DOCKER:
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG': {
+                "hosts": [('frontend-redis', 6379)],
+            },
+        },
+    }
+else:
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG': {
+                "hosts": [('127.0.0.1', 6379)],
+            },
+        },
+    }
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'stroamdb',
-        'USER': 'stroamuser',
-        'PASSWORD': 'stroam',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+if USE_DOCKER:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'stroamdb',
+            'USER': 'stroamuser',
+            'PASSWORD': 'stroam',
+            'HOST': 'frontend-db',
+            'PORT': '5432',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'stroamdb',
+            'USER': 'stroamuser',
+            'PASSWORD': 'stroam',
+            'HOST': '127.0.0.1',
+            'PORT': '5432',
+        }
+    }
 # frontend-db
 # ON LOCAL DEVELOPMENT CHANGE HOST TO '127.0.0.1'
 
@@ -161,5 +187,5 @@ LOGGING = {
     },
 }
 
-#
+# CORS
 CORS_ORIGIN_ALLOW_ALL = True

@@ -1,6 +1,7 @@
 import logging
 import json
 import requests
+from django.conf import settings
 from django.http import Http404
 from django.shortcuts import redirect
 from urllib.request import urlopen
@@ -8,8 +9,8 @@ from urllib.request import urlopen
 from ..models import Purchase, Purchase_Production
 
 LOGGER = logging.getLogger(__name__)
-PAYMENT_SERVICE_URL = "http://localhost:5000"
-PAYMENT_SERVICE_API_URL = "http://localhost:5000/api/"
+PAYMENT_SERVICE_URL = "http://payment:5000" if settings.USE_DOCKER else "http://localhost:5000"
+PAYMENT_SERVICE_API_URL = "http://payment:5000/api/" if settings.USE_DOCKER else "http://localhost:5000/api/"
 
 def createCheckout(price, returnURL, cancelURL, items, currency="EUR", merchant="tokensample123"):
     jsonItems = []

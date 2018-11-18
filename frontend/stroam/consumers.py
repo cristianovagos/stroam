@@ -22,8 +22,3 @@ class SubscribeConsumer(WebsocketConsumer):
             notifications.unsubscribe(user_id, channel)
         else:
             notifications.subscribe(user_id, channel)
-
-        # self.send(text_data=json.dumps({
-        #     'channel': message
-        # }))
-

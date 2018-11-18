@@ -17,15 +17,20 @@ This section will be updated as soon as development goes on.
 * Added basic GET+POST protection of hardcoded URLs (p.e. accessing certain pages out of cycle)
 * Added a user panel, on which one can see their orders (history, etc), and let resume payments and cancel orders
 * Added a personal library page, which one can see straight away the purchased productions
+* Added notification support (Push notifications for now)
+* Already 'Dockerized' (read the root project README)
 
 ## TODO
 This section will (_also_) be updated as soon as development goes on.
 * Add user authentication (Sign-in/Register, store user data, etc) (_needs Auth service_)
-* Add notification support (_needs Notification service_)
 * _More_ error handling (_to be found during tests_)
-* Migrate into Docker containers for ease of deployment
 
-### How to run (locally)
+### How to run
+
+Use Docker and Docker Compose (_read project README_) to create a container and run STROAM as a whole.
+The frontend is already depending and relying on multiple services, so it's better to deploy and run the whole system and enjoy it from that.
+
+### How to run (locally) - NOT RECOMMENDED
 
 * Install Python3.7
 
