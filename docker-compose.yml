@@ -1,16 +1,19 @@
 version: '3'
 
 services:
-  nginx:
-    container_name: nginx
-    restart: always
-    build:
-      context: .
-      dockerfile: ./Dockerfile-nginx
-    ports:
-      - "80:80"
-    depends_on:
-      - frontend
+  # nginx:
+  #   container_name: nginx
+  #   restart: always
+  #   build:
+  #     context: .
+  #     dockerfile: ./Dockerfile-nginx
+  #   volumes:
+  #     - static:/code/static
+  #     - media:/code/media
+  #   ports:
+  #     - "80:80"
+  #   depends_on:
+  #     - frontend
 
   frontend-db:
     container_name: frontend-db
@@ -25,12 +28,17 @@ services:
     container_name: frontend-redis
     restart: always
     image: redis:latest
+    ports:
+      - "6379:6379"
+  # remove port on production
   
   frontend:
     container_name: frontend
     restart: always
     build: ./frontend
     command: python3 manage.py runserver 0.0.0.0:8000
+    environment:
+      USE_DOCKER: 'yes'
     volumes:
       - ./frontend:/code
     ports:
@@ -73,9 +81,9 @@ services:
     restart: always
     build: ./payment
     volumes:
-        - ./payment:/app
+      - ./payment:/app
     ports:
-        - "5000:5000"
+       - "5000:5000"
 
   #notification - notTheService services
   mosquitto:
