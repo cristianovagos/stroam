@@ -1,4 +1,4 @@
-package es1819.stroam.notification.server.core.message;
+package es1819.stroam.notification.commons.communication.message;
 
 import es1819.stroam.notification.commons.Constants;
 import org.json.JSONException;

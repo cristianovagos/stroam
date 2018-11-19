@@ -2,13 +2,11 @@ package es1819.stroam.notification.client;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class NotTheServiceClientTest implements NotTheServiceClientCallback {
 
     @Test
     public void generalTest() {
-        NotTheServiceClient notTheServiceClient = new NotTheServiceClient("ws://localhost:1884")
+        NotTheServiceClient_ notTheServiceClient = new NotTheServiceClient_("ws://localhost:1884")
                 .setCallback(this);
 
         try {
@@ -29,7 +27,6 @@ public class NotTheServiceClientTest implements NotTheServiceClientCallback {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override

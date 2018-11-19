@@ -33,11 +33,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Constants.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/Constants.java">
+      <file leaf-file-name="Message.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/message/Message.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="31" column="9" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
+            <state relative-caret-position="188">
+              <caret line="17" column="34" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -45,33 +45,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/client/pom.xml">
+      <file leaf-file-name="EmailRequestMessage.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/message/request/EmailRequestMessage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="26" column="70" selection-start-line="26" selection-start-column="70" selection-end-line="26" selection-end-column="70" />
+            <state relative-caret-position="-33">
+              <caret line="2" column="52" selection-start-line="2" selection-start-column="52" selection-end-line="2" selection-end-column="52" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/pom.xml">
+      <file leaf-file-name="RequestMessage.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/message/request/RequestMessage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="327">
-              <caret line="26" column="70" selection-start-line="26" selection-start-column="28" selection-end-line="26" selection-end-column="70" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NotTheServiceClient.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/main/java/es1819/stroam/notification/client/NotTheServiceClient.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="367">
-              <caret line="53" selection-start-line="53" selection-end-line="53" />
+            <state relative-caret-position="953">
+              <caret line="142" column="1" lean-forward="true" selection-start-line="142" selection-start-column="1" selection-end-line="142" selection-end-column="1" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#937#938#0" expanded="true" />
-                <element signature="e#980#981#0" expanded="true" />
+                <element signature="e#655#656#0" expanded="true" />
+                <element signature="e#683#684#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -80,10 +71,9 @@
       <file leaf-file-name="NotTheServiceClientTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/src/test/java/es1819/stroam/notification/client/NotTheServiceClientTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="32" selection-start-line="32" selection-end-line="32" />
+            <state relative-caret-position="420">
+              <caret line="28" column="9" selection-start-line="28" selection-start-column="9" selection-end-line="28" selection-end-column="9" />
               <folding>
-                <element signature="imports" expanded="true" />
                 <element signature="e#1097#1098#0" expanded="true" />
                 <element signature="e#1144#1145#0" expanded="true" />
                 <element signature="e#1752#1753#0" expanded="true" />
@@ -93,38 +83,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Communication.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/Communication.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="46" selection-start-line="46" selection-end-line="46" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NotTheServiceClientCallback.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/main/java/es1819/stroam/notification/client/NotTheServiceClientCallback.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/main/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="58" column="12" selection-start-line="48" selection-start-column="8" selection-end-line="58" selection-end-column="12" />
+            <state relative-caret-position="645">
+              <caret line="43" selection-start-line="43" selection-end-line="43" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -139,9 +102,10 @@
       <list>
         <option value="Arquillian JUnit Test Class" />
         <option value="Enum" />
-        <option value="Class" />
         <option value="Interface" />
         <option value="JUnit4 Test Class" />
+        <option value="FxmlFile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -156,12 +120,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/commons/pom.xml" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/GeneralUtilities.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/Handler1.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/utilities/ChannelUtilities.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/SenderHandler.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/Message.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/ServerSender.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/RequestResponseMessage.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/ErrorType.java" />
@@ -169,30 +131,44 @@
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/ResponseSenderHandler.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/HandleErrorType.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/HandlerResponseUtilities.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/PhoneHandler.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/HandleResultType.java" />
         <option value="$PROJECT_DIR$/server/src/test/java/es1819/stroam/notification/server/core/message/MessageTest.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/MessageUtilities.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/ResponseMessage.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/Server.java" />
         <option value="$PROJECT_DIR$/server/src/test/java/es1819/stroam/notification/server/ServerTest.java" />
         <option value="$PROJECT_DIR$/server/nottheservice.conf" />
-        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/EmailHandler.java" />
         <option value="$PROJECT_DIR$/nottheservice.conf" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/utilities/GeneralUtilities.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/Constants.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/es1819/stroam/notification/client/Client.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/RequestMessage.java" />
         <option value="$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/CommunicationCallback.java" />
-        <option value="$PROJECT_DIR$/client/src/main/java/es1819/stroam/notification/client/NotTheServiceClientCallback.java" />
-        <option value="$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/Constants.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/main/Main.java" />
-        <option value="$PROJECT_DIR$/client/src/main/java/es1819/stroam/notification/client/NotTheServiceClient.java" />
-        <option value="$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/Communication.java" />
-        <option value="$PROJECT_DIR$/client/src/test/java/es1819/stroam/notification/client/NotTheServiceClientTest.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/Message.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/RequestMessage.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/utilities/TopicUtilities.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/EmailRequestMessage.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/PhoneRequestMessage.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/request/PhoneRequestMessage.java" />
         <option value="$PROJECT_DIR$/server/pom.xml" />
+        <option value="$PROJECT_DIR$/commons/pom.xml" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/HandleResultType.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/Server.java" />
+        <option value="$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/utilities/TopicUtilities.java" />
+        <option value="$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/Communication.java" />
+        <option value="$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/CommunicationOperation.java" />
+        <option value="$PROJECT_DIR$/client/src/test/java/es1819/stroam/notification/client/NotTheServiceClientTest.java" />
         <option value="$PROJECT_DIR$/client/pom.xml" />
+        <option value="$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/message/request/PhoneRequestMessage.java" />
+        <option value="$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/Constants.java" />
+        <option value="$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/message/response/ResponseMessage.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/es1819/stroam/notification/client/NotTheServiceClientCallback.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/es1819/stroam/notification/client/NotTheServiceClient1.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/PhoneHandler.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/es1819/stroam/notification/client/NotTheServiceClient.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/EmailHandler.java" />
+        <option value="$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/message/Message.java" />
+        <option value="$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/message/request/RequestMessage.java" />
+        <option value="$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/message/request/EmailRequestMessage.java" />
       </list>
     </option>
   </component>
@@ -475,7 +451,57 @@
               <item name="notification" type="462c0819:PsiDirectoryNode" />
               <item name="commons" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="es1819" type="462c0819:PsiDirectoryNode" />
+              <item name="stroam" type="462c0819:PsiDirectoryNode" />
+              <item name="notification" type="462c0819:PsiDirectoryNode" />
+              <item name="commons" type="462c0819:PsiDirectoryNode" />
+              <item name="communication" type="462c0819:PsiDirectoryNode" />
+              <item name="message" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="notification" type="b2602c69:ProjectViewProjectNode" />
+              <item name="notification" type="462c0819:PsiDirectoryNode" />
+              <item name="commons" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="es1819" type="462c0819:PsiDirectoryNode" />
+              <item name="stroam" type="462c0819:PsiDirectoryNode" />
+              <item name="notification" type="462c0819:PsiDirectoryNode" />
+              <item name="commons" type="462c0819:PsiDirectoryNode" />
+              <item name="communication" type="462c0819:PsiDirectoryNode" />
+              <item name="message" type="462c0819:PsiDirectoryNode" />
+              <item name="request" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="notification" type="b2602c69:ProjectViewProjectNode" />
+              <item name="notification" type="462c0819:PsiDirectoryNode" />
+              <item name="commons" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="es1819" type="462c0819:PsiDirectoryNode" />
+              <item name="stroam" type="462c0819:PsiDirectoryNode" />
+              <item name="notification" type="462c0819:PsiDirectoryNode" />
+              <item name="commons" type="462c0819:PsiDirectoryNode" />
+              <item name="communication" type="462c0819:PsiDirectoryNode" />
+              <item name="message" type="462c0819:PsiDirectoryNode" />
+              <item name="response" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="notification" type="b2602c69:ProjectViewProjectNode" />
+              <item name="notification" type="462c0819:PsiDirectoryNode" />
+              <item name="commons" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="es1819" type="462c0819:PsiDirectoryNode" />
+              <item name="stroam" type="462c0819:PsiDirectoryNode" />
+              <item name="notification" type="462c0819:PsiDirectoryNode" />
+              <item name="commons" type="462c0819:PsiDirectoryNode" />
+              <item name="utilities" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="notification" type="b2602c69:ProjectViewProjectNode" />
@@ -583,33 +609,6 @@
               <item name="server" type="462c0819:PsiDirectoryNode" />
               <item name="core" type="462c0819:PsiDirectoryNode" />
               <item name="handler" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="notification" type="b2602c69:ProjectViewProjectNode" />
-              <item name="notification" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="es1819" type="462c0819:PsiDirectoryNode" />
-              <item name="stroam" type="462c0819:PsiDirectoryNode" />
-              <item name="notification" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="core" type="462c0819:PsiDirectoryNode" />
-              <item name="message" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="notification" type="b2602c69:ProjectViewProjectNode" />
-              <item name="notification" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="es1819" type="462c0819:PsiDirectoryNode" />
-              <item name="stroam" type="462c0819:PsiDirectoryNode" />
-              <item name="notification" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="utilities" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="notification" type="b2602c69:ProjectViewProjectNode" />
@@ -789,7 +788,7 @@
       <module name="server" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="es1819.stroam.notification.commons.*" />
+          <option name="PATTERN" value="es1819.stroam.notification.commons.utilities.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -812,7 +811,7 @@
       <module name="server" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="es1819.stroam.notification.commons.*" />
+          <option name="PATTERN" value="es1819.stroam.notification.commons.utilities.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -835,7 +834,7 @@
       <module name="server" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="es1819.stroam.notification.commons.*" />
+          <option name="PATTERN" value="es1819.stroam.notification.commons.utilities.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -935,44 +934,44 @@
       <workItem from="1542324694402" duration="1075000" />
       <workItem from="1542330758333" duration="7261000" />
       <workItem from="1542645234685" duration="822000" />
-      <workItem from="1542646247694" duration="7768000" />
+      <workItem from="1542646247694" duration="19720000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 18h 06m 52s.xml">
-      <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 18h 08m 00s.xml">
-      <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 18h 08m 43s.xml">
-      <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 18h 09m 53s.xml">
-      <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 18h 11m 13s.xml">
-      <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 18h 13m 07s.xml">
-      <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 18h 13m 34s.xml">
-      <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 18h 47m 49s.xml">
-      <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 18h 48m 13s.xml">
-      <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 18h 49m 32s.xml">
+      <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 22h 18m 18s.xml">
+      <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 22h 19m 35s.xml">
+      <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 22h 20m 53s.xml">
+      <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 22h 22m 17s.xml">
+      <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 22h 24m 44s.xml">
+      <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 22h 25m 35s.xml">
+      <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 22h 28m 18s.xml">
+      <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 22h 35m 00s.xml">
+      <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="NotTheServiceClientTest_generalTest - 2018.11.19 at 22h 35m 51s.xml">
       <configuration name="NotTheServiceClientTest.generalTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="90740000" />
+    <option name="totallyTimeSpent" value="102692000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1011" extended-state="0" />
@@ -980,63 +979,33 @@
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Messages" order="7" weight="0.32713348" />
-      <window_info anchor="right" id="Palette&#9;" order="3" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.32713348" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info id="Image Layers" order="2" />
-      <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50080776" side_tool="true" weight="0.3154574" />
-      <window_info anchor="right" id="Maven Projects" order="3" visible="true" weight="0.106496274" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50080776" side_tool="true" weight="0.3154574" />
+      <window_info anchor="right" id="Maven Projects" order="7" weight="0.106496274" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49919224" visible="true" weight="0.31509846" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info id="Capture Tool" order="2" />
-      <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4968051" visible="true" weight="0.20234291" />
-      <window_info anchor="right" id="Database" order="3" weight="0.32960597" />
+      <window_info anchor="bottom" id="Version Control" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49919224" weight="0.31509846" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info id="Designer" order="3" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49674267" visible="true" weight="0.20234291" />
+      <window_info anchor="right" id="Database" order="6" weight="0.32960597" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32822758" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info id="UI Designer" order="2" />
-      <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info id="Favorites" order="2" sideWeight="0.50319487" side_tool="true" weight="0.20234291" />
+      <window_info id="UI Designer" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info id="Favorites" order="5" sideWeight="0.50325733" side_tool="true" weight="0.20234291" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39715537" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32822758" />
     </layout>
-    <layout-to-restore>
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32822758" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49919224" weight="0.31509846" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4968051" visible="true" weight="0.20234291" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info id="Image Layers" order="2" />
-      <window_info id="Designer" order="3" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info id="UI Designer" order="4" />
-      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.39715537" />
-      <window_info anchor="right" id="Database" order="6" weight="0.32960597" />
-      <window_info anchor="right" id="Palette&#9;" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50080776" side_tool="true" weight="0.3154574" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="Version Control" order="10" show_stripe_button="false" />
-      <window_info id="Capture Tool" order="5" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="bottom" id="Messages" order="11" weight="0.32713348" />
-      <window_info anchor="right" id="Maven Projects" order="8" visible="true" weight="0.106496274" />
-      <window_info id="Favorites" order="6" sideWeight="0.50319487" side_tool="true" weight="0.20234291" />
-    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -1046,31 +1015,38 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/client/src/main/java/es1819/stroam/notification/client/NotTheServiceClient.java</url>
-          <line>52</line>
-          <properties />
-          <option name="timeStamp" value="64" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/client/src/main/java/es1819/stroam/notification/client/NotTheServiceClient.java</url>
-          <line>26</line>
-          <properties />
-          <option name="timeStamp" value="67" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/client/src/test/java/es1819/stroam/notification/client/NotTheServiceClientTest.java</url>
-          <line>14</line>
-          <properties />
-          <option name="timeStamp" value="69" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="70" />
+      <option name="time" value="76" />
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>(EmailRequestMessage)message</expression-string>
+        <language-id>JAVA</language-id>
+        <custom-info>es1819.stroam.notification.commons.communication.message.request.RequestMessage,es1819.stroam.notification.commons.communication.message.request.EmailRequestMessage</custom-info>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>message instanceof RequestMessage</expression-string>
+        <language-id>JAVA</language-id>
+        <custom-info>es1819.stroam.notification.commons.communication.message.request.RequestMessage</custom-info>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>message instanceof EmailRequestMessage</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>!(message instanceof EmailRequestMessage)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>message instanceof ResponseMessage</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>Constants.CHANNEL_SEPARATOR + Constants.CHANNEL_SERVICE_PREFIX + topic</expression-string>
         <language-id>JAVA</language-id>
@@ -1089,33 +1065,6 @@
       <expression>
         <expression-string>System.getProperties()</expression-string>
         <language-id>JAVA</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>new URI(GeneralUtilities.class.getProtectionDomain().getCodeSource().getLocation().getPath()).</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>new URI(GeneralUtilities.class.getProtectionDomain().getCodeSource().getLocation().getPath())</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>GeneralUtilities.getCurrentWorkingDirectoryPath()</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>new URI(GeneralUtilities.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getPath()</expression-string>
-        <language-id>JAVA</language-id>
-        <custom-info>java.net.URI</custom-info>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>new URI(GeneralUtilities.class.getProtectionDomain().getCodeSource().getLocation()).getPath();</expression-string>
-        <language-id>JAVA</language-id>
-        <custom-info>java.net.URI</custom-info>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
     </expressions>
@@ -1175,28 +1124,7 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/EmailHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="44" selection-start-line="44" selection-end-line="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/test/java/es1819/stroam/notification/server/core/message/MessageTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="23" column="5" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/RequestMessage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="825">
-          <caret line="58" selection-start-line="58" selection-end-line="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/utilities/ChannelUtilities.java">
+    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/utilities/TopicUtilities.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="10" column="59" selection-start-line="10" selection-start-column="59" selection-end-line="10" selection-end-column="59" />
@@ -1217,13 +1145,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="33" selection-start-line="5" selection-start-column="33" selection-end-line="5" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/utilities/ChannelUtilities.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="59" selection-start-line="10" selection-start-column="59" selection-end-line="10" selection-end-column="59" />
         </state>
       </provider>
     </entry>
@@ -1277,20 +1198,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/lib/src.zip!/java.base/java/lang/Thread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="843" selection-start-line="843" selection-end-line="843" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/CommunicationOperation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/ServerSender.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -1305,52 +1212,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/ResponseSenderHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="780">
-          <caret line="52" selection-start-line="52" selection-end-line="52" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/HandlerResponseUtilities.java" />
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/HandleResultType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="29" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/PhoneHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="915">
-          <caret line="66" column="58" selection-start-line="66" selection-start-column="58" selection-end-line="66" selection-end-column="80" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/json/json/20180130/json-20180130-sources.jar!/org/json/JSONObject.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
           <caret line="2060" selection-start-line="2060" selection-end-line="2060" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/test/java/es1819/stroam/notification/server/core/message/MessageTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="33" selection-start-line="33" selection-end-line="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/MessageUtilities.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="13" column="53" selection-start-line="13" selection-start-column="53" selection-end-line="13" selection-end-column="53" />
         </state>
       </provider>
     </entry>
@@ -1386,116 +1252,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/commons/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/EmailHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2235">
-          <caret line="158" column="1" selection-start-line="158" selection-start-column="1" selection-end-line="158" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/nottheservice.conf">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
           <caret line="13" column="32" selection-start-line="13" selection-start-column="32" selection-end-line="13" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/Message.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="29" selection-start-line="29" selection-end-line="29" />
-          <folding>
-            <element signature="method#setRequestId#0;class#Message#0" />
-            <element signature="method#setChannel#0;class#Message#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/GeneralUtilities.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/MessageType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/RequestMessage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-212">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/ResponseMessage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="37" column="34" selection-start-line="37" selection-start-column="34" selection-end-line="37" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/CommunicationCallback.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="36" selection-start-line="3" selection-start-column="36" selection-end-line="3" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/Server.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1515">
-          <caret line="155" selection-start-line="155" selection-end-line="155" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/Constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="31" column="9" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/es1819/stroam/notification/client/NotTheServiceClientCallback.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/main/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="58" column="12" selection-start-line="48" selection-start-column="8" selection-end-line="58" selection-end-column="12" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1513,31 +1273,177 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/Communication.java">
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/ResponseSenderHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="46" selection-start-line="46" selection-end-line="46" />
+        <state relative-caret-position="326">
+          <caret line="41" column="27" selection-start-line="41" selection-start-column="12" selection-end-line="41" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/es1819/stroam/notification/client/NotTheServiceClient.java">
+    <entry file="file://$PROJECT_DIR$/server/src/test/java/es1819/stroam/notification/server/core/message/MessageTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
-          <caret line="53" selection-start-line="53" selection-end-line="53" />
+        <state relative-caret-position="405">
+          <caret line="32" column="32" selection-start-line="32" selection-start-column="32" selection-end-line="32" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/message/MessageType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/utilities/GeneralUtilities.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="627">
+          <caret line="48" column="21" selection-start-line="48" selection-start-column="21" selection-end-line="48" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commons/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="21" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/utilities/TopicUtilities.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="92">
+          <caret line="25" column="40" selection-start-line="25" selection-start-column="40" selection-end-line="25" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/CommunicationOperation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="43" selection-start-line="2" selection-start-column="36" selection-end-line="2" selection-end-column="43" />
+          <folding>
+            <element signature="e#251#252#0" expanded="true" />
+            <element signature="e#287#288#0" expanded="true" />
+            <element signature="e#248#249#0" expanded="true" />
+            <element signature="e#281#282#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/CommunicationCallback.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="36" selection-start-line="3" selection-start-column="36" selection-end-line="3" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/message/request/PhoneRequestMessage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="37" column="20" selection-start-line="37" selection-start-column="20" selection-end-line="37" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#937#938#0" expanded="true" />
-            <element signature="e#980#981#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/Communication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="72" column="43" selection-start-line="72" selection-start-column="43" selection-end-line="72" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="710">
+          <caret line="98" column="46" selection-start-line="98" selection-start-column="31" selection-end-line="98" selection-end-column="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/HandleResultType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="35" column="5" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/es1819/stroam/notification/client/NotTheServiceClientCallback.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home/lib/src.zip!/java.base/java/lang/Thread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="843" selection-start-line="843" selection-end-line="843" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/PhoneHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="38" column="49" selection-start-line="38" selection-start-column="49" selection-end-line="38" selection-end-column="49" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/es1819/stroam/notification/client/NotTheServiceClient_.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="129" column="8" selection-start-line="129" selection-start-column="8" selection-end-line="132" selection-end-column="79" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#978#979#0" expanded="true" />
+            <element signature="e#1021#1022#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/message/MessageUtilities.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/main/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="645">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/test/java/es1819/stroam/notification/client/NotTheServiceClientTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="32" selection-start-line="32" selection-end-line="32" />
+        <state relative-caret-position="420">
+          <caret line="28" column="9" selection-start-line="28" selection-start-column="9" selection-end-line="28" selection-end-column="9" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="e#1097#1098#0" expanded="true" />
             <element signature="e#1144#1145#0" expanded="true" />
             <element signature="e#1752#1753#0" expanded="true" />
@@ -1546,17 +1452,69 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/pom.xml">
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/es1819/stroam/notification/client/NotTheServiceClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="26" column="70" selection-start-line="26" selection-start-column="28" selection-end-line="26" selection-end-column="70" />
+        <state relative-caret-position="135">
+          <caret line="9" column="67" selection-start-line="9" selection-start-column="67" selection-end-line="9" selection-end-column="67" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/pom.xml">
+    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/message/response/ResponseMessage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="26" column="70" selection-start-line="26" selection-start-column="70" selection-end-line="26" selection-end-column="70" />
+        <state relative-caret-position="1305">
+          <caret line="91" column="1" selection-start-line="91" selection-start-column="1" selection-end-line="91" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/handler/EmailHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="675">
+          <caret line="46" column="69" selection-start-line="46" selection-start-column="69" selection-end-line="46" selection-end-column="69" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="95" column="40" selection-start-line="95" selection-start-column="40" selection-end-line="95" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/message/Message.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="17" column="34" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/message/request/RequestMessage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="953">
+          <caret line="142" column="1" lean-forward="true" selection-start-line="142" selection-start-column="1" selection-end-line="142" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#655#656#0" expanded="true" />
+            <element signature="e#683#684#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/message/request/EmailRequestMessage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-33">
+          <caret line="2" column="52" selection-start-line="2" selection-start-column="52" selection-end-line="2" selection-end-column="52" />
         </state>
       </provider>
     </entry>
@@ -1629,7 +1587,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.18069816" />
+                <option value="0.1529774" />
               </list>
             </option>
           </splitter-proportions>

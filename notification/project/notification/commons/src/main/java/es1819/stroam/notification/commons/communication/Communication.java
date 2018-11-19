@@ -4,7 +4,7 @@ import org.eclipse.paho.client.mqttv3.*;
 
 import java.util.UUID;
 
-public class Communication implements MqttCallback, CommunicationOperation {
+public class Communication implements MqttCallback {
 
     private String brokerAddress;
     private UUID clientId;
@@ -41,6 +41,7 @@ public class Communication implements MqttCallback, CommunicationOperation {
         }
         client.connect();
 
+        //add a shutdown hook to disconnect the client
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try { disconnect(); } catch (Exception ignored) {}
         }));
@@ -73,11 +74,13 @@ public class Communication implements MqttCallback, CommunicationOperation {
         return true;
     }
 
+    @Override
     public void connectionLost(Throwable throwable) {
         if(callback != null)
             callback.connectionLost(throwable);
     }
 
+    @Override
     public void messageArrived(String topic, MqttMessage mqttMessage) {
         if(mqttMessage == null)
             return;
@@ -87,6 +90,7 @@ public class Communication implements MqttCallback, CommunicationOperation {
             callback.messageArrived(topic, messageBytes);
     }
 
+    @Override
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
         if(iMqttDeliveryToken == null)
             return;

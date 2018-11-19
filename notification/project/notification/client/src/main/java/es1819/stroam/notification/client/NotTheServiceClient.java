@@ -3,12 +3,15 @@ package es1819.stroam.notification.client;
 import es1819.stroam.notification.commons.Constants;
 import es1819.stroam.notification.commons.communication.Communication;
 import es1819.stroam.notification.commons.communication.CommunicationCallback;
-import org.json.JSONObject;
+import es1819.stroam.notification.commons.communication.message.request.EmailRequestMessage;
+import es1819.stroam.notification.commons.communication.message.request.PhoneRequestMessage;
+import es1819.stroam.notification.commons.communication.message.request.RequestMessage;
+import es1819.stroam.notification.commons.communication.message.response.ResponseMessage;
+import es1819.stroam.notification.commons.utilities.TopicUtilities;
 
 import java.util.Base64;
-import java.util.UUID;
 
-public class NotTheServiceClient implements CommunicationCallback {
+public class NotTheServiceClient {
 
     private Communication communication;
     private NotTheServiceClientCallback callback;
@@ -17,8 +20,8 @@ public class NotTheServiceClient implements CommunicationCallback {
         if(serverAddress == null || serverAddress.isEmpty())
             throw new IllegalArgumentException("serverAddress cannot be null or empty");
 
-        this.communication = new Communication(serverAddress);
-        communication.setCallback(this);
+        this.communication = new Communication(serverAddress)
+                .setCallback(new CommunicationCallbackImpl());
     }
 
     public NotTheServiceClient setCallback(NotTheServiceClientCallback callback) {
@@ -26,31 +29,26 @@ public class NotTheServiceClient implements CommunicationCallback {
         return this;
     }
 
-    public void isConnected() {
-        communication.isConnected();
-    }
-
     public void connect() throws Exception {
         communication.connect();
         communication.subscribe(
-                Constants.CHANNEL_SEPARATOR +
-                        Constants.CHANNEL_SERVICE_PREFIX +
-                        Constants.CHANNEL_SEPARATOR +
-                        Constants.CHANNEL_REQUEST_RESPONSE_PREFIX);
+                TopicUtilities.createTopic(
+                        Constants.CHANNEL_SERVICE_PREFIX,
+                        Constants.CHANNEL_REQUEST_RESPONSE_PREFIX));
 
-        if(this.callback != null)
+        if(callback != null)
             callback.onConnect();
     }
 
     public void disconnect() throws Exception {
         communication.disconnect();
 
-        if(this.callback != null)
+        if(callback != null)
             callback.onDisconnect();
     }
 
     public void subscribe(String topic) throws Exception {
-        communication.subscribe(Constants.CHANNEL_SEPARATOR + Constants.CHANNEL_SERVICE_PREFIX + topic);
+        communication.subscribe(topic);
     }
 
     public void unsubscribe(String topic) throws Exception {
@@ -62,36 +60,18 @@ public class NotTheServiceClient implements CommunicationCallback {
     }
 
     public String sendEmail(String emailAddress, String subject, String body, String requestId) throws Exception {
-        if(emailAddress == null || emailAddress.isEmpty())
-            throw new IllegalArgumentException("emailAddress cannot be null or empty");
-
-        String encodedBody;
-        if(body == null || body.isEmpty())
-            throw new IllegalArgumentException("body cannot be null or empty");
+        EmailRequestMessage emailRequestMessage;
+        if(requestId != null && !requestId.isEmpty())
+            emailRequestMessage = new EmailRequestMessage(emailAddress, requestId);
         else
-            encodedBody = Base64.getEncoder().encodeToString(body.getBytes());
+            emailRequestMessage = new EmailRequestMessage(emailAddress);
 
-        String encodedSubject = ""; //Avoid null exceptions
-        if(subject != null && !subject.isEmpty())
-            encodedSubject = Base64.getEncoder().encodeToString(subject.getBytes());
+        send((EmailRequestMessage)emailRequestMessage
+                .setEmailSubject(subject)
+                .setEmailBody(body)
+                .setRequestId(requestId));
 
-        if(requestId == null)
-            requestId = UUID.randomUUID().toString();
-
-        JSONObject jsonData = new JSONObject()
-                .put(Constants.JSON_REQUEST_ID_KEY, requestId)
-                .put(Constants.JSON_EMAIL_SUBJECT_KEY, encodedSubject)
-                .put(Constants.JSON_EMAIL_PHONE_BODY_KEY, encodedBody);
-
-        communication.send(
-                Constants.CHANNEL_SEPARATOR +
-                        Constants.CHANNEL_SERVICE_PREFIX +
-                        Constants.CHANNEL_SEPARATOR +
-                        Constants.CHANNEL_EMAIL_PREFIX +
-                        Constants.CHANNEL_SEPARATOR +
-                        emailAddress,
-                jsonData.toString().getBytes());
-        return requestId;
+        return emailRequestMessage.getRequestId();
     }
 
     public String sendPhone(String phoneNumber, String body) throws Exception {
@@ -99,31 +79,14 @@ public class NotTheServiceClient implements CommunicationCallback {
     }
 
     public String sendPhone(String phoneNumber, String body, String requestId) throws Exception {
-        if(phoneNumber == null || phoneNumber.isEmpty())
-            throw new IllegalArgumentException("phoneNumber cannot be null or empty");
-
-        String encodedBody;
-        if(body == null || body.isEmpty())
-            throw new IllegalArgumentException("body cannot be null or empty");
+        PhoneRequestMessage phoneRequestMessage;
+        if(requestId != null && !requestId.isEmpty())
+            phoneRequestMessage = new PhoneRequestMessage(phoneNumber, requestId);
         else
-            encodedBody = Base64.getEncoder().encodeToString(body.getBytes());
+            phoneRequestMessage = new PhoneRequestMessage(phoneNumber);
 
-        if(requestId == null)
-            requestId = UUID.randomUUID().toString();
-
-        JSONObject jsonData = new JSONObject()
-                .put(Constants.JSON_REQUEST_ID_KEY, requestId)
-                .put(Constants.JSON_EMAIL_PHONE_BODY_KEY, encodedBody);
-
-        communication.send(
-                Constants.CHANNEL_SEPARATOR +
-                        Constants.CHANNEL_SERVICE_PREFIX +
-                        Constants.CHANNEL_SEPARATOR +
-                        Constants.CHANNEL_PHONE_PREFIX +
-                        Constants.CHANNEL_SEPARATOR +
-                        phoneNumber,
-                jsonData.toString().getBytes());
-        return requestId;
+        send(phoneRequestMessage.setPhoneBody(body));
+        return phoneRequestMessage.getRequestId();
     }
 
     public void sendPush(String topic, String body) throws Exception {
@@ -132,26 +95,53 @@ public class NotTheServiceClient implements CommunicationCallback {
         if(body == null || body.isEmpty())
             throw new IllegalArgumentException("body cannot be null or empty");
 
-        communication.send(Constants.CHANNEL_SEPARATOR + Constants.CHANNEL_SERVICE_PREFIX + topic, body.getBytes());
+        communication.send(
+                Constants.CHANNEL_SEPARATOR +
+                        Constants.CHANNEL_SERVICE_PREFIX +
+                        topic, body.getBytes());
     }
 
-    @Override
-    public void messageArrived(String topic, byte[] messageBytes) {
-        if(callback != null)
-            if (topic.contains(Constants.CHANNEL_REQUEST_RESPONSE_PREFIX)) {
-                //not implemented yet
-            }
-            else callback.onPushArrived(topic, new String(messageBytes));
+    private void send(RequestMessage requestMessage) throws Exception {
+        communication.send(requestMessage.getTopic(), requestMessage.getPayload());
     }
 
-    @Override
-    public void messageDeliveryComplete(byte[] messageBytes) {
+    //Used to hide the CommunicationCallback methods
+    private class CommunicationCallbackImpl implements CommunicationCallback {
 
-    }
+        @Override
+        public void messageArrived(String topic, byte[] messageBytes) {
+            if(callback != null)
+                if(topic.contains(Constants.CHANNEL_REQUEST_RESPONSE_PREFIX)) {
+                    ResponseMessage responseMessage;
+                    try {
+                        responseMessage = new ResponseMessage(topic, messageBytes);
+                    } catch (Exception ignored) { return; }
 
-    @Override
-    public void connectionLost(Throwable throwable) {
-        if(callback != null)
-            callback.onConnectionLost(throwable);
+                    callback.onResponseRequestArrived(
+                            responseMessage.getRequestId(),
+                            responseMessage.getResultCode(),
+                            responseMessage.getReason()
+                    );
+                }
+                else {
+                    String decodedPushBody = null;
+                    try {
+                        decodedPushBody = new String(Base64.getDecoder().decode(messageBytes));
+                    } catch (IllegalArgumentException ignored) { }
+
+                    callback.onPushArrived(topic, decodedPushBody);
+                }
+        }
+
+        @Override
+        public void messageDeliveryComplete(byte[] messageBytes) {
+
+        }
+
+        @Override
+        public void connectionLost(Throwable throwable) {
+            if(callback != null)
+                callback.onConnectionLost(throwable);
+        }
     }
 }

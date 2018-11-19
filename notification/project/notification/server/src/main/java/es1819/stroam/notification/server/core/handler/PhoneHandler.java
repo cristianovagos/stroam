@@ -1,9 +1,10 @@
 package es1819.stroam.notification.server.core.handler;
 
 import es1819.stroam.notification.commons.Constants;
-import es1819.stroam.notification.server.core.message.Message;
-import es1819.stroam.notification.server.core.message.RequestMessage;
-import es1819.stroam.notification.server.core.message.ResponseMessage;
+import es1819.stroam.notification.commons.communication.message.Message;
+import es1819.stroam.notification.commons.communication.message.request.PhoneRequestMessage;
+import es1819.stroam.notification.commons.communication.message.request.RequestMessage;
+import es1819.stroam.notification.commons.communication.message.response.ResponseMessage;
 
 import java.util.Base64;
 
@@ -40,12 +41,13 @@ public class PhoneHandler extends Handler {
                 new IllegalArgumentException("received a message to process of unexpected type of ResponseMessage").printStackTrace(); //TODO: debug
                 continue;
             }
-            RequestMessage requestMessage = (RequestMessage)message;
+            PhoneRequestMessage requestMessage = (PhoneRequestMessage)message;
 
             String phoneNumber = requestMessage.getPhoneNumber();
             if(phoneNumber == null || phoneNumber.isEmpty()) {
                 responseSenderHandler.handle(
-                        new ResponseMessage(HandleResultType.PHONE_NUMBER_NULL_OR_EMPTY, requestMessage.getRequestId())
+                        new ResponseMessage(HandleResultType.PHONE_NUMBER_NULL_OR_EMPTY.getResultCode(),
+                                requestMessage.getRequestId())
                                 .setReason("received a phone requestMessage to process " +
                                         "with a null or empty phone number"));
                 continue;
@@ -54,7 +56,8 @@ public class PhoneHandler extends Handler {
             String phoneMessageBody = requestMessage.getPhoneBody();
             if(phoneMessageBody == null || phoneMessageBody.isEmpty()) {
                 responseSenderHandler.handle(
-                        new ResponseMessage(HandleResultType.PHONE_BODY_NULL_OR_EMPTY, requestMessage.getRequestId())
+                        new ResponseMessage(HandleResultType.PHONE_BODY_NULL_OR_EMPTY.getResultCode(),
+                                requestMessage.getRequestId())
                                 .setReason("received a phone requestMessage to process with a null or empty body"));
                 continue;
             }
@@ -67,14 +70,15 @@ public class PhoneHandler extends Handler {
                 messageDecodeException.printStackTrace(); //TODO: logar excepçao
 
                 responseSenderHandler.handle(
-                        new ResponseMessage(HandleResultType.PHONE_BODY_DECODE_ERROR, requestMessage.getRequestId())
+                        new ResponseMessage(HandleResultType.PHONE_BODY_DECODE_ERROR.getResultCode(),
+                                requestMessage.getRequestId())
                                 .setReason("received a phone requestMessage to process with an invalid encoded body"));
                 continue;
             }
 
             if(decodedPhoneMessageBody.isEmpty()) {
                 responseSenderHandler.handle(
-                        new ResponseMessage(HandleResultType.PHONE_DECODED_BODY_NULL_OR_EMPTY,
+                        new ResponseMessage(HandleResultType.PHONE_DECODED_BODY_NULL_OR_EMPTY.getResultCode(),
                                 requestMessage.getRequestId())
                                 .setReason("received a phone requestMessage to process " +
                                         "with a null or empty decoded body"));
@@ -83,7 +87,8 @@ public class PhoneHandler extends Handler {
 
             if(decodedPhoneMessageBody.length() > Constants.PHONE_MESSAGE_MAX_CHARACTERS) {
                 responseSenderHandler.handle(
-                        new ResponseMessage(HandleResultType.PHONE_BODY_TOO_LONG, requestMessage.getRequestId())
+                        new ResponseMessage(HandleResultType.PHONE_BODY_TOO_LONG.getResultCode(),
+                                requestMessage.getRequestId())
                                 .setReason("received a phone requestMessage to " +
                                         "process with more than " + Constants.PHONE_MESSAGE_MAX_CHARACTERS +
                                         "characters long"));
@@ -107,7 +112,7 @@ public class PhoneHandler extends Handler {
 
             //phone message send success
             responseSenderHandler.handle(new ResponseMessage(
-                    HandleResultType.PHONE_SENDING_SUCCESS, requestMessage.getRequestId())
+                    HandleResultType.PHONE_SENDING_SUCCESS.getResultCode(), requestMessage.getRequestId())
                     .setReason("phone message successfully sended to " + phoneNumber));
         }
     }

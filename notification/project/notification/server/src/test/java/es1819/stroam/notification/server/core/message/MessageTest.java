@@ -1,6 +1,7 @@
 package es1819.stroam.notification.server.core.message;
 
 import es1819.stroam.notification.commons.Constants;
+import es1819.stroam.notification.commons.communication.message.request.RequestMessage;
 import org.json.JSONObject;
 import org.junit.Test;
 

@@ -1,6 +1,6 @@
 package es1819.stroam.notification.server.core.handler;
 
-import es1819.stroam.notification.server.core.message.Message;
+import es1819.stroam.notification.commons.communication.message.Message;
 
 import java.util.LinkedList;
 import java.util.Queue;
