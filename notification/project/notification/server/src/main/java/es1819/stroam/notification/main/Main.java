@@ -1,9 +1,8 @@
 package es1819.stroam.notification.main;
 
 import es1819.stroam.notification.commons.communication.Communication;
-import es1819.stroam.notification.server.Constants;
+import es1819.stroam.notification.commons.Constants;
 import es1819.stroam.notification.server.Server;
-import es1819.stroam.notification.server.utilities.GeneralUtilities;
 
 import java.io.*;
 
@@ -30,7 +29,7 @@ public class Main {
 
         System.out.println("Starting the server... ");
         try { //TODO: optimizar este codigo. informar se forem carregadas as propriedades padão
-            Constants.loadConfigurationFile(new File(Constants.currentWorkingDirectoryPath));
+            Constants.loadConfigurationFile(new File(System.getProperty("user.dir")));//new File(Constants.currentWorkingDirectoryPath));
         } catch (IOException configurationFileReadException) {
             configurationFileReadException.printStackTrace(); //TODO: debug
         }

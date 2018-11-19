@@ -1,6 +1,4 @@
-package es1819.stroam.notification.server;
-
-import es1819.stroam.notification.server.utilities.GeneralUtilities;
+package es1819.stroam.notification.commons;
 
 import java.io.*;
 import java.net.URI;
@@ -32,6 +30,7 @@ public class Constants {
             loadDefaultSettings();
             return;
         }
+        System.out.println("Using configuration file located in: " + configurationFile.getPath());
 
         if(!configurationFile.canRead()) {
             loadDefaultSettings();
