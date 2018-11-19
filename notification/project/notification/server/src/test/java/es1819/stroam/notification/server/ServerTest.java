@@ -1,17 +1,9 @@
 package es1819.stroam.notification.server;
 
-import es1819.stroam.notification.commons.communication.Communication;
-import org.json.JSONObject;
+import es1819.stroam.notification.commons.Constants;
 import org.junit.Test;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.io.File;
-import java.util.Base64;
-import java.util.Date;
-import java.util.Properties;
-import java.util.UUID;
 
 import static junit.framework.TestCase.fail;
 

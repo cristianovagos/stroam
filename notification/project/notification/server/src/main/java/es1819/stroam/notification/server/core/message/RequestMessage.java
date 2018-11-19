@@ -1,11 +1,9 @@
 package es1819.stroam.notification.server.core.message;
 
-import es1819.stroam.notification.server.Constants;
+import es1819.stroam.notification.commons.Constants;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.IllegalFormatException;
 
 public class RequestMessage extends Message {
 

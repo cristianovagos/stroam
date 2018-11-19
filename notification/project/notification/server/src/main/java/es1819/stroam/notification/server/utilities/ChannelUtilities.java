@@ -1,6 +1,6 @@
 package es1819.stroam.notification.server.utilities;
 
-import es1819.stroam.notification.server.Constants;
+import es1819.stroam.notification.commons.Constants;
 
 public class ChannelUtilities {
 

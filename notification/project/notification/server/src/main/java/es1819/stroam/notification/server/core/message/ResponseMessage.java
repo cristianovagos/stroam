@@ -1,6 +1,6 @@
 package es1819.stroam.notification.server.core.message;
 
-import es1819.stroam.notification.server.Constants;
+import es1819.stroam.notification.commons.Constants;
 import es1819.stroam.notification.server.core.handler.HandleResultType;
 import org.json.JSONObject;
 
