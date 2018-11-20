@@ -42,7 +42,7 @@ public class PhoneRequestMessage extends RequestMessage {
     public byte[] getPayload() {
         return new JSONObject()
                 .put(Constants.JSON_REQUEST_ID_KEY, requestId)
-                .put(Constants.JSON_EMAIL_PHONE_BODY_KEY, emailBody)
+                .put(Constants.JSON_EMAIL_PHONE_BODY_KEY, phoneBody)
                 .toString()
                 .getBytes();
     }

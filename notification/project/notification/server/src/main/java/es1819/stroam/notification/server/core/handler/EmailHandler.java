@@ -3,6 +3,7 @@ package es1819.stroam.notification.server.core.handler;
 import es1819.stroam.notification.commons.Constants;
 import es1819.stroam.notification.commons.communication.message.Message;
 import es1819.stroam.notification.commons.communication.message.request.EmailRequestMessage;
+import es1819.stroam.notification.commons.communication.message.request.RequestMessage;
 import es1819.stroam.notification.commons.communication.message.response.ResponseMessage;
 
 import javax.mail.*;
@@ -44,7 +45,7 @@ public class EmailHandler extends Handler {
                 new IllegalArgumentException("received a message to process of unexpected type of ResponseMessage").printStackTrace(); //TODO: debug
                 continue;
             }
-            EmailRequestMessage requestMessage = (EmailRequestMessage)message;
+            RequestMessage requestMessage = (RequestMessage)message;
 
             String emailAddress = requestMessage.getEmailAddress();
             if(emailAddress == null || emailAddress.isEmpty()) {
@@ -82,7 +83,7 @@ public class EmailHandler extends Handler {
                 responseSenderHandler.handle(
                         new ResponseMessage(HandleResultType.EMAIL_DECODED_BODY_NULL_OR_EMPTY.getResultCode(),
                                 requestMessage.getRequestId())
-                                .setReason("received a phone requestMessage to process " +
+                                .setReason("received a email requestMessage to process " +
                                         "with a null or empty decoded body"));
                 continue;
             }
