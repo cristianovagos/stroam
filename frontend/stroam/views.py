@@ -32,7 +32,7 @@ def home(request):
         body = json.loads(body_decoded)
         print(body)
 
-    subscribedChannels = [ch['channel_name'] for ch in
+    subscribed_channels = [ch['channel_name'] for ch in
                           Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
                               'channel_name')]
 
@@ -40,7 +40,7 @@ def home(request):
         'title': MAIN_TITLE + title,
         'movies': movies,
         'numCart': request.session.get('cartNumber', 0),
-        'subscribedChannels': subscribedChannels
+        'subscribed_channels': subscribed_channels
     }
     return render(request, 'pages/index.html', tparams)
 
@@ -51,14 +51,14 @@ def homeMovies(request):
         shuffle(movies)
     except Exception:
         movies = None
-    subscribedChannels = [ch['channel_name'] for ch in
+    subscribed_channels = [ch['channel_name'] for ch in
                           Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
                               'channel_name')]
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
         'numCart': request.session.get('cartNumber', 0),
-        'subscribedChannels': subscribedChannels
+        'subscribed_channels': subscribed_channels
     }
     return render(request, 'pages/index.html', tparams)
 
@@ -69,14 +69,14 @@ def homeSeries(request):
         shuffle(movies)
     except Exception:
         movies = None
-    subscribedChannels = [ch['channel_name'] for ch in
+    subscribed_channels = [ch['channel_name'] for ch in
                           Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
                               'channel_name')]
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
         'numCart': request.session.get('cartNumber', 0),
-        'subscribedChannels': subscribedChannels
+        'subscribed_channels': subscribed_channels
     }
     return render(request, 'pages/index.html', tparams)
 
@@ -85,14 +85,14 @@ def genreList(request):
     genres = genre.getAllGenres()
     if genres:
         shuffle(genres)
-    subscribedChannels = [ch['channel_name'] for ch in
+    subscribed_channels = [ch['channel_name'] for ch in
                           Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
                               'channel_name')]
     tparams = {
         'title': MAIN_TITLE + title,
         'genres': genres,
         'numCart': request.session.get('cartNumber', 0),
-        'subscribedChannels': subscribedChannels
+        'subscribed_channels': subscribed_channels
     }
     return render(request, 'pages/genre-list.html', tparams)
 
@@ -106,7 +106,7 @@ def genreMovies(request, genre):
         if movies:
             shuffle(movies)
 
-    subscribedChannels = [ch['channel_name'] for ch in
+    subscribed_channels = [ch['channel_name'] for ch in
                           Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
                               'channel_name')]
 
@@ -116,7 +116,7 @@ def genreMovies(request, genre):
         'genreName': genreName,
         'numCart': request.session.get('cartNumber', 0),
         'subscribed': notifications.is_user_subscribed(user_id=1, channel_name=('stroam-' + genreName)),
-        'subscribedChannels': subscribedChannels
+        'subscribed_channels': subscribed_channels
     }
     return render(request, 'pages/genre.html', tparams)
 
@@ -135,7 +135,7 @@ def singleMovie(request, id):
         if movie.type == 'series' and moviePurchased:
             seasonsPurchased = list(p.all().values_list('season_num', flat=True).distinct())
 
-    subscribedChannels = [ch['channel_name'] for ch in
+    subscribed_channels = [ch['channel_name'] for ch in
                           Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
                               'channel_name')]
 
@@ -171,7 +171,7 @@ def singleMovie(request, id):
             'purchased': moviePurchased,
             'seasonsPurchased': seasonsPurchased,
             'subscribed': notifications.is_user_subscribed(user_id=1, channel_name=('stroam-movie' + str(id))),
-            'subscribedChannels': subscribedChannels
+            'subscribed_channels': subscribed_channels
         }
         return render(request, 'pages/single-movie.html', tparams)
 
@@ -183,7 +183,7 @@ def singleMovie(request, id):
         'purchased': moviePurchased,
         'seasonsPurchased': seasonsPurchased,
         'subscribed': notifications.is_user_subscribed(user_id=1, channel_name=('stroam-movie' + str(id))),
-        'subscribedChannels': subscribedChannels
+        'subscribed_channels': subscribed_channels
     }
     return render(request, 'pages/single-movie.html', tparams)
 
@@ -227,7 +227,7 @@ def shoppingCart(request):
             else:
                 deleteProductListFromSession(request)
 
-    subscribedChannels = [ch['channel_name'] for ch in
+    subscribed_channels = [ch['channel_name'] for ch in
                           Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
                               'channel_name')]
 
@@ -236,7 +236,7 @@ def shoppingCart(request):
         'products': products,
         'totalPrice': price,
         'numCart': request.session.get('cartNumber', 0),
-        'subscribedChannels': subscribedChannels
+        'subscribed_channels': subscribed_channels
     }
     return render(request, 'pages/shopping-cart.html', tparams)
 
@@ -296,7 +296,7 @@ def checkout(request):
             LOGGER.error(str(error))
             raise Http404('Bad Request: \n\n' + str(error))
 
-    subscribedChannels = [ch['channel_name'] for ch in
+    subscribed_channels = [ch['channel_name'] for ch in
                           Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
                               'channel_name')]
 
@@ -308,7 +308,7 @@ def checkout(request):
         'products': products,
         'totalPrice': totalPrice,
         'cartShowing': False,
-        'subscribedChannels': subscribedChannels
+        'subscribed_channels': subscribed_channels
     }
     return render(request, 'pages/checkout.html', tparams)
 
@@ -316,13 +316,13 @@ def paymentCompleted(request):
     title = 'Payment Completed'
     deleteProductListFromSession(request)
 
-    subscribedChannels = [ch['channel_name'] for ch in
+    subscribed_channels = [ch['channel_name'] for ch in
                           Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
                               'channel_name')]
 
     tparams = {
         'title': MAIN_TITLE + title,
-        'subscribedChannels': subscribedChannels
+        'subscribed_channels': subscribed_channels
     }
     return render(request, 'pages/payment-completed.html', tparams)
 
@@ -330,7 +330,7 @@ def paymentError(request):
     title = 'Payment Canceled'
     deleteProductListFromSession(request)
 
-    subscribedChannels = [ch['channel_name'] for ch in
+    subscribed_channels = [ch['channel_name'] for ch in
                           Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
                               'channel_name')]
 
@@ -339,7 +339,7 @@ def paymentError(request):
 
     tparams = {
         'title': MAIN_TITLE + title,
-        'subscribedChannels': subscribedChannels
+        'subscribed_channels': subscribed_channels
     }
     return render(request, 'pages/payment-error.html', tparams)
 
@@ -376,7 +376,7 @@ def userPanel(request):
             else:
                 purchaseData[purchase.id]['products'][prod.id]['season'] = None
 
-    subscribedChannels = []
+    subscribed_channels = []
     subscriptionsData = {}
     allSubscriptions = Notification_Subscription.objects.filter(user_id=1)
     for subscription in allSubscriptions:
@@ -384,7 +384,7 @@ def userPanel(request):
         for ch in channels:
             subscriptionsData[subscription.id] = {}
             subscriptionsData[subscription.id]['channel_name'] = ch.channel_name
-            subscribedChannels.append(ch.channel_name)
+            subscribed_channels.append(ch.channel_name)
 
             if ch.channel_name.strip('stroam-movie').isnumeric():
                 pr = production.getSingleProduction(int(ch.channel_name.strip('stroam-movie')))
@@ -401,7 +401,7 @@ def userPanel(request):
         'title': MAIN_TITLE + title,
         'purchaseData': purchaseData,
         'subscriptionsData': subscriptionsData,
-        'subscribedChannels': subscribedChannels,
+        'subscribed_channels': subscribed_channels,
         'numCart': request.session.get('cartNumber', 0)
     }
     return render(request, 'pages/user-panel.html', tparams)
@@ -415,14 +415,14 @@ def myMovies(request):
     if movies:
         shuffle(list(set(movies)))
 
-    subscribedChannels = [ch['channel_name'] for ch in
+    subscribed_channels = [ch['channel_name'] for ch in
                           Notification_Channels.objects.filter(notification_subscription__user_id=1).values(
                               'channel_name')]
 
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
-        'subscribedChannels': subscribedChannels,
+        'subscribed_channels': subscribed_channels,
         'numCart': request.session.get('cartNumber', 0)
     }
     return render(request, 'pages/my-movies.html', tparams)

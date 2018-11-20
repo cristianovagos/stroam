@@ -18,14 +18,18 @@
     <!-- -->
     <link rel="stylesheet" href="{% static 'css/normalize.min.css' %}">
 
-    <script src="{% static 'channels/js/websocketbridge.js' %}"></script>
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-notify.min.js' %}"></script>
+
+    <!-- Notifications -->
+    <script src="{% static 'channels/js/websocketbridge.js' %}"></script>
     <script src="{% static 'js/paho-mqtt-min.js' %}"></script>
     <script src="{% static 'js/notTheServiceClient.js' %}"></script>
     <script src="{% static 'js/notification.js' %}"></script>
+
+    <!-- CDN -->
     {% if purchased %}
         <script src="http://localhost:1935/client.js"></script>
     {% endif %}

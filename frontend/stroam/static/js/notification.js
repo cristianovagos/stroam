@@ -15,16 +15,22 @@ function onResponseRequestArrived(requestId, errorCode, message) {
 
 // callback push arrived - todas as respostas chegam aqui
 function onPushArrived(topic, payload) {
+    console.log("onPushArrived");
     console.log("topic: ", topic);
-    console.log("payload: ", payload);
+    console.log("payload: ", JSON.parse(payload));
+
+    var obj = JSON.parse(payload);
 
     $.notify({
         // options
         icon: 'fas fa-bell',
-        message: 'Push arrived!\nTopic: ' + topic + '\nPayload: ' + payload
+        title: obj['title'],
+        message: obj['message'],
+        url: window.location + obj['url_path'],
+        target: '_blank'
     },{
         // settings
-        type: 'danger',
+        type: 'info',
         placement: {
             from: 'bottom',
             align: 'right'
@@ -56,9 +62,15 @@ function sendPhone_buttonClick() {
 
 function sendPush_buttonClick() {
     // var pushTopic = document.getElementById('pushTopic').value;
-    notificationClient.subscribe("/stroam-movie20"); //subscribe the topic to receive notifications
+    notificationClient.subscribe("/stroam-general"); //subscribe the topic to receive notifications
 
-    notificationClient.sendPush("/stroam-movie20", "olaolaolaolaolaola");
+    notificationClient.sendPush("/stroam-general",
+        JSON.stringify(
+            {
+                "ola": true,
+            }
+        )
+    );
     //client.unsubscribe(pushTopic); to unsubscribe an topic
     //notificationClient = new NotTheServiceClient("127.0.0.1", 1884);
 }
@@ -112,7 +124,7 @@ function subscribeToChannel(e, user_id, channel_name) {
             // settings
             type: 'info',
             placement: {
-                from: 'top',
+                from: 'bottom',
                 align: 'right'
             },
             animate: {
@@ -136,7 +148,7 @@ function subscribeToChannel(e, user_id, channel_name) {
             // settings
             type: 'info',
             placement: {
-                from: 'top',
+                from: 'bottom',
                 align: 'right'
             },
             animate: {
