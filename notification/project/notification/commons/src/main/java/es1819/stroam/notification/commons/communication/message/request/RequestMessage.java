@@ -1,30 +1,36 @@
-package es1819.stroam.notification.server.core.message;
+package es1819.stroam.notification.commons.communication.message.request;
 
 import es1819.stroam.notification.commons.Constants;
+import es1819.stroam.notification.commons.communication.message.Message;
+import es1819.stroam.notification.commons.communication.message.MessageType;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RequestMessage extends Message {
 
-    private String mailAddress;
-    private String mailSubject;
-    private String mailBody;
-    private String phoneNumber;
-    private String phoneBody;
+    protected String emailAddress;
+    protected String emailSubject;
+    protected String emailBody;
+    protected String phoneNumber;
+    protected String phoneBody;
 
-    public RequestMessage(String channel, byte[] payload) {
+    public RequestMessage(String topic) {
+        super(topic);
+    }
+
+    public RequestMessage(String topic, byte[] payload) {
         super();
 
-        if(channel == null || channel.isEmpty())
-            throw new IllegalArgumentException("channel cannot be null or empty");
+        if(topic == null || topic.isEmpty())
+            throw new IllegalArgumentException("topic cannot be null or empty");
         if(payload == null || payload.length == 0)
             throw new IllegalArgumentException("payload cannot be null or empty");
 
-        this.channel = channel;
+        this.topic = topic;
         this.payload = payload;
 
-        parseChannelData(); //Validates the channel data and defines the message type for payload validation
+        parseChannelData(); //Validates the topic data and defines the message type for payload validation
 
         String jsonString = new String(payload);
         if(jsonString.isEmpty())
@@ -45,33 +51,13 @@ public class RequestMessage extends Message {
             parsePayloadPhoneData(jsonData);
     }
 
-    public String getMailAddress() {
-        return mailAddress;
-    }
-
-    public String getMailSubject() {
-        return mailSubject;
-    }
-
-    public String getMailBody() {
-        return mailBody;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public String getPhoneBody() {
-        return phoneBody;
-    }
-
-    //parse and assign the channel values to the respective variables
+    //parse and assign the topic values to the respective variables
     private void parseChannelData() {
-        String[] channelParts = channel.split(Constants.CHANNEL_SEPARATOR);
+        String[] channelParts = topic.split(Constants.CHANNEL_SEPARATOR);
         if(channelParts.length == 0)
-            throw new IllegalArgumentException("unexpected channel format");
+            throw new IllegalArgumentException("unexpected topic format");
 
-        if(channelParts[0].isEmpty()) { //means that channel starts with /...
+        if(channelParts[0].isEmpty()) { //means that topic starts with /...
             String[] temporaryChannelParts = new String[channelParts.length - 1];
             System.arraycopy(channelParts, 1, temporaryChannelParts, 0, channelParts.length - 1); //remove the null string from the beginning
 
@@ -79,7 +65,7 @@ public class RequestMessage extends Message {
         }
 
         //TODO: tentar optimizar codigo abaixo
-        int channelFlagIndex = -1; //search the index of the channel part email
+        int channelFlagIndex = -1; //search the index of the topic part email
         for (int i = 0; i < channelParts.length; i++) {
             if(channelParts[i].contentEquals(Constants.CHANNEL_EMAIL_PREFIX)) {
                 this.type = MessageType.MAIL;
@@ -91,26 +77,26 @@ public class RequestMessage extends Message {
             }
         }
 
-        if(channelFlagIndex == -1) //type of contact not found in channel parts
+        if(channelFlagIndex == -1) //type of contact not found in topic parts
             throw new IllegalArgumentException(
                     Constants.CHANNEL_EMAIL_PREFIX + " or " + Constants.CHANNEL_PHONE_PREFIX +
-                            " expected in channel hierarchy");
-        else if(channelFlagIndex + 1 < channelParts.length - 1) //type of contact its not at the end of channel parts
+                            " expected in topic hierarchy");
+        else if(channelFlagIndex + 1 < channelParts.length - 1) //type of contact its not at the end of topic parts
             throw new IllegalArgumentException(
                     Constants.CHANNEL_EMAIL_PREFIX + " or " + Constants.CHANNEL_PHONE_PREFIX +
-                            " is expected on the penultimate part of the channel (before the contact data)");
+                            " is expected on the penultimate part of the topic (before the contact data)");
 
         String contactData;
         try {
             contactData = channelParts[channelFlagIndex + 1];
         } catch (IndexOutOfBoundsException channelPartIndexOutOfBounds) {
-            throw new IllegalArgumentException("contact data expected in the end of channel" +
+            throw new IllegalArgumentException("contact data expected in the end of topic" +
                     " hierarchy (after contact type)", channelPartIndexOutOfBounds);
         }
 
         if(this.type == MessageType.MAIL) {
             if (EmailValidator.getInstance().isValid(contactData))
-                this.mailAddress = contactData;
+                this.emailAddress = contactData;
             else
                 throw new IllegalArgumentException(contactData + " is not a valid email address");
         }
@@ -119,38 +105,23 @@ public class RequestMessage extends Message {
         }
     }
 
-    //parse and assign the payload general values to the respective variables
-    private void parsePayloadGeneralData(JSONObject jsonData) { //not null guaranteed
-        if(jsonData.has(Constants.JSON_REQUEST_ID_KEY)) {
-            try {
-                this.requestId = jsonData.getString(Constants.JSON_REQUEST_ID_KEY);
-            } catch (JSONException jsonValueParseException) {
-                throw new IllegalArgumentException("Invalid json value parsed for " +
-                        Constants.JSON_REQUEST_ID_KEY  + " key", jsonValueParseException);
-            }
-
-            if(this.requestId == null)
-                this.requestId = ""; //not null guaranteed
-        }
-    }
-
     //parse and assign the payload mail values to the respective variables
     private void parsePayloadMailData(JSONObject jsonData) { //not null guaranteed
         if(jsonData.has(Constants.JSON_EMAIL_SUBJECT_KEY)) {
             try {
-                this.mailSubject = jsonData.getString(Constants.JSON_EMAIL_SUBJECT_KEY);
+                this.emailSubject = jsonData.getString(Constants.JSON_EMAIL_SUBJECT_KEY);
             } catch (JSONException jsonValueParseException) {
                 throw new IllegalArgumentException("Invalid json value parsed for " +
                         Constants.JSON_EMAIL_SUBJECT_KEY  + " key", jsonValueParseException);
             }
 
-            if(this.mailSubject == null)
-                this.mailSubject = ""; //not null guaranteed
+            if(this.emailSubject == null)
+                this.emailSubject = ""; //not null guaranteed
         }
 
         if(jsonData.has(Constants.JSON_EMAIL_PHONE_BODY_KEY)) {
             try {
-                this.mailBody = jsonData.getString(Constants.JSON_EMAIL_PHONE_BODY_KEY);
+                this.emailBody = jsonData.getString(Constants.JSON_EMAIL_PHONE_BODY_KEY);
             } catch (JSONException jsonValueParseException) {
                 throw new IllegalArgumentException("Invalid json value parsed for " +
                         Constants.JSON_EMAIL_PHONE_BODY_KEY  + " key", jsonValueParseException);

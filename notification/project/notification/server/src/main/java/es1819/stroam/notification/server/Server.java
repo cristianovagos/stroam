@@ -7,10 +7,10 @@ import es1819.stroam.notification.server.core.handler.EmailHandler;
 import es1819.stroam.notification.server.core.handler.HandleResultType;
 import es1819.stroam.notification.server.core.handler.PhoneHandler;
 import es1819.stroam.notification.server.core.handler.ResponseSenderHandler;
-import es1819.stroam.notification.server.core.message.MessageUtilities;
-import es1819.stroam.notification.server.core.message.RequestMessage;
-import es1819.stroam.notification.server.core.message.ResponseMessage;
-import es1819.stroam.notification.server.utilities.ChannelUtilities;
+import es1819.stroam.notification.commons.communication.message.MessageUtilities;
+import es1819.stroam.notification.commons.communication.message.request.RequestMessage;
+import es1819.stroam.notification.commons.communication.message.response.ResponseMessage;
+import es1819.stroam.notification.commons.utilities.TopicUtilities;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -44,7 +44,7 @@ public class Server implements Runnable, CommunicationCallback, ServerSender {
             communication.connect();
 
         communication.subscribe(
-                ChannelUtilities.createChannel(
+                TopicUtilities.createTopic(
                         Constants.CHANNEL_SERVICE_PREFIX,
                         Constants.CHANNEL_ALL_PREFIX));
 
@@ -106,9 +106,9 @@ public class Server implements Runnable, CommunicationCallback, ServerSender {
         if(message == null)
             throw new IllegalArgumentException("received a null message to send");
 
-        String channel = message.getChannel();
+        String channel = message.getTopic();
         if(channel == null || channel.isEmpty())
-            throw new IllegalArgumentException("received a message to send with a null or empty destination channel");
+            throw new IllegalArgumentException("received a message to send with a null or empty destination topic");
 
         byte[] payload = message.getPayload();
         if(payload == null || payload.length == 0)
@@ -135,7 +135,7 @@ public class Server implements Runnable, CommunicationCallback, ServerSender {
             String requestId = MessageUtilities.recoverMalformedMessageRequestId(payload); //even if the message is malformed try recover request id
             responseSenderHandler.handle(
                     new ResponseMessage(
-                            HandleResultType.UNKNOWN_ERROR, requestId)
+                            HandleResultType.UNKNOWN_ERROR.getResultCode(), requestId)
                             .setReason(messageParseException.getMessage()));
             return;
         } finally {

@@ -48,13 +48,6 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/commons-validator/commons-validator -->
-        <dependency>
-            <groupId>commons-validator</groupId>
-            <artifactId>commons-validator</artifactId>
-            <version>1.6</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
         <dependency>
             <groupId>com.sun.mail</groupId>

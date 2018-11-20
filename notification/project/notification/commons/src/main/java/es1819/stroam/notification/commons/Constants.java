@@ -1,5 +1,7 @@
 package es1819.stroam.notification.commons;
 
+import es1819.stroam.notification.commons.utilities.GeneralUtilities;
+
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -94,7 +96,7 @@ public class Constants {
     public static final String JSON_EMAIL_SUBJECT_KEY = "subject";
     public static final String JSON_EMAIL_PHONE_BODY_KEY = "body";
     public static final String JSON_RESULT_CODE_KEY = "resultCode";
-    public static final String JSON_ERROR_REASON_KEY = "reason";
+    public static final String JSON_REASON_KEY = "reason";
 
     //Phone message constants
     public static final int PHONE_MESSAGE_MAX_CHARACTERS= 160;

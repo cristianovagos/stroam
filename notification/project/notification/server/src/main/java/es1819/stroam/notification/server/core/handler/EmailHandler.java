@@ -1,9 +1,9 @@
 package es1819.stroam.notification.server.core.handler;
 
 import es1819.stroam.notification.commons.Constants;
-import es1819.stroam.notification.server.core.message.Message;
-import es1819.stroam.notification.server.core.message.RequestMessage;
-import es1819.stroam.notification.server.core.message.ResponseMessage;
+import es1819.stroam.notification.commons.communication.message.Message;
+import es1819.stroam.notification.commons.communication.message.request.EmailRequestMessage;
+import es1819.stroam.notification.commons.communication.message.response.ResponseMessage;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -44,21 +44,23 @@ public class EmailHandler extends Handler {
                 new IllegalArgumentException("received a message to process of unexpected type of ResponseMessage").printStackTrace(); //TODO: debug
                 continue;
             }
-            RequestMessage requestMessage = (RequestMessage)message;
+            EmailRequestMessage requestMessage = (EmailRequestMessage)message;
 
-            String emailAddress = requestMessage.getMailAddress();
+            String emailAddress = requestMessage.getEmailAddress();
             if(emailAddress == null || emailAddress.isEmpty()) {
                 responseSenderHandler.handle(
-                        new ResponseMessage(HandleResultType.EMAIL_ADDRESS_NULL_OR_EMPTY, requestMessage.getRequestId())
+                        new ResponseMessage(HandleResultType.EMAIL_ADDRESS_NULL_OR_EMPTY.getResultCode(),
+                                requestMessage.getRequestId())
                                 .setReason("received a email requestMessage to process " +
                                         "with a null or empty email address"));
                 continue;
             }
 
-            String emailMessageBody = requestMessage.getMailBody();
+            String emailMessageBody = requestMessage.getEmailBody();
             if(emailMessageBody == null || emailMessageBody.isEmpty()) {
                 responseSenderHandler.handle(
-                        new ResponseMessage(HandleResultType.EMAIL_BODY_NULL_OR_EMPTY, requestMessage.getRequestId())
+                        new ResponseMessage(HandleResultType.EMAIL_BODY_NULL_OR_EMPTY.getResultCode(),
+                                requestMessage.getRequestId())
                                 .setReason("received a email requestMessage to process with a null or empty body"));
                 continue;
             }
@@ -70,14 +72,15 @@ public class EmailHandler extends Handler {
                 messageDecodeException.printStackTrace(); //TODO: logar excepçao
 
                 responseSenderHandler.handle(
-                        new ResponseMessage(HandleResultType.EMAIL_BODY_DECODE_ERROR, requestMessage.getRequestId())
+                        new ResponseMessage(HandleResultType.EMAIL_BODY_DECODE_ERROR.getResultCode(),
+                                requestMessage.getRequestId())
                                 .setReason("received a email requestMessage to process with an invalid encoded body"));
                 continue;
             }
 
             if(decodedEmailMessageBody.isEmpty()) {
                 responseSenderHandler.handle(
-                        new ResponseMessage(HandleResultType.EMAIL_DECODED_BODY_NULL_OR_EMPTY,
+                        new ResponseMessage(HandleResultType.EMAIL_DECODED_BODY_NULL_OR_EMPTY.getResultCode(),
                                 requestMessage.getRequestId())
                                 .setReason("received a phone requestMessage to process " +
                                         "with a null or empty decoded body"));
@@ -85,7 +88,7 @@ public class EmailHandler extends Handler {
             }
 
             String decodedEmailMessageSubject = "";
-            String emailMessageSubject = requestMessage.getMailSubject();
+            String emailMessageSubject = requestMessage.getEmailSubject();
             if(emailMessageSubject != null && !emailMessageSubject.isEmpty()) {
                 try {
                     decodedEmailMessageSubject = new String(Base64.getDecoder().decode(emailMessageSubject));
@@ -93,7 +96,7 @@ public class EmailHandler extends Handler {
                     messageDecodeException.printStackTrace(); //TODO: logar excepçao
 
                     responseSenderHandler.handle(
-                            new ResponseMessage(HandleResultType.EMAIL_SUBJECT_DECODE_ERROR,
+                            new ResponseMessage(HandleResultType.EMAIL_SUBJECT_DECODE_ERROR.getResultCode(),
                                     requestMessage.getRequestId())
                                     .setReason("received a email requestMessage to process " +
                                             "with an invalid encoded subject"));
@@ -114,14 +117,15 @@ public class EmailHandler extends Handler {
                 sendEmailException.printStackTrace(); //TODO: logar excepçao
 
                 responseSenderHandler.handle(
-                        new ResponseMessage(HandleResultType.EMAIL_SENDING_ERROR, requestMessage.getRequestId())
+                        new ResponseMessage(HandleResultType.EMAIL_SENDING_ERROR.getResultCode(),
+                                requestMessage.getRequestId())
                                 .setReason("an unknown error occurred while sending email. Try again later"));
                 continue;
             }
 
             //email send success
             responseSenderHandler.handle(new ResponseMessage(
-                    HandleResultType.EMAIL_SENDING_SUCCESS, requestMessage.getRequestId())
+                    HandleResultType.EMAIL_SENDING_SUCCESS.getResultCode(), requestMessage.getRequestId())
                     .setReason("email successfully sended to " + emailAddress));
         }
     }

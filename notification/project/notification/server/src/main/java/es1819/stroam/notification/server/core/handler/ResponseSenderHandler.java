@@ -2,9 +2,9 @@ package es1819.stroam.notification.server.core.handler;
 
 import es1819.stroam.notification.commons.Constants;
 import es1819.stroam.notification.server.ServerSender;
-import es1819.stroam.notification.server.core.message.Message;
-import es1819.stroam.notification.server.core.message.RequestMessage;
-import es1819.stroam.notification.server.core.message.ResponseMessage;
+import es1819.stroam.notification.commons.communication.message.Message;
+import es1819.stroam.notification.commons.communication.message.request.RequestMessage;
+import es1819.stroam.notification.commons.communication.message.response.ResponseMessage;
 
 public class ResponseSenderHandler extends Handler {
 
@@ -41,7 +41,7 @@ public class ResponseSenderHandler extends Handler {
             }
             ResponseMessage responseMessage = (ResponseMessage)message;
 
-            responseMessage.setChannel(Constants.CHANNEL_SEPARATOR +
+            responseMessage.setTopic(Constants.CHANNEL_SEPARATOR +
                     Constants.CHANNEL_SERVICE_PREFIX +
                     Constants.CHANNEL_SEPARATOR +
                     Constants.CHANNEL_REQUEST_RESPONSE_PREFIX);
