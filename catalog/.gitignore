@@ -3,6 +3,7 @@
 *.ipr
 *.iws
 *.jar
+!lib/NotTheServiceClient.jar
 *.sw?
 *~
 .#*
@@ -28,7 +29,6 @@ build.log
 dependency-reduced-pom.xml
 dump.rdb
 interpolated*.xml
-lib/
 manifest.yml
 overridedb.*
 settings.xml
