@@ -1,4 +1,4 @@
-package es1819.stroam.catalog.model.retrofit;
+package es1819.stroam.catalog.model.retrofit.omdb;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

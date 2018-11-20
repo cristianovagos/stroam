@@ -2,12 +2,17 @@ package es1819.stroam.catalog.controller;
 
 import es1819.stroam.catalog.errors.ProductionNotFoundException;
 import es1819.stroam.catalog.errors.SeasonNotFoundException;
+import es1819.stroam.catalog.model.Genre;
 import es1819.stroam.catalog.model.Production;
 import es1819.stroam.catalog.model.SeriesSeason;
+import es1819.stroam.catalog.model.notifications.Email;
+import es1819.stroam.catalog.model.notifications.NotificationMessage;
 import es1819.stroam.catalog.repository.ProductionRepository;
 import es1819.stroam.catalog.repository.SeasonRepository;
+import es1819.stroam.catalog.service.NotificationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +37,18 @@ public class SeasonController {
     @Autowired
     private ProductionRepository productionRepository;
 
+    @Autowired
+    private NotificationService notificationService;
+
+    @Value("${stroam.frontend.host}")
+    private String FRONTEND_HOST;
+
+    @Value("${stroam.frontend.port}")
+    private String FRONTEND_PORT;
+
+    @Value("${stroam.frontend.movie-path}")
+    private String FRONTEND_MOVIE_PATH;
+
     @RequestMapping(value = "/v1/catalog/{id}/season", method = GET)
     public List<SeriesSeason> getAllSeasonsByProdID(@PathVariable("id") Long productionID) {
         return seasonRepository.findAllByProductionId(productionID);
@@ -50,6 +67,25 @@ public class SeasonController {
 
         season.setProduction(production.get());
         SeriesSeason newSeason = seasonRepository.save(season);
+
+        try {
+            notificationService.connect();
+
+            NotificationMessage message = new NotificationMessage();
+            message.setTitle(production.get().getName() + " - Season " + newSeason.getSeason() + " added:");
+            message.setMessage("Season " + newSeason.getSeason() + " of " + production.get().getName() + " is now available at STROAM!");
+            message.setUrl_path(FRONTEND_HOST + ":" + FRONTEND_PORT + FRONTEND_MOVIE_PATH + production.get().getId());
+            notificationService.sendPushNotification("stroam-movie" + production.get().getId(), message);
+
+            Email emailMessage = new Email();
+            emailMessage.setSubject("[STROAM] " + production.get().getName() + " - Season " + newSeason.getSeason() + " added");
+            emailMessage.setBody("Hi,\nJust to inform that there is a new season of " +
+                " " + production.get().getName() + " added to STROAM library. Make sure you don't miss that!" +
+                "\n\nYou can view more details on " + message.getUrl_path());
+            notificationService.sendEmail("stroam-movie" + production.get().getId(), emailMessage);
+        } catch (Exception e) {
+            log.error("");
+        }
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .buildAndExpand(newSeason.getId()).toUri();

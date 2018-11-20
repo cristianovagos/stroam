@@ -1,4 +1,4 @@
-package es1819.stroam.catalog.model.retrofit;
+package es1819.stroam.catalog.model.retrofit.omdb;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

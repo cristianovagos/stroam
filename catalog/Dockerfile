@@ -1,4 +1,4 @@
-FROM maven:3.6.0-jdk-8-slim
+FROM maven:3.6.0-jdk-10-slim
 WORKDIR /usr/src/java-code
 COPY . /usr/src/java-code/
 RUN mvn package -DskipTests

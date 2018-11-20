@@ -1,11 +1,12 @@
 package es1819.stroam.catalog.config;
 
-import es1819.stroam.catalog.model.retrofit.OmdbService;
+import es1819.stroam.catalog.model.retrofit.frontend.FrontendService;
+import es1819.stroam.catalog.model.retrofit.omdb.OmdbService;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import retrofit2.Retrofit;
@@ -13,21 +14,27 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Configuration
 public class RetrofitConfig {
 
+    @Value("${stroam.frontend.host}")
+    private String FRONTEND_HOST;
+
+    @Value("${stroam.frontend.port}")
+    private String FRONTEND_PORT;
+
     @Bean
     public OmdbService omdbService() {
-        final Logger logger = LoggerFactory.getLogger(RetrofitConfig.class);
         final Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(JacksonConverterFactory.create())
                 .client(new OkHttpClient.Builder()
                         .connectTimeout(10, TimeUnit.SECONDS)
                         .addInterceptor(chain -> {
                             Request request = chain.request();
-                            logger.info("Sending request to url: {}", request.url());
+                            log.info("Sending request to url: {}", request.url());
                             Response response = chain.proceed(request);
-                            logger.info("Received response for call: {}", request.url());
+                            log.info("Received response for call: {}", request.url());
                             return response;
                         })
                         .build()
@@ -35,5 +42,14 @@ public class RetrofitConfig {
                 .baseUrl("http://www.omdbapi.com")
                 .build();
         return retrofit.create(OmdbService.class);
+    }
+
+    @Bean
+    public FrontendService frontendService() {
+        final Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(JacksonConverterFactory.create())
+                .baseUrl("http://" + FRONTEND_HOST + ":" + FRONTEND_PORT)
+                .build();
+        return retrofit.create(FrontendService.class);
     }
 }
