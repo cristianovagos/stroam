@@ -10,6 +10,7 @@ import es1819.stroam.notification.commons.communication.message.response.Respons
 import es1819.stroam.notification.commons.utilities.TopicUtilities;
 
 import java.util.Base64;
+import java.util.UUID;
 
 public class NotTheServiceClient {
 
@@ -64,12 +65,13 @@ public class NotTheServiceClient {
         if(requestId != null && !requestId.isEmpty())
             emailRequestMessage = new EmailRequestMessage(emailAddress, requestId);
         else
-            emailRequestMessage = new EmailRequestMessage(emailAddress);
+            emailRequestMessage = new EmailRequestMessage(emailAddress, UUID.randomUUID().toString());
 
-        send((EmailRequestMessage)emailRequestMessage
+        emailRequestMessage.setTopic(TopicUtilities.getEmailTopic(emailAddress));
+
+        send(emailRequestMessage
                 .setEmailSubject(subject)
-                .setEmailBody(body)
-                .setRequestId(requestId));
+                .setEmailBody(body));
 
         return emailRequestMessage.getRequestId();
     }
@@ -83,7 +85,9 @@ public class NotTheServiceClient {
         if(requestId != null && !requestId.isEmpty())
             phoneRequestMessage = new PhoneRequestMessage(phoneNumber, requestId);
         else
-            phoneRequestMessage = new PhoneRequestMessage(phoneNumber);
+            phoneRequestMessage = new PhoneRequestMessage(phoneNumber, UUID.randomUUID().toString());
+
+        phoneRequestMessage.setTopic(TopicUtilities.getPhoneTopic(phoneNumber));
 
         send(phoneRequestMessage.setPhoneBody(body));
         return phoneRequestMessage.getRequestId();

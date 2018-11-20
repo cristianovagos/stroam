@@ -67,6 +67,21 @@ public class ResponseMessage extends Message {
                 .getBytes();
     }
 
+    //parse and assign the payload general values to the respective variables
+    private void parsePayloadGeneralData(JSONObject jsonData) { //not null guaranteed
+        if(jsonData.has(Constants.JSON_REQUEST_ID_KEY)) {
+            try {
+                this.requestId = jsonData.getString(Constants.JSON_REQUEST_ID_KEY);
+            } catch (JSONException jsonValueParseException) {
+                throw new IllegalArgumentException("Invalid json value parsed for " +
+                        Constants.JSON_REQUEST_ID_KEY  + " key", jsonValueParseException);
+            }
+
+            if(this.requestId == null)
+                this.requestId = ""; //not null guaranteed
+        }
+    }
+
     private void parsePayloadResponseData(JSONObject jsonData) {
         if(jsonData.has(Constants.JSON_RESULT_CODE_KEY)) {
             try {

@@ -41,7 +41,7 @@ public class PhoneHandler extends Handler {
                 new IllegalArgumentException("received a message to process of unexpected type of ResponseMessage").printStackTrace(); //TODO: debug
                 continue;
             }
-            PhoneRequestMessage requestMessage = (PhoneRequestMessage)message;
+            RequestMessage requestMessage = (RequestMessage)message;
 
             String phoneNumber = requestMessage.getPhoneNumber();
             if(phoneNumber == null || phoneNumber.isEmpty()) {

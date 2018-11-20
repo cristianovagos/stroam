@@ -6,24 +6,24 @@ public class NotTheServiceClientTest implements NotTheServiceClientCallback {
 
     @Test
     public void generalTest() {
-        NotTheServiceClient_ notTheServiceClient = new NotTheServiceClient_("ws://localhost:1884")
+        NotTheServiceClient notTheServiceClient = new NotTheServiceClient("ws://localhost:1884")
                 .setCallback(this);
 
         try {
             notTheServiceClient.connect();
             notTheServiceClient.subscribe("/test");
-            System.out.println("email requestId: " +
-                    notTheServiceClient.sendEmail("test@stroam.com", "teste", "test"));
+            /*System.out.println("email requestId: " +
+                    notTheServiceClient.sendEmail("test@stroam.com", "teste", "test"));*/
             System.out.println("phone requestId: " +
                     notTheServiceClient.sendPhone("123484564", "asdojasdg"));
-            notTheServiceClient.sendPush("/test", "ola");
+            //notTheServiceClient.sendPush("/test", "ola");
         } catch (Exception e) {
             System.out.println("erro: ");
             e.printStackTrace();
         }
 
         try {
-            Thread.sleep(5000);
+            Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -36,8 +36,7 @@ public class NotTheServiceClientTest implements NotTheServiceClientCallback {
 
     @Override
     public void onResponseRequestArrived(String requestId, int code, String reason) {
-        System.out.println("Response: ");
-        System.out.println("requestId: " + requestId + " code: " + code + " reason: " + reason);
+        System.out.println("Response: requestId: " + requestId + " code: " + code + " reason: " + reason);
     }
 
     @Override

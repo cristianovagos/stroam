@@ -19,18 +19,18 @@ public class RequestMessage extends Message {
         super(topic);
     }
 
-    public RequestMessage(String topic, byte[] payload) {
+    public RequestMessage(String channel, byte[] payload) {
         super();
 
-        if(topic == null || topic.isEmpty())
-            throw new IllegalArgumentException("topic cannot be null or empty");
+        if(channel == null || channel.isEmpty())
+            throw new IllegalArgumentException("channel cannot be null or empty");
         if(payload == null || payload.length == 0)
             throw new IllegalArgumentException("payload cannot be null or empty");
 
-        this.topic = topic;
+        this.topic = channel;
         this.payload = payload;
 
-        parseChannelData(); //Validates the topic data and defines the message type for payload validation
+        parseChannelData(); //Validates the channel data and defines the message type for payload validation
 
         String jsonString = new String(payload);
         if(jsonString.isEmpty())
@@ -51,13 +51,33 @@ public class RequestMessage extends Message {
             parsePayloadPhoneData(jsonData);
     }
 
-    //parse and assign the topic values to the respective variables
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public String getEmailSubject() {
+        return emailSubject;
+    }
+
+    public String getEmailBody() {
+        return emailBody;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getPhoneBody() {
+        return phoneBody;
+    }
+
+    //parse and assign the channel values to the respective variables
     private void parseChannelData() {
         String[] channelParts = topic.split(Constants.CHANNEL_SEPARATOR);
         if(channelParts.length == 0)
-            throw new IllegalArgumentException("unexpected topic format");
+            throw new IllegalArgumentException("unexpected channel format");
 
-        if(channelParts[0].isEmpty()) { //means that topic starts with /...
+        if(channelParts[0].isEmpty()) { //means that channel starts with /...
             String[] temporaryChannelParts = new String[channelParts.length - 1];
             System.arraycopy(channelParts, 1, temporaryChannelParts, 0, channelParts.length - 1); //remove the null string from the beginning
 
@@ -65,7 +85,7 @@ public class RequestMessage extends Message {
         }
 
         //TODO: tentar optimizar codigo abaixo
-        int channelFlagIndex = -1; //search the index of the topic part email
+        int channelFlagIndex = -1; //search the index of the channel part email
         for (int i = 0; i < channelParts.length; i++) {
             if(channelParts[i].contentEquals(Constants.CHANNEL_EMAIL_PREFIX)) {
                 this.type = MessageType.MAIL;
@@ -77,20 +97,20 @@ public class RequestMessage extends Message {
             }
         }
 
-        if(channelFlagIndex == -1) //type of contact not found in topic parts
+        if(channelFlagIndex == -1) //type of contact not found in channel parts
             throw new IllegalArgumentException(
                     Constants.CHANNEL_EMAIL_PREFIX + " or " + Constants.CHANNEL_PHONE_PREFIX +
-                            " expected in topic hierarchy");
-        else if(channelFlagIndex + 1 < channelParts.length - 1) //type of contact its not at the end of topic parts
+                            " expected in channel hierarchy");
+        else if(channelFlagIndex + 1 < channelParts.length - 1) //type of contact its not at the end of channel parts
             throw new IllegalArgumentException(
                     Constants.CHANNEL_EMAIL_PREFIX + " or " + Constants.CHANNEL_PHONE_PREFIX +
-                            " is expected on the penultimate part of the topic (before the contact data)");
+                            " is expected on the penultimate part of the channel (before the contact data)");
 
         String contactData;
         try {
             contactData = channelParts[channelFlagIndex + 1];
         } catch (IndexOutOfBoundsException channelPartIndexOutOfBounds) {
-            throw new IllegalArgumentException("contact data expected in the end of topic" +
+            throw new IllegalArgumentException("contact data expected in the end of channel" +
                     " hierarchy (after contact type)", channelPartIndexOutOfBounds);
         }
 
@@ -102,6 +122,21 @@ public class RequestMessage extends Message {
         }
         else if(this.type == MessageType.PHONE) {
             this.phoneNumber = contactData; //TODO: validar numero de telefone (ver email)
+        }
+    }
+
+    //parse and assign the payload general values to the respective variables
+    private void parsePayloadGeneralData(JSONObject jsonData) { //not null guaranteed
+        if(jsonData.has(Constants.JSON_REQUEST_ID_KEY)) {
+            try {
+                this.requestId = jsonData.getString(Constants.JSON_REQUEST_ID_KEY);
+            } catch (JSONException jsonValueParseException) {
+                throw new IllegalArgumentException("Invalid json value parsed for " +
+                        Constants.JSON_REQUEST_ID_KEY  + " key", jsonValueParseException);
+            }
+
+            if(this.requestId == null)
+                this.requestId = ""; //not null guaranteed
         }
     }
 
