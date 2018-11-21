@@ -37,7 +37,7 @@ services:
     command: bash -c "python manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
     environment:
       USE_DOCKER: 'yes'
-      NOTIFICATION_SERVER_HOST: 'nottheserviceserver'
+      NOTIFICATION_SERVER_HOST: '127.0.0.1'
     volumes:
       - ./frontend:/code
       - static:/static
@@ -54,8 +54,8 @@ services:
     restart: always
     build: ./catalog
     environment:
-      NOTIFICATION_SERVER_HOST: 'nottheserviceserver'
-      FRONTEND_HOST: 'frontend'
+      NOTIFICATION_SERVER_HOST: '127.0.0.1'
+      FRONTEND_HOST: frontend
     volumes:
       - ./catalog:/app
     ports:

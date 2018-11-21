@@ -19,7 +19,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 USE_DOCKER = bool(os.getenv('USE_DOCKER', False))
 if USE_DOCKER:
     print('USING DOCKER')
-
 else:
     print('NOT USING DOCKER')
 
