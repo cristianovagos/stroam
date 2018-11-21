@@ -19,7 +19,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        let notificationClient = new NotTheServiceClient("127.0.0.1", 1884);
+        let notificationClient = new NotTheServiceClient('{{ NOTIFICATION_SERVER_HOST }}', 1884);
 
         function onConnect() {
             notificationClient.subscribe('/requestResponse'); //if have interest in receive the requests responses

@@ -46,4 +46,4 @@ class Notification_Channels(models.Model):
 
 class Notification_Subscription(models.Model):
     user_id = models.IntegerField()
-    channel_id = models.ManyToManyField(Notification_Channels)
+    channel_id = models.ManyToManyField(Notification_Channels, blank=True)

@@ -19,8 +19,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 USE_DOCKER = bool(os.getenv('USE_DOCKER', False))
 if USE_DOCKER:
     print('USING DOCKER')
+
 else:
     print('NOT USING DOCKER')
+
+NOTIFICATION_SERVER_HOST = os.getenv('NOTIFICATION_SERVER_HOST', '127.0.0.1')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -72,6 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'frontend.context_processors.global_settings',
             ],
         },
     },
@@ -164,7 +168,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'static')
 
 # Logging
 

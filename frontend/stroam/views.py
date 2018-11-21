@@ -382,20 +382,18 @@ def userPanel(request):
     for subscription in allSubscriptions:
         channels = Notification_Channels.objects.filter(notification_subscription=subscription.pk)
         for ch in channels:
-            subscriptionsData[subscription.id] = {}
-            subscriptionsData[subscription.id]['channel_name'] = ch.channel_name
+            subscriptionsData[ch.id] = {}
+            subscriptionsData[ch.id]['channel_name'] = ch.channel_name
             subscribed_channels.append(ch.channel_name)
 
             if ch.channel_name.strip('stroam-movie').isnumeric():
                 pr = production.getSingleProduction(int(ch.channel_name.strip('stroam-movie')))
-                subscriptionsData[subscription.id]['production'] = pr
-                subscriptionsData[subscription.id]['type'] = str(pr.type).capitalize()
+                subscriptionsData[ch.id]['production'] = pr
+                subscriptionsData[ch.id]['type'] = str(pr.type).capitalize()
             else:
-                subscriptionsData[subscription.id]['type'] = 'Genre'
+                subscriptionsData[ch.id]['type'] = 'Genre'
 
-            subscriptionsData[subscription.id]['strip'] = ch.channel_name.strip('stroam-movie')
-
-    # print(subscriptionsData)
+            subscriptionsData[ch.id]['strip'] = ch.channel_name.strip('stroam-movie')
 
     tparams = {
         'title': MAIN_TITLE + title,

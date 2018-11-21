@@ -48,7 +48,6 @@ def createCheckout(price, returnURL, cancelURL, items, currency="EUR", merchant=
             if product['season'] is not None:
                 purchaseInfo.season_num = int(product['season'])
             purchaseInfo.purchase_id.add(p)
-            purchaseInfo.save()
         return redirect(PAYMENT_SERVICE_URL + "/pay?checkout_token=" + checkoutToken)
     else:
         LOGGER.error(str(responseObj))

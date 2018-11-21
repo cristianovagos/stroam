@@ -1,12 +1,4 @@
-// let notificationClient = new NotTheServiceClient("127.0.0.1", 1884);
-
 // Tópicos do canal são "/notTheService{/channelID}"
-
-// callback
-// function onConnect() {
-//     notificationClient.subscribe("/requestResponse"); //if have interest in receive the requests responses
-//     console.log("connected to notification service");
-// }
 
 // callback erros
 function onResponseRequestArrived(requestId, errorCode, message) {

@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from stroam import views
 
 urlpatterns = [
@@ -37,10 +37,7 @@ urlpatterns = [
     path('auth/', views.makeauth, name='makeauth'),
     path('logout/', views.logout, name='logout'),
     path('push/', views.pushtest, name='push'),
-    # path('subscribe/genre/<slug:genre_name>', views.subscribeGenre, name='subscribeGenre'),
-    # path('unsubscribe/genre/<slug:genre_name>', views.unsubscribeGenre, name='unsubscribeGenre'),
-    # path('subscribe/movie/<int:movie_id>', views.subscribeMovie, name='subscribeMovie'),
-    # path('unsubscribe/movie/<int:movie_id>', views.unsubscribeMovie, name='unsubscribeMovie'),
+    path('api/', include('stroam.api.urls')),
 ]
 
 # DELETE ALL IS ONLY FOR DEBUGGING PURPOSES, IT DELETES ALL DATA FROM FRONTEND DATABASE + SESSION DATA
