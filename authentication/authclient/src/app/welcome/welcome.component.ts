@@ -46,7 +46,7 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
                 // );
                 // this.document.location.href = this.url + '?id=' + this.user.id.toString();
 
-                this.http.post(this.url, {'ids': this.user.id.toString()}, {responseType: 'text'})
+                this.http.post(this.url, {'user': this.user }, {responseType: 'text'})
                 .subscribe( 
                     resp => {
                         this.document.location.href = this.url;

@@ -1,4 +1,5 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
     token: string;
 
     constructor(
+        @Inject(DOCUMENT) private document: any,
         public router: Router,
         private activatedRoute: ActivatedRoute,
         private http: HttpClient,
@@ -48,6 +50,8 @@ export class LoginComponent implements OnInit {
     login() {
 
         let url = 'http://localhost:3000/api/v1/login';
+
+        console.log(this.model.username, this.model.password)
 
         this.http.post<User>(url, {
             username: this.model.username,
@@ -89,4 +93,22 @@ export class LoginComponent implements OnInit {
         );
     }
     
+    facebookLogin() {
+        console.log("redirect ...");
+        this.document.location.href = "http://localhost:3000/login/facebook";
+    }
+    
+    githubLogin() {
+        console.log("redirect ...");
+        this.document.location.href = "https://github.com/login/oauth/authorize?client_id=1a6064af05f1ade02e7b&redirect_uri=http://localhost:3000/api/v1/github;//"; //http://localhost:3000/login/github";
+        /* this.http.get("https://github.com/login/oauth/authorize", { params: {}})     &scope=user%20email"
+        .subscribe(
+            rsp => {
+                console.log(rsp);
+            },
+            err => {
+                console.log(err);
+            }
+         ); */
+    }
 }

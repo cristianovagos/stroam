@@ -1,0 +1,3 @@
+es\stroam\authserver\model\Token.class
+es\stroam\authserver\model\GithubLogin.class
+es\stroam\authserver\service\UserSession.class

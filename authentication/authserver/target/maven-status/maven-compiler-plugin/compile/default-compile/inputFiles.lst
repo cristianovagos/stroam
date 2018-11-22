@@ -1,6 +1,10 @@
-/home/cvagos/Área de Trabalho/EngServicos/Projeto/es1819-stroam/authentication/authserver/src/main/java/es/stroam/authserver/reposiroties/UserRepo.java
-/home/cvagos/Área de Trabalho/EngServicos/Projeto/es1819-stroam/authentication/authserver/src/main/java/es/stroam/authserver/model/Login.java
-/home/cvagos/Área de Trabalho/EngServicos/Projeto/es1819-stroam/authentication/authserver/src/main/java/es/stroam/authserver/controllers/LoginController.java
-/home/cvagos/Área de Trabalho/EngServicos/Projeto/es1819-stroam/authentication/authserver/src/main/java/es/stroam/authserver/model/User.java
-/home/cvagos/Área de Trabalho/EngServicos/Projeto/es1819-stroam/authentication/authserver/src/main/java/es/stroam/authserver/AuthServer.java
-/home/cvagos/Área de Trabalho/EngServicos/Projeto/es1819-stroam/authentication/authserver/src/main/java/es/stroam/authserver/controllers/UserController.java
+D:\UA\es\es1819-stroam\authentication\AuthServer\src\main\java\es\stroam\authserver\service\UserSession.java
+D:\UA\es\es1819-stroam\authentication\AuthServer\src\main\java\es\stroam\authserver\AuthServer.java
+D:\UA\es\es1819-stroam\authentication\AuthServer\src\main\java\es\stroam\authserver\controllers\LoginController.java
+D:\UA\es\es1819-stroam\authentication\AuthServer\src\main\java\es\stroam\authserver\model\Token.java
+D:\UA\es\es1819-stroam\authentication\AuthServer\src\main\java\es\stroam\authserver\model\User.java
+D:\UA\es\es1819-stroam\authentication\AuthServer\src\main\java\es\stroam\authserver\model\GithubLogin.java
+D:\UA\es\es1819-stroam\authentication\AuthServer\src\main\java\es\stroam\authserver\reposiroties\UserRepo.java
+D:\UA\es\es1819-stroam\authentication\AuthServer\src\main\java\es\stroam\authserver\service\HttpService.java
+D:\UA\es\es1819-stroam\authentication\AuthServer\src\main\java\es\stroam\authserver\controllers\UserController.java
+D:\UA\es\es1819-stroam\authentication\AuthServer\src\main\java\es\stroam\authserver\model\Login.java

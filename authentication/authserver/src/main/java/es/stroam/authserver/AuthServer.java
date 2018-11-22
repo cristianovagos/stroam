@@ -27,10 +27,10 @@ public class AuthServer {
 	public CommandLineRunner demo(UserRepo repository) {
 		return (args) -> {
 			// save a couple of customers
-			repository.save(new User("Admin01", "pass", "admin01@ua.pt", "Administrador"));
-			repository.save(new User("Admin02", "pass", "admin02@ua.pt", "Administrador"));
-			repository.save(new User("User01", "pass", "user01@ua.pt", "User"));
-			repository.save(new User("User01", "pass", "user02@ua.pt", "User"));
+			repository.save(new User("Admin01", "pass", "admin01@ua.pt"));
+			repository.save(new User("Admin02", "pass", "admin02@ua.pt"));
+			repository.save(new User("User01", "pass", "user01@ua.pt"));
+			repository.save(new User("User01", "pass", "user02@ua.pt"));
 
 			// fetch all customers
 			log.info("User added:");

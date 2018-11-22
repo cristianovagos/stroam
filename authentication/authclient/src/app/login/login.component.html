@@ -1,7 +1,4 @@
-﻿<div class="row">
-
-    <div class="col-md-4"></div>
-
+﻿<!-- <div class="row">
     <div class="col-md-4">
 
         <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
@@ -26,19 +23,19 @@
         </form>
 
     </div>
-
-    <div class="col-md-4"></div>
-
 </div>
 
-<!-- <br /> <br />
+<br /> <br />
 
+<button (click)="facebookLogin()">facebook</button> -->
+
+<!-- 
 <button (click)="getAllUsers()">who is</button>
 
 <button (click)="getToken()">get Token</button> -->
 
 
-<!-- <div class="container">
+<div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-login">
@@ -53,12 +50,12 @@
                     </div>
                     <hr>
                 </div>
+
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12">
 
-                            Login 
-                            <form id="login-form" action="https://phpoll.com/login/process" method="post" role="form" style="display: block;">
+                            <!-- <form id="login-form" action="https://phpoll.com/login/process" method="post" role="form" style="display: block;">
                                 <div class="form-group">
                                     <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
                                 </div>
@@ -85,17 +82,55 @@
                                         </div>
                                     </div>
                                 </div>
+                            </form> -->
+
+
+                            <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+
+                                <div [ngClass]="{ 'has-error': f.submitted && !username.valid }">
+                                   <!--  <label for="username">Username: </label>
+                                    <input type="text" name="username" [(ngModel)]="model.username" #username="ngModel" required /> -->
+                                    <input type="text" name="username" [(ngModel)]="model.username" #username="ngModel" required id="username" tabindex="1" class="form-control" placeholder="Username" value="">
+                                    <div class="alert alert-danger" *ngIf="f.submitted && !username.valid">Username is required</div>
+                                </div>
+                                
+                                <br />
+                                <div [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+                                   <!--  <label for="password">Password: </label>
+                                    <input type="password" name="password" [(ngModel)]="model.password" #password="ngModel" required /> -->
+                                    <input type="password" name="password" [(ngModel)]="model.password" #password="ngModel" required id="password" tabindex="2" class="form-control" placeholder="Password">
+                                    <div class="alert alert-danger" *ngIf="f.submitted && !password.valid">Password is required</div>
+                                </div>
+                                <div class="form-group text-center">
+                                    <input type="checkbox" tabindex="3" class="" name="remember" id="remember">
+                                    <label for="remember"> Remember Me</label>
+                                </div>
+                                <div>
+                                    <button class="form-control btn btn-login" type="submit" >Login</button>
+                                </div>
                             </form>
 
                         </div>
                     </div>
+                </div>
+
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <button type="button" class="btn btn-fb" (click)="facebookLogin()"><i class="fa fa-facebook pr-1"></i> Facebook</button>
+                        </div>
+                        <div class="col-xs-6">
+                            <button type="button" class="btn btn-git" (click)="githubLogin()"><i class="fa fa-github pr-1"></i> Github</button>
+                        </div>
+                    </div>
+                    <hr>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<br /> <br /> -->
+<br /> <br />
 
 <div *ngIf="failLogin">
     User Not found.
