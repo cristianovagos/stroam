@@ -32,10 +32,11 @@ public class Constants {
             loadDefaultSettings();
             return;
         }
-        System.out.println("Using configuration file located in: " + configurationFile.getPath());
+        else
+            System.out.println("Using configuration file located in: " + configurationFile.getPath());
 
         if(!configurationFile.canRead()) {
-            loadDefaultSettings();
+            loadDefaultSettings(); //TODO: verificar print neste caso
             throw new IOException("configuration file cannot be readed. Check read permissions");
         }
 
@@ -71,7 +72,7 @@ public class Constants {
     }
 
     private static void loadDefaultSettings() {
-
+        System.out.println("Using default configuration settings");
     }
 
     //General constants/variables (from configuration file)

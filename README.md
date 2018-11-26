@@ -21,7 +21,8 @@ Payment gateway service which takes care of billing.
 Built with Flask (Python).
 
 * **Notification**  
-Service responsible for notifying users upon multiple usage in app.  
+Service responsible for notifying users upon multiple usage in app.
+Built with Java
 
 * **Streaming CDN**  
 A content delivery network which serves media sources based on user location.

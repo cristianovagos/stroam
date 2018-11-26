@@ -2,16 +2,17 @@ version: '3'
   
 services:
   mosquitto:
-    image: eclipse-mosquitto:1.4.12
+    image: eclipse-mosquitto:1.5.4
     container_name: mosquittoserver
     restart: always
     ports:
+      - "1883:1883"
       - "1884:1884"
     volumes:
       - ./configurations/mosquitto.conf:/mosquitto/config/mosquitto.conf
   
   tvialmail:
-    image: tvial/docker-mailserver:latest #trocar para uma versão fixa
+    image: tvial/docker-mailserver:release-v6.1.0
     hostname: tvialmail
     domainname: nottheservice.com
     container_name: tvialmailserver
