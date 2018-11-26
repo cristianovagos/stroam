@@ -5,7 +5,8 @@ WORKDIR /usr/src/notification
 RUN mvn clean install -DskipTests
 
 RUN cp ./server/target/notTheService.jar .
-RUN rm nottheservice.conf #avoid conflits
+RUN rm nottheservice.conf 
+#line above: avoid conflits
 EXPOSE 1884
 CMD ["java", "--illegal-access=deny", "-jar", "notTheService.jar"]
 

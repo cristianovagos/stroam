@@ -16,7 +16,7 @@ public class NotTheServiceClientTest implements NotTheServiceClientCallback {
                     notTheServiceClient.sendEmail("test@stroam.com", "teste", "test"));*/
             System.out.println("phone requestId: " +
                     notTheServiceClient.sendPhone("123484564", "asdojasdg"));
-            //notTheServiceClient.sendPush("/test", "ola");
+            notTheServiceClient.sendPush("/test", "ola");
         } catch (Exception e) {
             System.out.println("erro: ");
             e.printStackTrace();
