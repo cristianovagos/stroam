@@ -12,7 +12,7 @@ The service is distributed in topics where users can subscribe to receive all th
 * Topics with the hierarchy **/email** and **/phone** (hereinafter referred as &quot;service topics&quot;) are reserved for this type of notifications and should be only used for this purpose, otherwise may produce incorrect or unexpected service responses.
 * With the exception of the service topics, all the other topics can carry any kind of data up to 250 Megabytes and do not need to respect any struture or format.
 * With the exception of the service topics, all the other user topics will not receive any type of result about the request/operation made, and it is up to the user implement this type of guarantees over the existing service.
-* The topics should not contain spaces or other null characters, punctuation, accentuation or special characters of any kind. To learn more about using the topics correctly read the information in the &quot;Topics/Subscriptions&quot; chapter in: [a link](https://mosquitto.org/man/mqtt-7.html).
+* The topics should not contain spaces or other null characters, punctuation, accentuation or special characters of any kind. To learn more about using the topics correctly read the information in the &quot;Topics/Subscriptions&quot; chapter in: [https://mosquitto.org/man/mqtt-7.html](https://mosquitto.org/man/mqtt-7.html).
 
 ### Send email notification
 It is possible to send a notification of type email by publishing on any topic where the hierarchy ends in **/email/&lt;recipient_email address&gt;** where the message must contain fields and data formatted in JSON respecting the all conventions of this language according to the following standards:
@@ -58,7 +58,7 @@ The execution of requests will produce a JSON formated response according to the
 * **resultCode**: contains a string that justifies the result obtained for the request made.
 
 ### Examples
-You can find the libraries, examples of how to use them and more information about the service and how data is processed in [a link](http://code.ua.pt/projects/es1819-stroam/repository/revisions/master/show/notification/project/client).
+You can find the libraries, examples of how to use them and more information about the service and how data is processed in [here](http://code.ua.pt/projects/es1819-stroam/repository/revisions/master/show/notification/project/client).
 
 ## What is done
 - All base server logic
@@ -76,9 +76,9 @@ You can find the libraries, examples of how to use them and more information abo
 **Requirements**: 
 * last version of the container platform Docker.
 * git client
-* MQTT client. You can use the JavaScript example in here: [a link](code.ua.pt/projects/es1819-stroam/repository/revisions/master/show/notification/project/client/JavaScript)
+* MQTT client. You can use the JavaScript example in [here](code.ua.pt/projects/es1819-stroam/repository/revisions/master/show/notification/project/client/JavaScript)
 
-To run the service demonstration local level you just need to download the project source files in [a link](http://code.ua.pt/projects/es1819-stroam/repository/revisions/master/show/notification) and, in terminal do:
+To run the service demonstration local level you just need to download the project source files in [git repository](http://code.ua.pt/projects/es1819-stroam/repository/revisions/master/show/notification) and, in terminal do:
 **cd** to the directory where is located the project folder download from git
 **docker-compose up**
 
