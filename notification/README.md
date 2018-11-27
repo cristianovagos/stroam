@@ -76,7 +76,7 @@ You can find the libraries, examples of how to use them and more information abo
 **Requirements**: 
 * last version of the container platform Docker.
 * git client
-* MQTT client. You can use the JavaScript example in [here](code.ua.pt/projects/es1819-stroam/repository/revisions/master/show/notification/project/client/JavaScript)
+* MQTT client. You can use the JavaScript example in [here](http://code.ua.pt/projects/es1819-stroam/repository/revisions/master/show/notification/project/client/JavaScript)
 
 To run the service demonstration local level you just need to download the project source files in [git repository](http://code.ua.pt/projects/es1819-stroam/repository/revisions/master/show/notification) and, in terminal do:
 **cd** to the directory where is located the project folder download from git
