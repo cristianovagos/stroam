@@ -1,10 +1,10 @@
-package es.stroam.authserver.model;
+package es.stroam.authserver.social.github;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import es.stroam.authserver.service.HttpService;
+import es.stroam.authserver.model.User;
 
 /**
  *      https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/

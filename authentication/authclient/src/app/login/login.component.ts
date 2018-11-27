@@ -18,6 +18,8 @@ export class LoginComponent implements OnInit {
     failLogin: boolean;
     urlRedirect: string;
     token: string;
+    client_id: string;
+
 
     constructor(
         @Inject(DOCUMENT) private document: any,
@@ -32,9 +34,11 @@ export class LoginComponent implements OnInit {
     ngOnInit() {
         //sessionStorage.setItem('token', '');
         this.activatedRoute.queryParams.subscribe(params => {
-            this.urlRedirect = params['url'];
-            this.token = params['token'];
-            // console.log(urlRedirect);
+            this.client_id = params['id'];
+            this.urlRedirect = params['redirect'];
+            //this.token = params['token'];
+            console.log(this.client_id);
+            console.log(this.urlRedirect);
             // console.log(atob(urlRedirect));
         });
     }
@@ -51,8 +55,6 @@ export class LoginComponent implements OnInit {
 
         let url = 'http://localhost:3000/api/v1/login';
 
-        console.log(this.model.username, this.model.password)
-
         this.http.post<User>(url, {
             username: this.model.username,
             password: this.model.password
@@ -60,7 +62,6 @@ export class LoginComponent implements OnInit {
             resp => {
                 console.log(resp);
                 if (resp.id != null) {
-                    console.log("nova pagina");
                     this.storage.data = JSON.stringify({
                         'user': resp, 
                         'url': this.urlRedirect,
@@ -69,9 +70,37 @@ export class LoginComponent implements OnInit {
                     this.router.navigate(['/welcome']);
 
                 } else {
-                    console.log("fail");
                     this.failLogin = true;
                 }
+            },
+            err => {
+                console.log(err.error.status, err.error.error);
+            }
+        );
+    }
+
+    oauthlogin() {
+        let url = 'http://localhost:3000/api/v1/oauth/login';
+
+        this.http.post<any>(url, {
+            username: this.model.username,
+            password: this.model.password,
+            clientid: this.client_id
+        }).subscribe( 
+            resp => {
+                console.log(resp) // code
+
+                // send code to redirect url
+                /* this.http.post<any>(this.urlRedirect, {
+                    code: ""
+                }).subscribe(
+                    resp => {
+                        console.log(resp);
+                    },
+                    err => {
+                        console.log(err.error.status, err.error.error);
+                    }
+                ); */
             },
             err => {
                 console.log(err.error.status, err.error.error);
@@ -100,7 +129,7 @@ export class LoginComponent implements OnInit {
     
     githubLogin() {
         console.log("redirect ...");
-        this.document.location.href = "https://github.com/login/oauth/authorize?client_id=1a6064af05f1ade02e7b&redirect_uri=http://localhost:3000/api/v1/github;//"; //http://localhost:3000/login/github";
+        this.document.location.href = "https://github.com/login/oauth/authorize?client_id=1a6064af05f1ade02e7b&redirect_uri=http://localhost:3000/api/v1/github"; //http://localhost:3000/login/github";
         /* this.http.get("https://github.com/login/oauth/authorize", { params: {}})     &scope=user%20email"
         .subscribe(
             rsp => {

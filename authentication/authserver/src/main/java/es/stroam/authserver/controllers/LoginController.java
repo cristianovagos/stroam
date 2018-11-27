@@ -1,6 +1,5 @@
 package es.stroam.authserver.controllers;
 
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,12 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import es.stroam.authserver.model.GithubLogin;
 import es.stroam.authserver.model.Login;
 import es.stroam.authserver.model.Token;
 import es.stroam.authserver.model.User;
 import es.stroam.authserver.reposiroties.UserRepo;
 import es.stroam.authserver.service.HttpService;
+import es.stroam.authserver.social.github.GithubLogin;
 
 
 @Controller
@@ -30,8 +29,7 @@ public class LoginController {
 
 	@Autowired
     private UserRepo userRepository;
-    
-	
+        
 	@PostMapping(path="/login")
 	public ResponseEntity<User> login (@RequestBody Login login) {
         
@@ -60,8 +58,9 @@ public class LoginController {
         String token_response = service.sendPost(gitLogin.URL_GET_TOKEN, gitLogin.getBody());
 
         // create user
-        Token token = new Token( token_response );
-        System.out.println(token);
+        Token token = new Token();
+        token.fromGithub(token_response);
+        //System.out.println(token);
         String user_response = service.sendAuthGet(gitLogin.URL_GET_USER, token);
         String email_response = service.sendAuthGet(gitLogin.URL_GET_EMAIL, token);
         gitLogin.setUser( user_response );
@@ -78,4 +77,6 @@ public class LoginController {
         // create session
         //UserSession uSession = new UserSession(user, token);
 	}
+    
+   
 }

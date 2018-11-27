@@ -11,7 +11,9 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import es.stroam.authserver.model.Client;
 import es.stroam.authserver.model.User;
+import es.stroam.authserver.reposiroties.ClientRepo;
 import es.stroam.authserver.reposiroties.UserRepo;
 
 @SpringBootApplication
@@ -24,21 +26,35 @@ public class AuthServer {
     }
 
     @Bean
-	public CommandLineRunner demo(UserRepo repository) {
+	public CommandLineRunner adduser(UserRepo userepo) {
 		return (args) -> {
 			// save a couple of customers
-			repository.save(new User("Admin01", "pass", "admin01@ua.pt"));
-			repository.save(new User("Admin02", "pass", "admin02@ua.pt"));
-			repository.save(new User("User01", "pass", "user01@ua.pt"));
-			repository.save(new User("User01", "pass", "user02@ua.pt"));
+			userepo.save(new User("Admin", "pass", "admin@ua.pt"));
+			userepo.save(new User("User", "pass", "user@ua.pt"));
 
 			// fetch all customers
 			log.info("User added:");
 			log.info("-------------------------------");
-			for (User user : repository.findAll()) {
+			for (User user : userepo.findAll()) {
 				log.info(user.toString());
 			}
-			log.info("");
+            log.info("");
+		};
+    }
+
+    @Bean
+    public CommandLineRunner addclient(ClientRepo clientrepo) {
+		return (args) -> {
+            clientrepo.save(new Client("es-stroam-test", "super_screct001"));
+            clientrepo.save(new Client("es-stroam-frontend", "super_screct001"));
+            
+            // fetch all customers
+			log.info("Client added:");
+			log.info("-------------------------------");
+			for (Client client : clientrepo.findAll()) {
+				log.info(client.toString());
+			}
+            log.info("");
 		};
     }
     

@@ -6,10 +6,14 @@ public class Token {
     private String scope;
     private String type;
 
-    public Token() {}
+    public Token() {
+        this.token = "";
+        this.scope = "";
+        this.type = "";
+    }
 
-    public Token(String rsp) {
-       
+    public void fromGithub(String rsp) {
+        
         String[] tmp = rsp.split("&");
         this.token = tmp[0].split("=")[1];
         this.scope = ""; //tmp[1].split("=")[1];

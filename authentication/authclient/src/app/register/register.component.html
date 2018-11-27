@@ -4,10 +4,10 @@
             <div class="panel panel-login">
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col">
                             <a id="login-form-link"  (click)="goToLogin()">Login</a>
                         </div>
-                        <div class="col-xs-6">
+                        <div class="col">
                             <a id="register-form-link" class="active" (click)="goToRegister()">Register</a>
                         </div>
                     </div>
@@ -17,25 +17,36 @@
                     <div class="row">
                         <div class="col-lg-12">
 
-                            <!-- Register -->
-                            <form id="register-form" (ngSubmit)="f.form.valid && register()" #f="ngForm" method="post" role="form" style="display: block;">
-                                <div class="form-group">
-                                    <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
+                            <!-- Register (ngSubmit)="f.form.valid && register()"  required -->
+                            <form  #f="ngForm" (ngSubmit)="register()" method="post" novalidate>
+
+                                <div [ngClass]="{ 'has-error': f.submitted && !username.valid }">
+                                    <input type="text" name="username" [(ngModel)]="model.username" #username="ngModel"  id="username" tabindex="1" class="form-control" placeholder="Username" value="">
+                                    <div class="alert alert-danger" *ngIf="f.submitted && !username.valid">Username is required</div>
                                 </div>
-                                <div class="form-group">
-                                    <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="">
+                                <br />
+
+                                <div [ngClass]="{ 'has-error': f.submitted && !email.valid }">
+                                    <input type="email" name="email" [(ngModel)]="model.email" #email="ngModel"  id="email" tabindex="1" class="form-control" placeholder="Email Address" value="">
+                                    <div class="alert alert-danger" *ngIf="f.submitted && !email.valid">Email is required</div>
                                 </div>
-                                <div class="form-group">
-                                    <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+                                <br />
+
+                                <div [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+                                    <input type="password" name="password" [(ngModel)]="model.password" #password="ngModel"  id="password" tabindex="2" class="form-control" placeholder="Password">
+                                    <div class="alert alert-danger" *ngIf="f.submitted && !password.valid">Password is required</div>
                                 </div>
-                                <div class="form-group">
-                                    <input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password">
+                                <br />
+
+                                <div [ngClass]="{ 'has-error': f.submitted && !confirm-password.valid }">
+                                    <input type="password" name="confirm-password" [(ngModel)]="model.confirmpassword" #confirmpassword="ngModel"  id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password">
+                                    <div class="alert alert-danger" *ngIf="f.submitted && !confirm-password.valid">Password must match</div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-sm-6 col-sm-offset-3">
-                                            <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now">
-                                        </div>
+                                <br />
+
+                                <div class="row">
+                                    <div class="col">
+                                        <button class="form-control btn btn-register" type="submit" >Register Now</button>
                                     </div>
                                 </div>
                             </form>
