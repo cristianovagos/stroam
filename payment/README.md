@@ -67,6 +67,6 @@ python app.py
 
 ## How it works
 
-![alt text](http://code.ua.pt/projects/es1819-stroam/repository/revisions/878587cfe77a45370a047b9111ce3ae4530b696b/raw/payment/payment/static/images/strongpay_payment.png)
+![alt text](http://code.ua.pt/projects/es1819-stroam/repository/revisions/fb91fa2acbf7cd7709990e52f526e0c8e535fd2c/raw/payment/static/images/strongpay_payment.png)
 
 # **API documentation is available at /docs**
