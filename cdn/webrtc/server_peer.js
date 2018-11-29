@@ -1,17 +1,13 @@
 
+var SERVER_HOST = "localhost"
+var SERVER_PORT = 1935;
+
 var peerConnectionConfig = {
   'iceServers': [
     {'urls': 'stun:stun.stunprotocol.org:3478'},
     {'urls': 'stun:stun.l.google.com:19302'},
   ]
 };
-
-/*
-const offerOptions = {
-  offerToReceiveAudio: 1,
-  offerToReceiveVideo: 1
-};
-*/
 
 var constraints = {
     video: true,
@@ -23,6 +19,8 @@ var peerConnection;
 var localStream;
 var uuid = 0;
 var peer_uuid;
+
+var receiveChannel;
 
 var video;
 var recording_video;
@@ -40,7 +38,7 @@ function pageReady(){
 	video = document.getElementById('sourceVideoPlayer');
 	recording_video = document.getElementById('recordingVideoPlayer');
 
-	serverConnection = new WebSocket("ws://localhost:1935");
+	serverConnection = new WebSocket("ws://"+SERVER_HOST+":"+SERVER_PORT);
 
 	serverConnection.onopen = function(evt) {
     	console.log("Socket open");
@@ -79,6 +77,7 @@ function processMessage(msg){
 			if(peerConnection === undefined){ // if no peer connection created 
 				peerConnection = new RTCPeerConnection(constraints); // create new peer connection
 				peerConnection.onicecandidate = gotIceCandidate;
+				peerConnection.ondatachannel = receiveChannelCallback;
 			}
 			peerConnection.setRemoteDescription(new RTCSessionDescription(msg.sdp)).then(function() {
 				if(msg.sdp.type == 'offer') { // Only create answers in response to offers
@@ -119,18 +118,27 @@ function loadPlayerSrc(movie_id){
 }
 
 function newCaptureStream(){
-	const capture = video.mozCaptureStream();
+
+	var capture;
+
+	if(isFirefox)	capture = video.mozCaptureStream();
+	//else if (isChrome) capture = video.captureStream();
+	//else{ console.log("Web browser does not support media capture"); return; };
 
 	console.log(capture);
 
-	recording_video.srcObject = capture;
+	// recording_video.srcObject = capture;
 	localStream = capture;
 	video.play();
 }
 
 function addTracks(){
 	console.log(localStream);
-	localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+	if(isFirefox)
+		localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+	else
+		peerConnection.addStream(localStream);
+	
 	console.log("Tracks added!");
 }
 
@@ -161,6 +169,8 @@ function captureStream(){
 	*/
 
 	video.addEventListener('play', () => {
+
+		cosole.log("<<<< play Event listener");
 
 		var capture;
 
@@ -199,28 +209,6 @@ function gotIceCandidate(event) {
 	}
 }
 
-// TODO: Not sure if needed here
-
-/*
-pc.setRemoteDescription(desc).then(function () {
-  return navigator.mediaDevices.getUserMedia(mediaConstraints);
-})
-.then(function(stream) {
-  previewElement.srcObject = stream;
-
-  stream.getTracks().forEach(track => pc.addTrack(track, stream));
-})
-*/
-
-	// RTCPeerConnection.addStream(capture);
-		
-	//rtpSender = RTCPeerConnection.addTrack(track, stream...);
-
-
-	// establish capture as source stream
-	// send stream to client peer 
-
-
 function createdDescription(description) {
 	console.log('got description');
 	peerConnection.setLocalDescription(description).then(function() {
@@ -234,8 +222,34 @@ function errorHandler(error) {
   console.log(error);
 }
 
-
 function newTrack(event){
 	console.log(event);
 	console.log("new track added!");
+}
+
+function receiveChannelCallback(event) {
+    receiveChannel = event.channel;
+    receiveChannel.onmessage = handleReceiveMessage;
+    receiveChannel.onopen = handleReceiveChannelStatusChange;
+    receiveChannel.onclose = handleReceiveChannelStatusChange;
+}
+
+function handleReceiveMessage(event) {
+
+	switch(event.data){
+		case "pause":
+			console.log(">>> Client requested pause!");
+			video.pause();
+			break;
+		case "resume":
+			console.log(">>> Client requested play!");
+			video.play();
+			break;
+	}
+}
+
+function handleReceiveChannelStatusChange(event){
+	if (receiveChannel) {
+		console.log(">>>>>> Receive channel's status has changed to " + receiveChannel.readyState);
+	}
 }

@@ -6,15 +6,6 @@
 
 	<title>Client</title>
 
-	<link rel="stylesheet" href="css/styles.css?v=1.0">
-
-	<style>
-	    video {
-	        width: 800px;
-	        height:600px;
-	    }
-	</style>
-
 </head>
 
 <body>
@@ -27,11 +18,15 @@
 	</div>
 
 	<div id="playerDiv" align="center" style="display: none;">
-        <video id="player" controls style="width:40%;"></video> 
-    	<!-- <video id="remoteVideo" autoplay style="width:40%;"></video>> -->
+        <video id="player" crossorigin="anonymous" controls style="width:50%;">
+        	<!-- TODO: Remote fetching of movie subtitle tracks --> 
+        	<!--
+        	<track id='track_id' kind="subtitles" srclang="en" src="http://localhost:1935/movieSubtitles 1_eng.vtt" label="en" default>
+			-->
+        </video> 
     </div>
 
-  <script src="./client.js"> </script>
+  <script src="http://localhost:1935/client.js"> </script>
 
 </body>
 </html>

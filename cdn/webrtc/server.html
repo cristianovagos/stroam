@@ -6,23 +6,18 @@
 
 	<title>Server side</title>
 
-	<link rel="stylesheet" href="css/styles.css?v=1.0">
-
 	<script src="./server_peer.js"></script>
-
-	<style>
-	    video {
-	        width: 800px;
-	        height:600px;
-	    }
-	</style>
 
 </head>
 
 <body onload="pageReady()">
 	<div id="player_div" align="center">
-        <video controls muted type="video/mp4" id="sourceVideoPlayer">Video stream not available.</video> 
-        <video id="recordingVideoPlayer" playsinline autoplay>Video stream not available.</video> 
+        <video controls muted type="video/mp4" id="sourceVideoPlayer">
+        	Video stream not available
+        	<!-- <track id="track_eng" kind="subtitles" srclang="en" src="./movies/1_eng.vtt" label="en" default> -->
+        	
+        </video> 
+        <!-- <video id="recordingVideoPlayer" playsinline autoplay>Video stream not available.</video> -->
     </div>
 
 </body>

@@ -1,12 +1,13 @@
-//var express = require('express');
-//var app = express();
 var opn = require('opn');
 var fs = require("fs");
 var WebSocket = require('ws');
 const http = require('http');
+var ffmpeg = require('fluent-ffmpeg');
+const phantom = require('phantom');
 var WebSocketServer = WebSocket.Server;
 
 const HTTP_PORT = 1935;
+const HTTP_HOST = '0.0.0.0';
 
 var usersID = new Set();
 
@@ -30,7 +31,7 @@ const handleRequest = function(request, response) {
 			fs.stat(movie_src, function(error, stats) {
 				if(error){
 					if(error.code==='ENOENT'){
-						console.log("A");
+						console.log("Error: File " + movie_src + " not found!");
 						response.setHeader("Content-Type", "application/json");
 						response.setHeader("Access-Control-Allow-Origin", "*");
 						response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -49,7 +50,6 @@ const handleRequest = function(request, response) {
 	        		response.end(JSON.stringify({"response": "Movie found"}));
 	        		loadServerPeerMovie(uuid, movie_id);
 	        		return response;
-	        		//return response;
 	        	}else{
 	        		console.log("User already has an open session with the server!");
 	        		response.writeHead(404);
@@ -61,19 +61,135 @@ const handleRequest = function(request, response) {
 	    });
 	}
 	
-	/*
-	if(request.url === '/') {
-		response.writeHead(200, {'Content-Type': 'text/html'});
-		response.end(fs.readFileSync('client/index.html'));
-	} else if(request.url === '/webrtc.js') {
-		response.writeHead(200, {'Content-Type': 'application/javascript'});
-		response.end(fs.readFileSync('client/webrtc.js'));
+	if(request.method === "GET"){
+
+		if(request.url === "/client.js"){
+			response = setResponseHeaders(response);
+			response.end(fs.readFileSync('./client.js'));
+			return response;
+		}
+
+		/* Returns a list containing all of the movie available at the cdn */
+		else if(request.url === '/movieList/'){ 
+			movieList = []
+			fs.readdir(__dirname + "/movies/", function(err, items) {
+			    //console.log(items);	 
+			    for (var i=0; i<items.length; i++) {
+			    	if(items[i].split('.')[1] === 'mp4'){
+			    		console.log(items[i]);
+			        	movieList.push(items[i]);
+			        }
+			    }
+				console.log(movieList);
+				response = setResponseHeaders(response);
+				response.end(JSON.stringify({"Movie_List:":  movieList}));
+				return response;
+			});
+		}
+
+		/* Returns a dictionary contaning the complete metadata of the movie file */
+			else if(request.url.startsWith('/movieInfo/')){
+			var seg_url = request.url.split('/');
+			var movie_id = seg_url[2];	
+			ffmpeg.ffprobe( __dirname + "/movies/" + movie_id + ".mp4" ,function(err, metadata) {
+				response = setResponseHeaders(response);
+				response.end(JSON.stringify({"Movie_Metadata":  metadata}));
+				return response;
+			});
+		}
+
+		/* Results a list containing the languages of the available subtitles for the requested movie */
+		else if(request.url.startsWith('/subtitleInfo/')){
+			var seg_url = request.url.split('/');
+			var subtitle_id = seg_url[2];
+			subtitleList =  [];
+			fs.readdir(__dirname + "/movies/", function(err, items) {	 
+			    for (var i=0; i<items.length; i++) {
+			    	seg_name = items[i].split('.')
+			    	if((seg_name[1] === 'vtt') && ((seg_name[0]).split("_")[0] === subtitle_id)){
+			        	subtitleList.push(seg_name[0].split("_")[1]);
+			        }
+			    }
+			    console.log(subtitleList);
+				response = setResponseHeaders(response);
+				response.end(JSON.stringify({"Subtitle_list":  subtitleList}));
+				return response;
+			});			
+		}
+
+		/* Subtitles section */ 
+		/* Not operational, client browser never fetches (GET) the subtitles file :/ */
+		else if(request.url.startsWith('/subtitles/')){
+			var seg_url = request.url.split('/');
+			var subtitles_src = __dirname + "/movies/" + seg_url[2];		
+			fs.stat(subtitles_src, function(error, stats){
+				if(error){
+					if(error.code==='ENOENT'){
+						response.setHeader("Content-Type", "application/json");
+						response.setHeader("Access-Control-Allow-Origin", "*");
+						response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+						response.setHeader("Status", 404); // file not found
+						response.end(JSON.stringify({"response": "Movie not found"}));
+						console.log("ERROR");
+						return response;
+					}
+				}else{
+					response.setHeader("Access-Control-Allow-Origin", "*");
+					response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+					response = setResponseHeaders(response, "text/vtt");
+					response.end(fs.readFileSync(subtitles_src));
+					return response;
+				}
+			});			
+
+		}
+		else{
+			response.setHeader("Status", 404);
+			response.end();
+			return response;		
+		}
+
+
+
+
+		/*
+		console.log(request.url.split('/'));
+		var seg_url = request.url.split('/')[1].split('%20');
+
+		console.log(seg_url);
+		
+		if(seg_url[0] === 'subtitles'){
+
+			var subtitles_src = __dirname + "/movies/" + seg_url[1];
+			
+			fs.stat(subtitles_src, function(error, stats){
+				if(error){
+					if(error.code==='ENOENT'){
+						response.setHeader("Content-Type", "application/json");
+						response.setHeader("Access-Control-Allow-Origin", "*");
+						response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+						response.setHeader("Status", 404); // file not found
+						response.end(JSON.stringify({"response": "Movie not found"}));
+						console.log("ERROR");
+						return response;
+					}
+				}else{
+					response.setHeader("Access-Control-Allow-Origin", "*");
+					response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+					response = setResponseHeaders(response, "text/vtt");
+					response.end(fs.readFileSync(subtitles_src));
+					return response;
+				}
+			});
+		}
+		*/
+		
 	}
-	*/
+
 };
 
 const httpsServer = http.createServer(handleRequest);
-httpsServer.listen(HTTP_PORT, '0.0.0.0');
+httpsServer.listen(HTTP_PORT, HTTP_HOST);
 
 // Create a server for handling websocket calls
 const wss = new WebSocketServer({server: httpsServer});
@@ -131,7 +247,7 @@ wss.on("connection", (ws) => {
 			}
 			
 		}else{
-			console.log("Message not of SDP type. Aborting...");
+			console.log("Message not of SDP type. Ignoring...");
 			return;
 		}
 	});
@@ -142,8 +258,15 @@ console.log('Server running. https://localhost:' + HTTP_PORT);
 loadServerPeer();
 
 function loadServerPeer(){
+	/* Old implementation of opening server peer */
 	console.log("Opening server peer web page");
-	opn("./server.html");
+	opn("./server.html");	
+	/*
+	console.log("Opening firefox in headless mode...");
+	var exec = require('child_process').exec;
+	function puts(error, stdout, stderr) { console.log(stdout) }
+	exec("firefox server.html", puts);	
+	*/
 }
 
 function loadServerPeerMovie(uuid, movie_id){
@@ -176,6 +299,17 @@ function onExit(){
 
 }
 
+function setResponseHeaders(response, content_type){
+	if(content_type === undefined)
+		response.setHeader("Content-Type", "application/json");
+	else
+		response.setHeader("Content-Type", content_type);
+	// set cross origin headers
+	response.setHeader("Access-Control-Allow-Origin", "*");
+	response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	return response;
+}
+
 function closeServerPeer(){
 	if(usersID.has(0)){
 		console.log("Closing server peer page...");
@@ -184,27 +318,3 @@ function closeServerPeer(){
 }
 
 onExit();
-
-/*
-function renderServerPeerWebpage(movie_id){
-
-	// delete old html page if existent
-	if(fs.existsSync( __dirname +"/"+movie_id+".html")){
-		fs.unlink( __dirname +"/"+movie_id+".html", function(err){
-			if(err) throw err;
-			console.log("Old page removed");
-		});
-	}
-	
-	fs.appendFile(movie_id+".js",
-		"",
-
-	function (err){
-		if(err) throw err;
-		console.log("Page created successfuly!");
-	});
-
-
-	opn("./"+movie_id+".html");
-}
-*/
