@@ -1099,12 +1099,14 @@ def pay():
 
     # Getting row from database of the checkout
     checkout = db.get('CHECKOUT', 'id', args['checkout_token']);
-    items = db.get_all('ITEM', 'checkout', args['checkout_token']);
-    merchant = db.get('MERCHANT', 'id', checkout['merchant'])
 
     # Checking if checkout is valid
     if not checkout:
         return redirect(url_for('index', error = "invalid_checkout"))
+
+    # Get items and merchant
+    items = db.get_all('ITEM', 'checkout', args['checkout_token']);
+    merchant = db.get('MERCHANT', 'id', checkout['merchant'])
 
     # Checking if checkout was already paid
     if checkout['status'] != "CREATED":
