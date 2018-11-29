@@ -11,12 +11,11 @@ public class Oauth {
     @Id
     private String code;
     private String user;
-    private String client;
+    
 
-    public Oauth(String client, String user) {
+    public Oauth(String username) {
         generateCode();
-        this.user = user;
-        this.client = client;
+        this.user = username;
     }
 
     public void generateCode() {
@@ -41,9 +40,5 @@ public class Oauth {
 
     public String getUser() {
         return this.user;
-    }
-
-    public String getClient() {
-        return this.client;
     }
 }

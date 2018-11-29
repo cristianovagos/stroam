@@ -11,6 +11,7 @@ import es.stroam.authserver.model.OauthLogin;
 import es.stroam.authserver.model.PreOauthLogin;
 import es.stroam.authserver.model.User;
 import es.stroam.authserver.reposiroties.ClientRepo;
+import es.stroam.authserver.reposiroties.OauthRepo;
 import es.stroam.authserver.reposiroties.UserRepo;
 import es.stroam.authserver.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,9 @@ public class OauthController {
     
     @Autowired
     private UserRepo userRepository;
+    
+    @Autowired
+    private OauthRepo oauthRepository;
     
     @PostMapping(path="/login")
     public ResponseEntity<String> create (@RequestBody PreOauthLogin login) {
@@ -65,7 +69,7 @@ public class OauthController {
         // If User exist, generate code
         for(User u : userRepository.findAll()) {
             if (u.getName().equals(login.getUsername()) && u.getPassword().equals(login.getPassword())) {
-                oauth = new Oauth(login.getClientid(), login.getUsername());
+                oauth = new Oauth(login.getUsername());
                 return new ResponseEntity<>( oauth.getCodeJSON(), HttpStatus.OK);       // return the code
             }
         }
@@ -76,16 +80,34 @@ public class OauthController {
     public ResponseEntity<String> create (@RequestBody OauthLogin login) {
         
         TokenService ts;
+        String response;
+        int id = 0;
+        String name = null;
+        String token = null;
         
         // Client exist ?
         for (Client c : clientRepository.findAll()) {
             if (c.getClientId().equals(login.getClientId()) && c.getClientSecret().equals(login.getClientSecret())) {
-                // && code is valid
-                ts = new TokenService();
-                return new ResponseEntity<>(ts.create(), HttpStatus.OK);
+                
+                for (Oauth auth : oauthRepository.findAll()) {
+                    if (auth.getCode().equals(login.getCode())) {
+                        ts = new TokenService();
+                        token = ts.create();
+                        name = auth.getUser();
+                        
+                        for(User u :userRepository.findAll()) {
+                            if (u.getName().equals(name)) {
+                                id = u.getId();
+                                u.setToken(token);
+                                userRepository.save(u);
+                            }
+                        }
+                    }
+                }
+                response = "{\"id\":\""+id+"\", \"name\":\""+name+"\", \"token\":\""+token+"\"}";
+                return new ResponseEntity<>(response, HttpStatus.OK);
             }
         }
-
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
     

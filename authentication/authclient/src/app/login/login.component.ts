@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
         //sessionStorage.setItem('token', '');
         this.activatedRoute.queryParams.subscribe(params => {
             this.client_id = params['id'];
-            this.urlRedirect = params['redirect'];
+            this.urlRedirect = params['url'];
             //this.token = params['token'];
             console.log(this.client_id);
             console.log(this.urlRedirect);

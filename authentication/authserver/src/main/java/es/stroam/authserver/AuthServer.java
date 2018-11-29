@@ -45,8 +45,8 @@ public class AuthServer {
     @Bean
     public CommandLineRunner addclient(ClientRepo clientrepo) {
 		return (args) -> {
-            clientrepo.save(new Client("es-stroam-test", "super_screct001"));
-            clientrepo.save(new Client("es-stroam-frontend", "super_screct001"));
+            clientrepo.save(new Client("es-stroam-test", "super_secret001"));
+            clientrepo.save(new Client("es-stroam-frontend", "super_secret001"));
             
             // fetch all customers
 			log.info("Client added:");
