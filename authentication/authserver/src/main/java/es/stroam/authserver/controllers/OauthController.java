@@ -70,6 +70,7 @@ public class OauthController {
         for(User u : userRepository.findAll()) {
             if (u.getName().equals(login.getUsername()) && u.getPassword().equals(login.getPassword())) {
                 oauth = new Oauth(login.getUsername());
+                oauthRepository.save(oauth);
                 return new ResponseEntity<>( oauth.getCodeJSON(), HttpStatus.OK);       // return the code
             }
         }
@@ -88,7 +89,6 @@ public class OauthController {
         // Client exist ?
         for (Client c : clientRepository.findAll()) {
             if (c.getClientId().equals(login.getClientId()) && c.getClientSecret().equals(login.getClientSecret())) {
-                
                 for (Oauth auth : oauthRepository.findAll()) {
                     if (auth.getCode().equals(login.getCode())) {
                         ts = new TokenService();

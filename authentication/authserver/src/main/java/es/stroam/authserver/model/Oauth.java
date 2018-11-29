@@ -12,6 +12,7 @@ public class Oauth {
     private String code;
     private String user;
     
+    public Oauth () {}
 
     public Oauth(String username) {
         generateCode();

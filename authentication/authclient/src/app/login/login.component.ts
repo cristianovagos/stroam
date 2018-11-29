@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
         //sessionStorage.setItem('token', '');
         this.activatedRoute.queryParams.subscribe(params => {
             this.client_id = params['id'];
-            this.urlRedirect = params['url'];
+            this.urlRedirect = atob(params['url']);
             //this.token = params['token'];
             console.log(this.client_id);
             console.log(this.urlRedirect);
@@ -88,19 +88,21 @@ export class LoginComponent implements OnInit {
             clientid: this.client_id
         }).subscribe( 
             resp => {
-                console.log(resp) // code
+                console.log(resp.code) // code
 
                 // send code to redirect url
-                /* this.http.post<any>(this.urlRedirect, {
-                    code: ""
+                this.http.post<any>(this.urlRedirect, {
+                    'code': resp.code
                 }).subscribe(
                     resp => {
                         console.log(resp);
+                        
                     },
                     err => {
-                        console.log(err.error.status, err.error.error);
+                        console.error(err.error.status, err.error.error);
+                        this.document.location.href = this.urlRedirect;
                     }
-                ); */
+                );
             },
             err => {
                 console.log(err.error.status, err.error.error);

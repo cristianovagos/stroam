@@ -1,9 +1,14 @@
 package es.stroam.authserver.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class OauthLogin {
 
+    @JsonProperty
     private String code;
+    @JsonProperty
     private String client_id;
+    @JsonProperty
     private String client_secret;
 
     public OauthLogin() {}
