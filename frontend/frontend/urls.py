@@ -34,7 +34,7 @@ urlpatterns = [
     path('userpanel/', views.userPanel, name='user-panel'),
     path('my-movies/', views.myMovies, name='my-movies'),
     path('deleteAll', views.deleteAll, name='deleteAll'),
-    path('auth/', views.makeauth, name='makeauth'),
+    path('auth/<slug:url>', views.makeauth, name='makeauth'),
     path('logout/', views.logout, name='logout'),
     path('push/', views.pushtest, name='push'),
     path('api/', include('stroam.api.urls')),

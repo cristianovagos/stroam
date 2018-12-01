@@ -9,7 +9,7 @@ from urllib.request import urlopen
 from ..models import Purchase, Purchase_Production
 
 LOGGER = logging.getLogger(__name__)
-PAYMENT_SERVICE_URL = "http://payment:5000" if settings.USE_DOCKER else "http://localhost:5000"
+PAYMENT_SERVICE_URL = "http://192.168.85.71" if settings.USE_DOCKER else "http://localhost:5000"
 PAYMENT_SERVICE_API_URL = "http://payment:5000/api/" if settings.USE_DOCKER else "http://localhost:5000/api/"
 
 def createCheckout(price, returnURL, cancelURL, items, currency="EUR", merchant="tokensample123"):
@@ -48,7 +48,10 @@ def createCheckout(price, returnURL, cancelURL, items, currency="EUR", merchant=
             if product['season'] is not None:
                 purchaseInfo.season_num = int(product['season'])
             purchaseInfo.purchase_id.add(p)
-        return redirect(PAYMENT_SERVICE_URL + "/pay?checkout_token=" + checkoutToken)
+        res = redirect(PAYMENT_SERVICE_URL + "/pay?checkout_token=" + checkoutToken)
+        # res.set_cookie('Host', 'pay.stroam.com')
+        res['Host'] = 'pay.stroam.com'
+        return res
     else:
         LOGGER.error(str(responseObj))
         raise Http404("Bad Request:\n\n" + str(responseObj))

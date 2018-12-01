@@ -18,11 +18,11 @@ This section will be updated as soon as development goes on.
 * Added a user panel, on which one can see their orders (history, etc), and let resume payments and cancel orders
 * Added a personal library page, which one can see straight away the purchased productions
 * Added notification support (Push notifications for now)
+* Added user authentication (Sign-in/Register, store user data, etc)
 * Already 'Dockerized' (read the root project README)
 
 ## TODO
 This section will (_also_) be updated as soon as development goes on.
-* Add user authentication (Sign-in/Register, store user data, etc) (_needs Auth service_)
 * _More_ error handling (_to be found during tests_)
 
 ### How to run

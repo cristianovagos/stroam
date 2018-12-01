@@ -70,6 +70,6 @@ $(document).ready(function () {
 });
 
 function onWatchMovieClick() {
-   streamSetup();
+   playerSetup();
    $("#watchMovie").modal('show');
 }
