@@ -8,11 +8,11 @@ This service aims to process and forward the various notifications to all its us
 Below are specified all the necessary requirements for the correct use of the service. These requirements must be fulfilled by users in order to ensure a satisfactory use of the service.
 
 The service is distributed in topics where users can subscribe to receive all the notifications published in them. These topics must respect the following requirements:
-* All topics of the service must start with **/notTheService**, otherwise the messages will not be processed by the service.
-* Topics with the hierarchy **/email** and **/phone** (hereinafter referred as &quot;service topics&quot;) are reserved for this type of notifications and should be only used for this purpose, otherwise may produce incorrect or unexpected service responses.
-* With the exception of the service topics, all the other topics can carry any kind of data up to 250 Megabytes and do not need to respect any struture or format.
-* With the exception of the service topics, all the other user topics will not receive any type of result about the request/operation made, and it is up to the user implement this type of guarantees over the existing service.
-* The topics should not contain spaces or other null characters, punctuation, accentuation or special characters of any kind. To learn more about using the topics correctly read the information in the &quot;Topics/Subscriptions&quot; chapter in: [https://mosquitto.org/man/mqtt-7.html](https://mosquitto.org/man/mqtt-7.html).
+- All topics of the service must start with **/notTheService**, otherwise the messages will not be processed by the service.
+- Topics with the hierarchy **/email** and **/phone** (hereinafter referred as &quot;service topics&quot;) are reserved for this type of notifications and should be only used for this purpose, otherwise may produce incorrect or unexpected service responses.
+- With the exception of the service topics, all the other topics can carry any kind of data up to 250 Megabytes and do not need to respect any struture or format.
+- With the exception of the service topics, all the other user topics will not receive any type of result about the request/operation made, and it is up to the user implement this type of guarantees over the existing service.
+- The topics should not contain spaces or other null characters, punctuation, accentuation or special characters of any kind. To learn more about using the topics correctly read the information in the &quot;Topics/Subscriptions&quot; chapter in: [https://mosquitto.org/man/mqtt-7.html](https://mosquitto.org/man/mqtt-7.html).
 
 ### Send email notification
 It is possible to send a notification of type email by publishing on any topic where the hierarchy ends in **/email/&lt;recipient_email address&gt;** where the message must contain fields and data formatted in JSON respecting the all conventions of this language according to the following standards:
