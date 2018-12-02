@@ -77,7 +77,7 @@ services:
     volumes:
       - ./authentication/authclient:/app
     ports:
-      - "3200:4200"
+      - "4200:4200"
 
   payment:
     container_name: payment
@@ -85,8 +85,18 @@ services:
     build: ./payment
     volumes:
       - ./payment:/app
+      - static:/static
     ports:
-       - "5000:5000"
+      - "5000:5000"
+
+  cdn:
+    container_name: cdn
+    restart: always
+    build: ./cdn
+    volumes:
+      - ./cdn/webrtc:/app
+    ports:
+      - "1935:1935"
 
   #notification - notTheService services
   mosquitto:

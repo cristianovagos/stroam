@@ -12,14 +12,16 @@
                     {% endif %}
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">{{ movie.title }}</li>
-                {% if subscribed %}
-                    <li class="btn btn-sm btn-secondary ml-auto fas fa-bell" onclick="subscribeToChannel(this, 1, 'stroam-movie{{ movie.id }}')">
-                        Unubscribe
-                    </li>
-                {% else %}
-                    <li class="btn btn-sm btn-danger ml-auto fas fa-bell" onclick="subscribeToChannel(this, 1, 'stroam-movie{{ movie.id }}')">
-                        Subscribe
-                    </li>
+                {% if isAuthenticated %}
+                    {% if subscribed %}
+                        <li class="btn btn-sm btn-secondary ml-auto fas fa-bell" onclick="subscribeToChannel(this, {{ user_id }}, 'stroam-movie{{ movie.id }}')">
+                            Unsubscribe
+                        </li>
+                    {% else %}
+                        <li class="btn btn-sm btn-danger ml-auto fas fa-bell" onclick="subscribeToChannel(this, {{ user_id }}, 'stroam-movie{{ movie.id }}')">
+                            Subscribe
+                        </li>
+                    {% endif %}
                 {% endif %}
             </ol>
         </nav>
@@ -161,8 +163,8 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div id="playerDiv" style="visibility: hidden">
-                                <video width="100%" controls id="videoPlayer" style="margin-bottom: 30px"></video>
+                            <div id="playerDiv" style="display: none">
+                                <video width="100%" controls id="player" style="margin-bottom: 30px"></video>
                             </div>
                         </div>
                     </div>

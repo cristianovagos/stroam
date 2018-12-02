@@ -3,7 +3,7 @@ var fs = require("fs");
 var WebSocket = require('ws');
 const http = require('http');
 var ffmpeg = require('fluent-ffmpeg');
-const phantom = require('phantom');
+// const phantom = require('phantom');
 var WebSocketServer = WebSocket.Server;
 
 const HTTP_PORT = 1935;
@@ -149,41 +149,6 @@ const handleRequest = function(request, response) {
 			return response;		
 		}
 
-
-
-
-		/*
-		console.log(request.url.split('/'));
-		var seg_url = request.url.split('/')[1].split('%20');
-
-		console.log(seg_url);
-		
-		if(seg_url[0] === 'subtitles'){
-
-			var subtitles_src = __dirname + "/movies/" + seg_url[1];
-			
-			fs.stat(subtitles_src, function(error, stats){
-				if(error){
-					if(error.code==='ENOENT'){
-						response.setHeader("Content-Type", "application/json");
-						response.setHeader("Access-Control-Allow-Origin", "*");
-						response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-						response.setHeader("Status", 404); // file not found
-						response.end(JSON.stringify({"response": "Movie not found"}));
-						console.log("ERROR");
-						return response;
-					}
-				}else{
-					response.setHeader("Access-Control-Allow-Origin", "*");
-					response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-					response = setResponseHeaders(response, "text/vtt");
-					response.end(fs.readFileSync(subtitles_src));
-					return response;
-				}
-			});
-		}
-		*/
-		
 	}
 
 };
@@ -255,7 +220,17 @@ wss.on("connection", (ws) => {
 
 console.log('Server running. https://localhost:' + HTTP_PORT);
 
-loadServerPeer();
+if(process.argv[2] == "--headless")
+	loadServerPeerHeadless();
+else
+	loadServerPeer();
+
+function loadServerPeerHeadless(){
+	console.log("Opening firefox in headless mode...");
+	var exec = require('child_process').exec;
+	function puts(error, stdout, stderr) { console.log(stdout) }
+	exec("firefox server.html --headless", puts);		
+}
 
 function loadServerPeer(){
 	/* Old implementation of opening server peer */

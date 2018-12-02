@@ -12,7 +12,7 @@ document.getElementById("defaultOpen").click();
 function updateData(){
 
   var Http = new XMLHttpRequest();
-  var url='http://127.0.0.1:5000/api/v1/user';
+  var url= window.location.href + 'api/v1/user';
   Http.open("GET", url);
   Http.send();
   Http.onreadystatechange=(e)=>{
@@ -88,7 +88,7 @@ document.getElementById("update-button").onclick = function(){
   var nif = document.getElementById("nif").value;
 
   var Http = new XMLHttpRequest();
-  var url='http://127.0.0.1:5000/api/v1/user/client';
+  var url= window.location.href + 'api/v1/user/client';
   Http.open("PUT", url);
   Http.setRequestHeader("Content-Type", "application/json");
   Http.send(JSON.stringify({ "NAME": name, "NIF": parseInt(nif) }));
@@ -105,7 +105,7 @@ document.getElementById("update-button-merchant").onclick = function(){
   var logo = document.getElementById("logo").value;
 
   var Http = new XMLHttpRequest();
-  var url='http://127.0.0.1:5000/api/v1/user/merchant';
+  var url= window.location.href + 'api/v1/user/merchant';
   Http.open("PUT", url);
   Http.setRequestHeader("Content-Type", "application/json");
   Http.send(JSON.stringify({ "NAME": name, "DOMAIN": domain, "LOGO": logo }));
@@ -140,7 +140,7 @@ document.getElementById("update-ba").onclick = function(){
   var phone = document.getElementsByName("phone")[0].value;
 
   var Http = new XMLHttpRequest();
-  var url='http://127.0.0.1:5000/api/v1/user/billing_address';
+  var url= window.location.href + 'api/v1/user/billing_address';
   Http.open("PUT", url);
   Http.setRequestHeader("Content-Type", "application/json");
   Http.send(JSON.stringify({ "ID": selected_ba, "FIRST_NAME": first_name,
@@ -163,7 +163,7 @@ document.getElementById("update-ba").onclick = function(){
 
 document.getElementById("become-merchant").onclick = function(){
   var Http = new XMLHttpRequest();
-  var url='http://127.0.0.1:5000/api/v1/user/become_merchant';
+  var url= window.location.href + 'api/v1/user/become_merchant';
   Http.open("GET", url);
   Http.send();
   Http.onreadystatechange=(e)=>{if (Http.readyState == 4 && Http.status == 200){ updateData(); document.getElementById("merchantOpen").click(); }  }
@@ -179,7 +179,7 @@ document.getElementById("become-merchant").onclick = function(){
 
 document.getElementById("delete-ba").onclick = function(){
   var Http = new XMLHttpRequest();
-  var url='http://127.0.0.1:5000/api/v1/user/billing_address';
+  var url= window.location.href + 'api/v1/user/billing_address';
   Http.open("DELETE", url);
   Http.setRequestHeader("Content-Type", "application/json");
   Http.send(JSON.stringify({ "ID": selected_ba }));
@@ -191,7 +191,7 @@ document.getElementById("delete-ba").onclick = function(){
 
 document.getElementById("delete-cc").onclick = function(){
   var Http = new XMLHttpRequest();
-  var url='http://127.0.0.1:5000/api/v1/user/credit_card';
+  var url= window.location.href + 'api/v1/user/credit_card';
   Http.open("DELETE", url);
   Http.setRequestHeader("Content-Type", "application/json");
   Http.send(JSON.stringify({ "ID": selected_cc }));

@@ -16,6 +16,7 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
     url: string;
     sec: any;
     token: string;
+    session_id: string;
 
     public constructor(
         @Inject(DOCUMENT) private document: any,
@@ -26,6 +27,7 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
     ngOnInit(): void {
         this.user = JSON.parse(this.storage.data).user;
         this.url = atob(JSON.parse(this.storage.data).url);
+        this.session_id = JSON.parse(this.storage.data).session_id;
         this.sec = 3;
     }
 
@@ -46,7 +48,7 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
                 // );
                 // this.document.location.href = this.url + '?id=' + this.user.id.toString();
 
-                this.http.post(this.url, {'user': this.user }, {responseType: 'text'})
+                this.http.post(this.url, {'user': this.user, 'session_id': this.session_id }, {responseType: 'text'})
                 .subscribe( 
                     resp => {
                         this.document.location.href = this.url;
