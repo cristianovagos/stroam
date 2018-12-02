@@ -91,7 +91,8 @@ def homeMovies(request):
         'movies': movies,
         'numCart': request.session.get('cartNumber', 0),
         'subscribed_channels': subscribed_channels,
-        'user': request.session.get('user', None),
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None),
         'thisUrl': resolve(request.path_info).url_name,
     }
     return render(request, 'pages/index.html', tparams)
@@ -115,7 +116,8 @@ def homeSeries(request):
         'movies': movies,
         'numCart': request.session.get('cartNumber', 0),
         'subscribed_channels': subscribed_channels,
-        'user': request.session.get('user', None),
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None),
         'thisUrl': resolve(request.path_info).url_name,
     }
     return render(request, 'pages/index.html', tparams)
@@ -137,7 +139,8 @@ def genreList(request):
         'genres': genres,
         'numCart': request.session.get('cartNumber', 0),
         'subscribed_channels': subscribed_channels,
-        'user': request.session.get('user', None),
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None),
         'thisUrl': resolve(request.path_info).url_name,
     }
     return render(request, 'pages/genre-list.html', tparams)
@@ -166,7 +169,9 @@ def genreMovies(request, genre):
         'numCart': request.session.get('cartNumber', 0),
         'subscribed': notifications.is_user_subscribed(user_id=1, channel_name=('stroam-' + genreName)),
         'subscribed_channels': subscribed_channels,
-        'user': request.session.get('user', None),
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None),
+        'user_id': request.session.get('user_id', None),
         'thisUrl': resolve(request.path_info).url_name,
     }
     return render(request, 'pages/genre.html', tparams)
@@ -230,7 +235,9 @@ def singleMovie(request, id):
             'seasonsPurchased': seasonsPurchased,
             'subscribed': subscribed,
             'subscribed_channels': subscribed_channels,
-            'user': request.session.get('user', None),
+            'isAuthenticated': request.session.get('isAuthenticated', False),
+            'user_id': request.session.get('user_id', None),
+            'username': request.session.get('user_name', None),
             'thisUrl': resolve(request.path_info).url_name,
         }
         return render(request, 'pages/single-movie.html', tparams)
@@ -244,7 +251,9 @@ def singleMovie(request, id):
         'seasonsPurchased': seasonsPurchased,
         'subscribed': subscribed,
         'subscribed_channels': subscribed_channels,
-        'user': request.session.get('user', None),
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'user_id': request.session.get('user_id', None),
+        'username': request.session.get('user_name', None),
         'thisUrl': resolve(request.path_info).url_name,
     }
     return render(request, 'pages/single-movie.html', tparams)
@@ -303,7 +312,7 @@ def shoppingCart(request):
         'numCart': request.session.get('cartNumber', 0),
         'subscribed_channels': subscribed_channels,
         'isAuthenticated': request.session.get('isAuthenticated', False),
-        'user': request.session.get('user', None),
+        'username': request.session.get('user_name', None),
         'thisUrl': resolve(request.path_info).url_name,
     }
     return render(request, 'pages/shopping-cart.html', tparams)
@@ -380,7 +389,8 @@ def checkout(request):
         'totalPrice': totalPrice,
         'cartShowing': False,
         'subscribed_channels': subscribed_channels,
-        'user': request.session.get('user', None),
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None),
         'thisUrl': resolve(request.path_info).url_name,
     }
     return render(request, 'pages/checkout.html', tparams)
@@ -399,7 +409,8 @@ def paymentCompleted(request):
     tparams = {
         'title': MAIN_TITLE + title,
         'subscribed_channels': subscribed_channels,
-        'user': request.session.get('user', None),
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None),
         'thisUrl': resolve(request.path_info).url_name,
     }
     return render(request, 'pages/payment-completed.html', tparams)
@@ -421,7 +432,8 @@ def paymentError(request):
     tparams = {
         'title': MAIN_TITLE + title,
         'subscribed_channels': subscribed_channels,
-        'user': request.session.get('user', None),
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None),
         'thisUrl': resolve(request.path_info).url_name,
     }
     return render(request, 'pages/payment-error.html', tparams)
@@ -489,7 +501,8 @@ def userPanel(request):
         'subscriptionsData': subscriptionsData,
         'subscribed_channels': subscribed_channels,
         'numCart': request.session.get('cartNumber', 0),
-        'user': request.session.get('user', None),
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None),
         'thisUrl': resolve(request.path_info).url_name,
     }
     return render(request, 'pages/user-panel.html', tparams)
@@ -520,7 +533,8 @@ def myMovies(request):
         'movies': movies,
         'subscribed_channels': subscribed_channels,
         'numCart': request.session.get('cartNumber', 0),
-        'user': request.session.get('user', None),
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None),
         'thisUrl': resolve(request.path_info).url_name,
     }
     return render(request, 'pages/my-movies.html', tparams)
@@ -549,7 +563,8 @@ def pushtest(request):
     title = 'Send a push notification'
     tparams = {
         'title': MAIN_TITLE + title,
-        'user': request.session.get('user', None),
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None),
         'thisUrl': resolve(request.path_info).url_name,
     }
     return render(request, 'pages/push.html', tparams)
@@ -565,7 +580,8 @@ def deleteAll(request):
 
     tparams = {
         'title': MAIN_TITLE + title,
-        'user': request.session.get('user', None),
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None),
         'thisUrl': resolve(request.path_info).url_name,
     }
     return render(request, 'pages/delete-all.html', tparams)

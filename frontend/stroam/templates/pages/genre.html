@@ -6,14 +6,16 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'genres' %}">Genres</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{ genreName }}</li>
-                {% if subscribed %}
-                    <li class="btn btn-sm btn-secondary ml-auto fas fa-bell" onclick="subscribeToChannel(this, 1, 'stroam-{{ genreName }}')">
-                        Unubscribe
-                    </li>
-                {% else %}
-                    <li class="btn btn-sm btn-danger ml-auto fas fa-bell" onclick="subscribeToChannel(this, 1, 'stroam-{{ genreName }}')">
-                        Subscribe
-                    </li>
+                {% if isAuthenticated %}
+                    {% if subscribed %}
+                        <li class="btn btn-sm btn-secondary ml-auto fas fa-bell" onclick="subscribeToChannel(this, {{ user_id }}, 'stroam-{{ genreName }}')">
+                            Unubscribe
+                        </li>
+                    {% else %}
+                        <li class="btn btn-sm btn-danger ml-auto fas fa-bell" onclick="subscribeToChannel(this, {{ user_id }}, 'stroam-{{ genreName }}')">
+                            Subscribe
+                        </li>
+                    {% endif %}
                 {% endif %}
             </ol>
         </nav>
