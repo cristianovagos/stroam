@@ -85,8 +85,15 @@ services:
     build: ./payment
     volumes:
       - ./payment:/app
+      - static:/static
     ports:
-       - "5000:5000"
+      - "5000:5000"
+    environment:
+      VIRTUAL_HOST: pay.stroam.com
+      VIRTUAL_PORT: 5000
+    networks: 
+      - nginx-proxy
+      - back
 
   #notification - notTheService services
   mosquitto:
