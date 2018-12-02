@@ -4,7 +4,7 @@ var info = {}
 function updateData(){
 
   var Http = new XMLHttpRequest();
-  var url='http://127.0.0.1:5000/api/v1/user';
+  var url= window.location.href + 'api/v1/user';
   Http.open("GET", url);
   Http.send();
   Http.onreadystatechange=(e)=>{
