@@ -11,6 +11,7 @@ from django.contrib.sessions.backends.db import SessionStore
 from .catalog import production, genre
 from .payment import payment
 from .notifications import notifications
+from .auth import auth
 from .models import *
 from .utils import *
 
@@ -34,7 +35,7 @@ def home(request):
         auth_code = body['code']
         session_id = body['session_id']
         if auth_code:
-            req = requests.post('http://localhost:3000/api/v1/oauth/login/access_token', json={
+            req = requests.post(auth.AUTH_SERVICE_API_URL + 'v1/oauth/login/access_token', json={
                 "client_id": "es-stroam-frontend",
                 "client_secret": "super_secret001",
                 "code": auth_code
@@ -332,7 +333,7 @@ def checkoutCreate(request):
                     })
                     price += p.price
             deleteProductListFromSession(request)
-    return payment.createCheckout(price, request.build_absolute_uri(reverse('checkout')),
+    return payment.createCheckout(request.session.get('user_id', None), price, request.build_absolute_uri(reverse('checkout')),
                                   request.build_absolute_uri(reverse('paymentError')), products)
 
 def checkout(request):
@@ -530,7 +531,7 @@ def pay(request, checkout_token):
 def makeauth(request, url):
     redirUrl = request.build_absolute_uri(reverse(url)).encode("utf-8")
     urlEncoded = base64.b64encode(redirUrl)
-    return redirect('http://localhost:4200?url=' + str(urlEncoded).replace('b\'', '').replace('\'', '') +
+    return redirect(auth.AUTH_SERVICE_URL + '?url=' + str(urlEncoded).replace('b\'', '').replace('\'', '') +
                     '&id=es-stroam-frontend&sess_id=' + request.session.session_key)
 
 def logout(request):

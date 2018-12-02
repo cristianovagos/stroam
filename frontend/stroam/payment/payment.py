@@ -9,10 +9,12 @@ from urllib.request import urlopen
 from ..models import Purchase, Purchase_Production
 
 LOGGER = logging.getLogger(__name__)
-PAYMENT_SERVICE_URL = "http://192.168.85.71" if settings.USE_DOCKER else "http://localhost:5000"
+PAYMENT_SERVICE_URL = "http://engserv-3-aulas.ws.atnog.av.it.pt/pay" if settings.USE_DOCKER else "http://localhost:5000"
 PAYMENT_SERVICE_API_URL = "http://payment:5000/api/" if settings.USE_DOCKER else "http://localhost:5000/api/"
 
-def createCheckout(price, returnURL, cancelURL, items, currency="EUR", merchant="tokensample123"):
+def createCheckout(user_id, price, returnURL, cancelURL, items, currency="EUR", merchant="tokensample123"):
+    if not user_id: return Http404("Bad Request:\n\n" + "User id not valid")
+
     jsonItems = []
     for item in items:
         jsonItems.append({
@@ -40,7 +42,7 @@ def createCheckout(price, returnURL, cancelURL, items, currency="EUR", merchant=
 
     if responseObj and "CHECKOUT_TOKEN" in responseObj:
         checkoutToken = responseObj["CHECKOUT_TOKEN"]
-        p = Purchase(user_id=1, token_payment=checkoutToken)
+        p = Purchase(user_id=user_id, token_payment=checkoutToken)
         p.save()
         for product in items:
             purchaseInfo = Purchase_Production(production_id=int(product['id']))
@@ -48,10 +50,7 @@ def createCheckout(price, returnURL, cancelURL, items, currency="EUR", merchant=
             if product['season'] is not None:
                 purchaseInfo.season_num = int(product['season'])
             purchaseInfo.purchase_id.add(p)
-        res = redirect(PAYMENT_SERVICE_URL + "/pay?checkout_token=" + checkoutToken)
-        # res.set_cookie('Host', 'pay.stroam.com')
-        res['Host'] = 'pay.stroam.com'
-        return res
+        return redirect(PAYMENT_SERVICE_URL + "/pay?checkout_token=" + checkoutToken)
     else:
         LOGGER.error(str(responseObj))
         raise Http404("Bad Request:\n\n" + str(responseObj))
