@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
     urlRedirect: string;
     token: string;
     client_id: string;
-
+    session_id: string;
 
     constructor(
         @Inject(DOCUMENT) private document: any,
@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
         this.activatedRoute.queryParams.subscribe(params => {
             this.client_id = params['id'];
             this.urlRedirect = atob(params['url']);
+            this.session_id = params['sess_id'];
             //this.token = params['token'];
             console.log(this.client_id);
             console.log(this.urlRedirect);
@@ -92,7 +93,8 @@ export class LoginComponent implements OnInit {
 
                 // send code to redirect url
                 this.http.post<any>(this.urlRedirect, {
-                    'code': resp.code
+                    'code': resp.code,
+                    'session_id': this.session_id
                 }).subscribe(
                     resp => {
                         console.log(resp);
