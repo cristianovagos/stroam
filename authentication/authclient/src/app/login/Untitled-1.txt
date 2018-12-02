@@ -1,0 +1,10 @@
+Frontend
+
+Login com custom OAuth
+http://localhost:4200/login?url=d3d3Lmdvb2dsZS5jb20%3D&id=es-stroam-frontend
+
+Login com Google Auth
+
+
+Gestão da conta
+http://localhost:4200/manager

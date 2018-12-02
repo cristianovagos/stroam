@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="row">
+        <div class="panel-body">
+
+            <div class="row">
+                <input type="text" name="username" [(ngModel)]="model.username" #username="ngModel" required id="username" tabindex="1" class="form-control" placeholder="Username" value="">
+            </div>
+            <div class="row">
+                    <input type="text" name="username" [(ngModel)]="model.username" #username="ngModel" required id="username" tabindex="1" class="form-control" placeholder="Email" value="">
+            </div>
+            <div class="row">
+                <div class="col">
+                    <input type="password" name="oldpassword" [(ngModel)]="model.password" #password="ngModel" required id="password" tabindex="2" class="form-control" placeholder="Old Password">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <input type="password" name="newpassword" [(ngModel)]="model.password" #password="ngModel" required id="password" tabindex="2" class="form-control" placeholder="New Password">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <input type="password" name="confnewpassword" [(ngModel)]="model.password" #password="ngModel" required id="password" tabindex="2" class="form-control" placeholder="Confirm New Password">
+                </div>
+            </div>
+            <div class="row">
+                <button class="form-control btn btn-register" type="submit" >Update</button>
+            </div>
+            <div class="row">
+                <button class="form-control btn btn-register" type="submit" >Active Two Factor Authenticator</button>
+            </div>
+            
+        </div>
+    </div>
+</div>

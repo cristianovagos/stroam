@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { ManagerComponent } from './manager/manager.component';
 import { StorageData } from './models/storage.model';
 
 @NgModule({
@@ -17,7 +18,8 @@ import { StorageData } from './models/storage.model';
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    ManagerComponent
   ],
   imports: [
     BrowserModule,

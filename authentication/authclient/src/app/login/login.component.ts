@@ -96,7 +96,6 @@ export class LoginComponent implements OnInit {
                 }).subscribe(
                     resp => {
                         console.log(resp);
-                        
                     },
                     err => {
                         console.error(err.error.status, err.error.error);
