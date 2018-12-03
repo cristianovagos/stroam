@@ -9,13 +9,13 @@ import java.io.*;
 public class Main {
 
     static {
-        /*try {
+        try {
             PrintStream errFilePrintStream = new PrintStream(
-                    new FileOutputStream("./systemErr.txt", true));
+                    new FileOutputStream("./notTheServiceLog.txt", true));
             System.setErr(errFilePrintStream);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }*/ //TODO: nao usar no desenvolvimento
+        } //TODO: nao usar no desenvolvimento
     }
 
     public static void main(String[] args) {
@@ -65,5 +65,4 @@ public class Main {
             serverStartException.printStackTrace(); //TODO: debug
         }
     }
-
 }
