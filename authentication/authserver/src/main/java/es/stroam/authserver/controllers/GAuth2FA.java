@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -29,7 +30,7 @@ public class GAuth2FA {
     private UserRepo userRepository;
     
     @GetMapping(path="active/{user}")
-    public ResponseEntity<String> active(@RequestParam("user") String name) {
+    public ResponseEntity<String> active(@PathVariable("user") String name) {
         
         GoogleAuthenticator gAuth;
         GoogleAuthenticatorKey gAuthKey;
@@ -41,15 +42,14 @@ public class GAuth2FA {
                 u.setGauthKey2fa(gAuthKey.getKey());
                 u.setGauth2faActive(true);
                 userRepository.save(u);
-                return new ResponseEntity<>(u.getGauthKey2fa() ,HttpStatus.OK);
+                return new ResponseEntity<>(u.getGauthKey2faJSON() ,HttpStatus.OK);
             }
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     
     @GetMapping(path="confrim/{user}/{code}")
-    public ResponseEntity<String> condirm(@RequestParam("user") String name,
-            @RequestParam("code") Integer code) {
+    public ResponseEntity<String> condirm(@PathVariable("user") String name, @PathVariable("code") String code) {
         
         GoogleAuthenticator gAuth;
         GoogleAuthenticatorKey gAuthKey;
@@ -58,11 +58,11 @@ public class GAuth2FA {
             if (u.getName().equals(name)) { 
                 gAuth = new GoogleAuthenticator();
                 gAuthKey = gAuth.createCredentials();
-                if (gAuth.authorize(u.getGauthKey2fa(), code)) {
-                    return new ResponseEntity<>("success", HttpStatus.OK);
+                if (gAuth.authorize(u.getGauthKey2fa(), Integer.parseInt(code) )) {
+                    return new ResponseEntity<>("{\"code\":\"success\"}", HttpStatus.OK);
                 }
             }
         }
-        return new ResponseEntity<>("fail", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("{\"code\":\"fail\"}", HttpStatus.OK);
     }
 }

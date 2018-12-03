@@ -98,6 +98,7 @@ export class LoginComponent implements OnInit {
                 }).subscribe(
                     resp => {
                         console.log(resp);
+                        this.document.location.href = this.urlRedirect;
                     },
                     err => {
                         console.error(err.error.status, err.error.error);
@@ -132,6 +133,10 @@ export class LoginComponent implements OnInit {
     
     githubLogin() {
         console.log("redirect ...");
+        this.storage.data = JSON.stringify({
+            'url': this.urlRedirect,
+            'sess_id': this.session_id
+        });
         this.document.location.href = "https://github.com/login/oauth/authorize?client_id=1a6064af05f1ade02e7b&redirect_uri=http://localhost:3000/api/v1/github"; //http://localhost:3000/login/github";
         /* this.http.get("https://github.com/login/oauth/authorize", { params: {}})     &scope=user%20email"
         .subscribe(
@@ -142,5 +147,6 @@ export class LoginComponent implements OnInit {
                 console.log(err);
             }
          ); */
+        
     }
 }

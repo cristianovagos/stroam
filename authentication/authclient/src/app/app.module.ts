@@ -11,6 +11,8 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { ManagerComponent } from './manager/manager.component';
+import { GithubComponent } from './github/github.component';
+import { GauthComponent } from './gauth/gauth.component';
 import { StorageData } from './models/storage.model';
 
 @NgModule({
@@ -19,7 +21,9 @@ import { StorageData } from './models/storage.model';
     LoginComponent,
     RegisterComponent,
     WelcomeComponent,
-    ManagerComponent
+    ManagerComponent,
+    GithubComponent,
+    GauthComponent
   ],
   imports: [
     BrowserModule,

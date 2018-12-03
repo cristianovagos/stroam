@@ -1,0 +1,53 @@
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div style="text-align:center">
+                <font size="30">  Chave: {{ this.key }}</font>
+            </div>
+        </div>
+    </div>
+
+    <br/> <br/>
+
+    <div class="row">
+        <div class="col">
+            <div style="text-align:center">
+                <h1>  Verificar Código do Autenticador</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col">
+            <div style="text-align:center">
+                <input type="text" size="10" name="gauthcode" [(ngModel)]="gauthcode.code" #code="ngModel" required id="gauthcode" tabindex="2" class="form-control" placeholder="Código">
+                <br/>
+                <button  type="submit" class="btn btn-register" (click)="verifycode()">Verificar</button>
+            </div>
+        </div>
+        <div class="col"></div>
+        <div class="col"></div>
+    </div>
+    
+    <br />
+
+    <div class="row">
+        <div *ngIf="this.send && this.success" class="row">
+            <div class="col">
+                <div style="text-align:center">
+                    <h2 style="color:green;">Código Correcto</h2>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="this.send && !this.success" class="row">
+            <div class="col">
+                <div style="text-align:center">
+                    <h2 style="color:red;">Código Incorrecto</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -18,8 +18,11 @@ public class User {
     @JsonIgnore
     private String password;
     private String token;
+    @JsonIgnore
     private boolean accActive;
+    @JsonIgnore
     private String gauthKey2fa;
+    @JsonIgnore
     private boolean gauth2faActive;
 
     public User() {
@@ -100,5 +103,13 @@ public class User {
     public String getGauthKey2fa() {
         return gauthKey2fa;
     }
+
+    public boolean isGauth2faActive() {
+        return gauth2faActive;
+    }
     
+    @JsonIgnore
+    public String getGauthKey2faJSON() {
+        return "{\"key\":\""+ this.gauthKey2fa +"\"}";
+    }
 }

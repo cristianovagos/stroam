@@ -19,6 +19,14 @@ import es.stroam.authserver.model.User;
 import es.stroam.authserver.reposiroties.UserRepo;
 import es.stroam.authserver.service.HttpService;
 import es.stroam.authserver.social.github.GithubLogin;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
@@ -70,10 +78,22 @@ public class LoginController {
         User user = gitLogin.getUser();
         user = userRepository.save(user);
 
-        //service.sendPost("", user.getBody() );
-        //System.out.println(user.getBody());
-        return new ResponseEntity<>(user , HttpStatus.OK);
+        try {
+            //service.sendPost("", user.getBody() );
+            //System.out.println(user.getBody());
+            //return new ModelAndView("forward:/www.google.com");
+            String url = "http://localhost:4200/github?id="+user.getId()+"&name="+user.getName()+"&token="+user.getToken().split(" ")[1];
+            System.out.println(url);
+            URI authClient = new URI(url);
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setLocation(authClient);
+            
+            return new ResponseEntity<>(user, httpHeaders, HttpStatus.SEE_OTHER);
 
+        } catch (URISyntaxException ex) {
+            java.util.logging.Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new ResponseEntity<>( HttpStatus.INTERNAL_SERVER_ERROR);
         // create session
         //UserSession uSession = new UserSession(user, token);
 	}

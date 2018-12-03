@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { StorageData } from '../models/storage.model';
 
 @Component({
   selector: 'register',
@@ -16,6 +17,7 @@ export class RegisterComponent implements OnInit {
         @Inject(DOCUMENT) private document: any,
         public router: Router,
         private http: HttpClient,
+        private storage: StorageData
     ) { 
     }
 
@@ -31,20 +33,18 @@ export class RegisterComponent implements OnInit {
     }
 
     register() {
-        console.log("register");
-        console.log(this.model)
-
         let url = 'http://localhost:3000/api/user';
 
-        this.http.post(url, {
+        this.http.post<any>(url, {
             name: this.model.username,
-            password: this.model.email,
-            email: this.model.password,
+            password: this.model.password,
+            email: this.model.email,
         }).subscribe( 
             resp => {
                 console.log(resp);
                 //this.router.navigate(['/success']);
-                this.document.location.href = "http://google.com";
+                this.storage.data = resp;
+                this.router.navigate(["/manager"]);
             },
             err => {
                 console.log(err.error.status, err.error.error);
