@@ -11,7 +11,7 @@ from apispec.ext.flask import FlaskPlugin
 import database as db
 import secrets, json
 
-app = Flask(__name__, static_folder = '/pay')
+app = Flask(__name__)
 app.config.from_pyfile('config.py')
 
 # Create an APISpec
@@ -1208,7 +1208,7 @@ with open('static/swagger.json', 'w') as f:
     json.dump(spec.to_dict(), f)
 ###
 
-# Solution to add prefix - 
+# Solution to add prefix -
 # Credits: https://stackoverflow.com/a/36033627/9883550
 class PrefixMiddleware(object):
 

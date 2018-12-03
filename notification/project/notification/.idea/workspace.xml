@@ -117,11 +117,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/main/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="387">
-              <caret line="43" selection-start-line="43" selection-end-line="43" />
+            <state relative-caret-position="773">
+              <caret line="54" column="41" selection-start-line="54" selection-start-column="41" selection-end-line="54" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -129,11 +129,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="582">
-              <caret line="39" column="44" selection-start-line="39" selection-start-column="44" selection-end-line="39" selection-end-column="44" />
+            <state relative-caret-position="780">
+              <caret line="52" column="10" lean-forward="true" selection-start-line="52" selection-start-column="10" selection-end-line="52" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -216,7 +216,6 @@
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/Constants.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/es1819/stroam/notification/client/Client.java" />
         <option value="$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/communication/CommunicationCallback.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/main/Main.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/Message.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/server/core/message/RequestMessage.java" />
@@ -245,6 +244,7 @@
         <option value="$PROJECT_DIR$/commons/src/main/java/es1819/stroam/notification/commons/Constants.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/es1819/stroam/notification/client/NotTheServiceClient.java" />
         <option value="$PROJECT_DIR$/client/pom.xml" />
+        <option value="$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/main/Main.java" />
       </list>
     </option>
   </component>
@@ -1076,7 +1076,7 @@
       <workItem from="1543274087377" duration="739000" />
       <workItem from="1543276572726" duration="118000" />
       <workItem from="1543276758618" duration="77000" />
-      <workItem from="1543691949634" duration="39000" />
+      <workItem from="1543691949634" duration="1156000" />
     </task>
     <servers />
   </component>
@@ -1113,7 +1113,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="113949000" />
+    <option name="totallyTimeSpent" value="115066000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1011" extended-state="0" />
@@ -1656,20 +1656,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/main/Main.java">
+    <entry file="file://$PROJECT_DIR$/client/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="387">
-          <caret line="43" selection-start-line="43" selection-end-line="43" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="780">
+          <caret line="52" column="10" lean-forward="true" selection-start-line="52" selection-start-column="10" selection-end-line="52" selection-end-column="10" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/pom.xml">
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/es1819/stroam/notification/main/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="582">
-          <caret line="39" column="44" selection-start-line="39" selection-start-column="44" selection-end-line="39" selection-end-column="44" />
+        <state relative-caret-position="773">
+          <caret line="54" column="41" selection-start-line="54" selection-start-column="41" selection-end-line="54" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
