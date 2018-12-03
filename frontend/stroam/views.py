@@ -542,8 +542,8 @@ def myMovies(request):
 def pay(request, checkout_token):
     return redirect(payment.PAYMENT_SERVICE_URL + "/pay?checkout_token=" + checkout_token)
 
-def makeauth(request, url):
-    redirUrl = request.build_absolute_uri(reverse(url)).encode("utf-8")
+def makeauth(request):
+    redirUrl = request.build_absolute_uri(reverse('homepage')).encode("utf-8")
     urlEncoded = base64.b64encode(redirUrl)
     return redirect(auth.AUTH_SERVICE_URL + '?url=' + str(urlEncoded).replace('b\'', '').replace('\'', '') +
                     '&id=es-stroam-frontend&sess_id=' + request.session.session_key)
