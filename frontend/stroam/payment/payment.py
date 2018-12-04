@@ -13,7 +13,9 @@ PAYMENT_SERVICE_URL = "http://engserv-3-aulas.ws.atnog.av.it.pt/pay" if settings
 PAYMENT_SERVICE_API_URL = "http://payment:5000/api/" if settings.USE_DOCKER else "http://localhost:5000/api/"
 
 def createCheckout(user_id, price, returnURL, cancelURL, items, currency="EUR", merchant="tokensample123"):
-    if not user_id: return Http404("Bad Request:\n\n" + "User id not valid")
+    # TODO auth
+    # if not user_id: return Http404("Bad Request:\n\n" + "User id not valid")
+    user_id = 1
 
     jsonItems = []
     for item in items:

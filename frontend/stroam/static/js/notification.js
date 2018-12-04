@@ -59,7 +59,8 @@ function sendPush_buttonClick() {
     notificationClient.sendPush("/stroam-general",
         JSON.stringify(
             {
-                "ola": true,
+                "title": "Notificação teste",
+                "message": "Olá! Esta notificação é um teste!\nParece que está tudo OK ;)",
             }
         )
     );

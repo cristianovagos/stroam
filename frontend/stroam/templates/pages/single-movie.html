@@ -12,17 +12,26 @@
                     {% endif %}
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">{{ movie.title }}</li>
-                {% if isAuthenticated %}
+{#            TODO auth #}
+{#                {% if isAuthenticated %}#}
                     {% if subscribed %}
-                        <li class="btn btn-sm btn-secondary ml-auto fas fa-bell" onclick="subscribeToChannel(this, {{ user_id }}, 'stroam-movie{{ movie.id }}')">
+{#                        TODO auth #}
+{#                        <li class="btn btn-sm btn-secondary ml-auto fas fa-bell" onclick="subscribeToChannel(this, {{ user_id }}, 'stroam-movie{{ movie.id }}')">#}
+{#                            Unsubscribe#}
+{#                        </li>#}
+                        <li class="btn btn-sm btn-secondary ml-auto fas fa-bell" onclick="subscribeToChannel(this, 1, 'stroam-movie{{ movie.id }}')">
                             Unsubscribe
                         </li>
                     {% else %}
-                        <li class="btn btn-sm btn-danger ml-auto fas fa-bell" onclick="subscribeToChannel(this, {{ user_id }}, 'stroam-movie{{ movie.id }}')">
+{#                        TODO auth #}
+{#                        <li class="btn btn-sm btn-danger ml-auto fas fa-bell" onclick="subscribeToChannel(this, {{ user_id }}, 'stroam-movie{{ movie.id }}')">#}
+{#                            Subscribe#}
+{#                        </li>#}
+                        <li class="btn btn-sm btn-danger ml-auto fas fa-bell" onclick="subscribeToChannel(this, 1, 'stroam-movie{{ movie.id }}')">
                             Subscribe
                         </li>
                     {% endif %}
-                {% endif %}
+{#                {% endif %}#}
             </ol>
         </nav>
         <div class="container" style="margin-top: -16px; background: white">
