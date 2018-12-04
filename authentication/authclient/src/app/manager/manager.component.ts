@@ -59,6 +59,10 @@ export class ManagerComponent implements OnInit {
         );
     }
 
+    updateuser(): void {
+
+    }
+
     active2fa(): void {
 
         let url = "http://localhost:3000/api/v1/gauth2fa/active/"+ this.model.username

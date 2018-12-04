@@ -38,9 +38,9 @@
                                 </div>
                                 <br />
 
-                                <div [ngClass]="{ 'has-error': f.submitted && !confirm-password.valid }">
-                                    <input type="password" name="confirm-password" [(ngModel)]="model.confirmpassword" #confirmpassword="ngModel"  id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password">
-                                    <div class="alert alert-danger" *ngIf="f.submitted && !confirm-password.valid">Password must match</div>
+                                <div [ngClass]="{ 'has-error': f.submitted && !confirmpassword.valid }">
+                                    <input type="password" name="confirmpassword" [(ngModel)]="model.confirmpassword" #confirmpassword="ngModel"  id="confirmpassword" tabindex="2" class="form-control" placeholder="Confirm Password">
+                                    <div class="alert alert-danger" *ngIf="f.submitted && !confirmpassword.valid">Password must match</div>
                                 </div>
                                 <br />
 

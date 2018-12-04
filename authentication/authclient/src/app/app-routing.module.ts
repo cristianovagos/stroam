@@ -8,7 +8,7 @@ import { GithubComponent } from './github/github.component';
 import { GauthComponent } from './gauth/gauth.component';
 
 const routes: Routes = [
-  //{ path: '', component: LoginComponent },
+  { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'manager', component: ManagerComponent},
