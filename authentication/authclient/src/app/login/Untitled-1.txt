@@ -8,3 +8,6 @@ Login com Google Auth
 
 Gestão da conta
 http://localhost:4200/manager
+
+
+https://www.js-tutorials.com/javascript-tutorial/use-localstorage-sessionstorage-using-webstorage-angular4/

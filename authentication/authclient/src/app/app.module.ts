@@ -14,6 +14,7 @@ import { ManagerComponent } from './manager/manager.component';
 import { GithubComponent } from './github/github.component';
 import { GauthComponent } from './gauth/gauth.component';
 import { StorageData } from './models/storage.model';
+import { StorageServiceModule} from 'angular-webstorage-service';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { StorageData } from './models/storage.model';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    StorageServiceModule
   ],
   providers: [StorageData],
   bootstrap: [AppComponent]

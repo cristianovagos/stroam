@@ -5,6 +5,7 @@ import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { StorageData } from '../models/storage.model';
+import { LOCAL_STORAGE, WebStorageService } from 'angular-webstorage-service';
 
 @Component({
     selector: 'login',
@@ -21,12 +22,15 @@ export class LoginComponent implements OnInit {
     client_id: string;
     session_id: string;
 
+    public data: any=[];
+
     constructor(
         @Inject(DOCUMENT) private document: any,
         public router: Router,
         private activatedRoute: ActivatedRoute,
         private http: HttpClient,
-        private storage: StorageData
+        private storage: StorageData,
+        @Inject(LOCAL_STORAGE) private session: WebStorageService
     ) { 
         this.failLogin = false;
     }
@@ -137,6 +141,8 @@ export class LoginComponent implements OnInit {
             'url': this.urlRedirect,
             'sess_id': this.session_id
         });
+        this.saveInLocal("url", this.urlRedirect);
+        this.saveInLocal("sess_id", this.session_id);
         this.document.location.href = "https://github.com/login/oauth/authorize?client_id=1a6064af05f1ade02e7b&redirect_uri=http://localhost:3000/api/v1/github"; //http://localhost:3000/login/github";
         /* this.http.get("https://github.com/login/oauth/authorize", { params: {}})     &scope=user%20email"
         .subscribe(
@@ -148,5 +154,11 @@ export class LoginComponent implements OnInit {
             }
          ); */
         
+    }
+
+    saveInLocal(key, val): void {
+        console.log('recieved= key: ' + key + ' value: ' + val);
+        this.session.set(key, val);
+        this.data[key] = this.session.get(key);
     }
 }
