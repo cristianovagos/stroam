@@ -2,6 +2,8 @@ package es1819.stroam.catalog.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es1819.stroam.catalog.model.notifications.Email;
+import es1819.stroam.catalog.model.retrofit.authemail.AuthEmailInfo;
+import es1819.stroam.catalog.model.retrofit.authemail.AuthEmailService;
 import es1819.stroam.catalog.model.retrofit.frontend.FrontendChannelInfo;
 import es1819.stroam.catalog.model.retrofit.frontend.FrontendService;
 import es1819.stroam.notification.client.NotTheServiceClient;
@@ -28,6 +30,9 @@ public class NotificationService implements NotTheServiceClientCallback {
     private FrontendService frontendService;
 
     @Autowired
+    private AuthEmailService authEmailService;
+
+    @Autowired
     private ObjectMapper mapper;
 
     private NotTheServiceClient client;
@@ -46,10 +51,9 @@ public class NotificationService implements NotTheServiceClientCallback {
         client.disconnect();
     }
 
-    // TODO
-//    public boolean isConnected() {
-//        return client.isConnected();
-//    }
+    public boolean isConnected() {
+        return client.isConnected();
+    }
 
     public void subscribe(String topic) throws Exception {
         client.subscribe("/" + topic);
@@ -69,16 +73,20 @@ public class NotificationService implements NotTheServiceClientCallback {
 
     public void sendEmail(String channelName, Email email) {
         try {
-//            if(!client.isConnected()) client.connect();
+            if(!client.isConnected()) client.connect();
             Response<FrontendChannelInfo> response = frontendService.getUserSubscriptions(channelName).execute();
             if (response.isSuccessful()) {
                 FrontendChannelInfo info = response.body();
-
                 for (int userID : info.getUsers()) {
-                    // TODO - get emails from Auth and send them
-                    client.sendEmail("user_email_from_auth@stroam.com", email.getSubject(), email.getBody());
+                    Response<AuthEmailInfo> emailResponse = authEmailService.getEmailByUserID(userID).execute();
+                    if(emailResponse.isSuccessful()) {
+                        AuthEmailInfo emailInfo = emailResponse.body();
+                        client.sendEmail(emailInfo.getEmail(), email.getSubject(), email.getBody());
+                    }
+                    else {
+                        log.error("Auth response of email not successful: " + emailResponse.errorBody().toString());
+                    }
                 }
-
             } else {
                 log.error("Response not successful: " + response.errorBody().string());
             }

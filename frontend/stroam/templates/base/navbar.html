@@ -32,10 +32,9 @@
                 </li>
             {% endif %}
             <li class="nav-item">
-{#                TODO auth #}
-{#                {% if isAuthenticated %}#}
+                {% if isAuthenticated %}
                     <div class="dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Welcome, {{ user }}
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Welcome, {{ username }}
                             <b class="caret"></b>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -46,9 +45,9 @@
                             <a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-power-off"></i>&nbsp; Logout</a>
                         </div>
                     </div>
-{#                {% else %}#}
-{#                    <a class="nav-link" href="{% url 'makeauth' %}">Register/Sign in</a>#}
-{#                {% endif %}#}
+                {% else %}
+                    <a class="nav-link" href="{% url 'makeauth' %}">Register/Sign in</a>
+                {% endif %}
             </li>
         </ul>
     </div>

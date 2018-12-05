@@ -70,7 +70,8 @@ export class GithubComponent implements OnInit {
                         this.document.location.href = this.url;
                     },
                     err => {
-                        console.error(err);
+                        // console.error(err);
+                        this.document.location.href = this.url;
                     }
                 );
             }

@@ -24,7 +24,7 @@ public class NotificationController {
     public ResponseEntity<Object> sendPushNotification(@RequestBody Notification notification) {
         try {
             service.connect();
-            service.sendPushNotification("/" + notification.getTopic(), notification.getMessage());
+            service.sendPushNotification(notification.getTopic(), notification.getMessage());
             service.disconnect();
         } catch (Exception e) {
             log.error("Exception on connecting to Notification Server: " + e.getMessage());

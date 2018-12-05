@@ -39,9 +39,9 @@ function sendEmail_buttonClick() {
     console.log("email sended with request id: " +
     notificationClient.sendEmail(
         undefined, //or you can put you request id here (STRING por exemplo), se o requestID for undefined é devolvido um requestID
-        document.getElementById('emailAddress').value,
-        document.getElementById('emailSubject').value,
-        document.getElementById('emailBody').value));
+        "test@stroam.com",
+        "You received an email from STROAM!",
+        "Hi! This is a awesome message!"));
 }
 
 function sendPhone_buttonClick() {

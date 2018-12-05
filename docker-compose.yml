@@ -1,18 +1,18 @@
 version: '3'
 
 services:
-  nginx:
-    container_name: nginx
-    restart: always
-    build:
-      context: .
-      dockerfile: ./Dockerfile-nginx
-    volumes:
-      - static:/static
-    ports:
-      - "80:80"
-    depends_on:
-      - frontend
+  # nginx:
+  #   container_name: nginx
+  #   restart: always
+  #   build:
+  #     context: .
+  #     dockerfile: ./Dockerfile-nginx
+  #   volumes:
+  #     - static:/static
+  #   ports:
+  #     - "80:80"
+  #   depends_on:
+  #     - frontend
 
   frontend-db:
     container_name: frontend-db
@@ -30,32 +30,33 @@ services:
     ports:
       - "6379:6379"
   
-  frontend:
-    container_name: frontend
-    restart: always
-    build: ./frontend
-    command: bash -c "python manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
-    environment:
-      USE_DOCKER: 'yes'
-      NOTIFICATION_SERVER_HOST: '127.0.0.1'
-    volumes:
-      - ./frontend:/code
-      - static:/static
-    ports:
-      - "8000:8000"
-    depends_on:
-      - frontend-db
-      - frontend-redis
-    links:
-      - catalog
+  # frontend:
+  #   container_name: frontend
+  #   restart: always
+  #   build: ./frontend
+  #   command: bash -c "python manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
+  #   environment:
+  #     USE_DOCKER: 'yes'
+  #     NOTIFICATION_SERVER_HOST: '127.0.0.1'
+  #   volumes:
+  #     - ./frontend:/code
+  #     - static:/static
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - frontend-db
+  #     - frontend-redis
+  #   links:
+  #     - catalog
   
   catalog:
     container_name: catalog
     restart: always
     build: ./catalog
     environment:
-      NOTIFICATION_SERVER_HOST: '127.0.0.1'
+      NOTIFICATION_SERVER_HOST: mosquitto
       FRONTEND_HOST: frontend
+      AUTH_HOST: authserver
     volumes:
       - ./catalog:/app
     ports:
@@ -89,14 +90,14 @@ services:
     ports:
       - "5000:5000"
 
-  cdn:
-    container_name: cdn
-    restart: always
-    build: ./cdn
-    volumes:
-      - ./cdn/webrtc:/app
-    ports:
-      - "1935:1935"
+  # cdn:
+  #   container_name: cdn
+  #   restart: always
+  #   build: ./cdn
+  #   volumes:
+  #     - ./cdn/webrtc:/app
+  #   ports:
+  #     - "1935:1935"
 
   #notification - notTheService services
   mosquitto:

@@ -29,51 +29,47 @@ def home(request):
     if movies:
         shuffle(movies)
 
-    # TODO auth
-    # if request.method == 'POST':
-    #     body_decoded = request.body.decode('utf-8')
-    #     body = json.loads(body_decoded)
-    #     auth_code = body['code']
-    #     session_id = body['session_id']
-    #     if auth_code:
-    #         req = requests.post(auth.AUTH_SERVICE_API_URL + 'v1/oauth/login/access_token', json={
-    #             "client_id": "es-stroam-frontend",
-    #             "client_secret": "super_secret001",
-    #             "code": auth_code
-    #         })
-    #         json_res = json.loads(req.text)
-    #
-    #         sess = SessionStore(session_key=session_id)
-    #         sess['isAuthenticated'] = True
-    #         sess['user_id'] = int(json_res['id'])
-    #         sess['user_name'] = str(json_res['name'])
-    #         sess['user_token'] = str(json_res['token'])
-    #         sess.save()
+    if request.method == 'POST':
+        body_decoded = request.body.decode('utf-8')
+        body = json.loads(body_decoded)
 
-    # if request.session.get('user_id', False):
-        # subscribed_channels = [ch['channel_name'] for ch in
-        #                       Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
-        #                           'channel_name')]
-    # else:
-    #     subscribed_channels = None
+        if body.get('code', False):
+            auth_code = body['code']
+            if auth_code:
+                req = requests.post(auth.AUTH_SERVICE_API_URL + 'v1/oauth/login/access_token', json={
+                    "client_id": "es-stroam-frontend",
+                    "client_secret": "super_secret001",
+                    "code": auth_code
+                })
+                json_res = json.loads(req.text)
 
-    subscribed_channels = [ch['channel_name'] for ch in
-                           Notification_Channels.objects.filter(
-                               notification_subscription__user_id=1).values(
-                               'channel_name')]
+                print(json_res)
+        else:
+            json_res = body
+
+        session_id = body['session_id']
+        sess = SessionStore(session_key=session_id)
+        sess['isAuthenticated'] = True
+        sess['user_id'] = int(json_res['id'])
+        sess['user_name'] = str(json_res['name'])
+        sess['user_token'] = str(json_res['token'])
+        sess.save()
+
+    if request.session.get('user_id', False):
+        subscribed_channels = [ch['channel_name'] for ch in
+                              Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
+                                  'channel_name')]
+    else:
+        subscribed_channels = None
 
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
         'numCart': request.session.get('cartNumber', 0),
         'subscribed_channels': subscribed_channels,
-        # 'isAuthenticated': request.session.get('isAuthenticated', False),
-        # 'username': request.session.get('user_name', None),
-        # 'thisUrl': resolve(request.path_info).url_name,
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None)
     }
-
-    for key, value in request.session.items():
-        print('{} => {}'.format(key, value))
 
     return render(request, 'pages/index.html', tparams)
 
@@ -85,27 +81,20 @@ def homeMovies(request):
     except Exception:
         movies = None
 
-    # TODO auth
-    # if request.session.get('user_id', False):
-    #     subscribed_channels = [ch['channel_name'] for ch in
-    #                           Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
-    #                               'channel_name')]
-    # else:
-    #     subscribed_channels = None
-
-    subscribed_channels = [ch['channel_name'] for ch in
-                           Notification_Channels.objects.filter(
-                               notification_subscription__user_id=1).values(
-                               'channel_name')]
+    if request.session.get('user_id', False):
+        subscribed_channels = [ch['channel_name'] for ch in
+                              Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
+                                  'channel_name')]
+    else:
+        subscribed_channels = None
 
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
         'numCart': request.session.get('cartNumber', 0),
         'subscribed_channels': subscribed_channels,
-        # 'isAuthenticated': request.session.get('isAuthenticated', False),
-        # 'username': request.session.get('user_name', None),
-        # 'thisUrl': resolve(request.path_info).url_name,
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None)
     }
     return render(request, 'pages/index.html', tparams)
 
@@ -117,27 +106,20 @@ def homeSeries(request):
     except Exception:
         movies = None
 
-    # TODO auth
-    # if request.session.get('user_id', False):
-    #     subscribed_channels = [ch['channel_name'] for ch in
-    #                           Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
-    #                               'channel_name')]
-    # else:
-    #     subscribed_channels = None
-
-    subscribed_channels = [ch['channel_name'] for ch in
-                           Notification_Channels.objects.filter(
-                               notification_subscription__user_id=1).values(
-                               'channel_name')]
+    if request.session.get('user_id', False):
+        subscribed_channels = [ch['channel_name'] for ch in
+                              Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
+                                  'channel_name')]
+    else:
+        subscribed_channels = None
 
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
         'numCart': request.session.get('cartNumber', 0),
         'subscribed_channels': subscribed_channels,
-        # 'isAuthenticated': request.session.get('isAuthenticated', False),
-        # 'username': request.session.get('user_name', None),
-        # 'thisUrl': resolve(request.path_info).url_name,
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None)
     }
     return render(request, 'pages/index.html', tparams)
 
@@ -147,27 +129,20 @@ def genreList(request):
     if genres:
         shuffle(genres)
 
-    # TODO auth
-    # if request.session.get('user_id', False):
-    #     subscribed_channels = [ch['channel_name'] for ch in
-    #                           Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
-    #                               'channel_name')]
-    # else:
-    #     subscribed_channels = None
-
-    subscribed_channels = [ch['channel_name'] for ch in
-                           Notification_Channels.objects.filter(
-                               notification_subscription__user_id=1).values(
-                               'channel_name')]
+    if request.session.get('user_id', False):
+        subscribed_channels = [ch['channel_name'] for ch in
+                              Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
+                                  'channel_name')]
+    else:
+        subscribed_channels = None
 
     tparams = {
         'title': MAIN_TITLE + title,
         'genres': genres,
         'numCart': request.session.get('cartNumber', 0),
         'subscribed_channels': subscribed_channels,
-        # 'isAuthenticated': request.session.get('isAuthenticated', False),
-        # 'username': request.session.get('user_name', None),
-        # 'thisUrl': resolve(request.path_info).url_name,
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None)
     }
     return render(request, 'pages/genre-list.html', tparams)
 
@@ -181,18 +156,12 @@ def genreMovies(request, genre):
         if movies:
             shuffle(movies)
 
-    # TODO auth
-    # if request.session.get('user_id', False):
-    #     subscribed_channels = [ch['channel_name'] for ch in
-    #                           Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
-    #                               'channel_name')]
-    # else:
-    #     subscribed_channels = None
-
-    subscribed_channels = [ch['channel_name'] for ch in
-                           Notification_Channels.objects.filter(
-                               notification_subscription__user_id=1).values(
-                               'channel_name')]
+    if request.session.get('user_id', False):
+        subscribed_channels = [ch['channel_name'] for ch in
+                              Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
+                                  'channel_name')]
+    else:
+        subscribed_channels = None
 
     tparams = {
         'title': MAIN_TITLE + title,
@@ -201,10 +170,9 @@ def genreMovies(request, genre):
         'numCart': request.session.get('cartNumber', 0),
         'subscribed': notifications.is_user_subscribed(user_id=1, channel_name=('stroam-' + genreName)),
         'subscribed_channels': subscribed_channels,
-        # 'isAuthenticated': request.session.get('isAuthenticated', False),
-        # 'username': request.session.get('user_name', None),
-        # 'user_id': request.session.get('user_id', None),
-        # 'thisUrl': resolve(request.path_info).url_name,
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None),
+        'user_id': request.session.get('user_id', None)
     }
     return render(request, 'pages/genre.html', tparams)
 
@@ -215,37 +183,24 @@ def singleMovie(request, id):
     movieTitle = movie.title
     seasonsPurchased = []
 
-    # if request.session.get('user_id', False):
-    #     p = Purchase_Production.objects.filter(purchase_id__user_id=request.session['user_id'], purchase_id__purchase_production__production_id=id,
-    #                                            purchase_id__payment_status=Purchase.PAYMENT_COMPLETED)
-    #     moviePurchased = p.count() > 0
-    #
-    #     subscribed_channels = [ch['channel_name'] for ch in
-    #                            Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
-    #                                'channel_name')]
-    #
-    #     subscribed = notifications.is_user_subscribed(user_id=request.session['user_id'], channel_name=('stroam-movie' + str(id)))
-    #
-    #     if movie is not None:
-    #         if movie.type == 'series' and moviePurchased:
-    #             seasonsPurchased = list(p.all().values_list('season_num', flat=True).distinct())
-    # else:
-    #     moviePurchased = False
-    #     subscribed_channels = None
-    #     subscribed = False
+    if request.session.get('user_id', False):
+        p = Purchase_Production.objects.filter(purchase_id__user_id=request.session['user_id'], purchase_id__purchase_production__production_id=id,
+                                               purchase_id__payment_status=Purchase.PAYMENT_COMPLETED)
+        moviePurchased = p.count() > 0
 
-    p = Purchase_Production.objects.filter(purchase_id__user_id=1,
-                                           purchase_id__purchase_production__production_id=id,
-                                           purchase_id__payment_status=Purchase.PAYMENT_COMPLETED)
-    moviePurchased = p.count() > 0
+        subscribed_channels = [ch['channel_name'] for ch in
+                               Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
+                                   'channel_name')]
 
-    subscribed_channels = [ch['channel_name'] for ch in
-                           Notification_Channels.objects.filter(
-                               notification_subscription__user_id=1).values(
-                               'channel_name')]
+        subscribed = notifications.is_user_subscribed(user_id=request.session['user_id'], channel_name=('stroam-movie' + str(id)))
 
-    subscribed = notifications.is_user_subscribed(user_id=1,
-                                                  channel_name=('stroam-movie' + str(id)))
+        if movie is not None:
+            if movie.type == 'series' and moviePurchased:
+                seasonsPurchased = list(p.all().values_list('season_num', flat=True).distinct())
+    else:
+        moviePurchased = False
+        subscribed_channels = None
+        subscribed = False
 
     if movie is not None:
         if movie.type == 'series' and moviePurchased:
@@ -284,10 +239,9 @@ def singleMovie(request, id):
             'seasonsPurchased': seasonsPurchased,
             'subscribed': subscribed,
             'subscribed_channels': subscribed_channels,
-            # 'isAuthenticated': request.session.get('isAuthenticated', False),
-            # 'user_id': request.session.get('user_id', None),
-            # 'username': request.session.get('user_name', None),
-            # 'thisUrl': resolve(request.path_info).url_name,
+            'isAuthenticated': request.session.get('isAuthenticated', False),
+            'user_id': request.session.get('user_id', None),
+            'username': request.session.get('user_name', None)
         }
         return render(request, 'pages/single-movie.html', tparams)
 
@@ -300,10 +254,9 @@ def singleMovie(request, id):
         'seasonsPurchased': seasonsPurchased,
         'subscribed': subscribed,
         'subscribed_channels': subscribed_channels,
-        # 'isAuthenticated': request.session.get('isAuthenticated', False),
-        # 'user_id': request.session.get('user_id', None),
-        # 'username': request.session.get('user_name', None),
-        # 'thisUrl': resolve(request.path_info).url_name,
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'user_id': request.session.get('user_id', None),
+        'username': request.session.get('user_name', None)
     }
     return render(request, 'pages/single-movie.html', tparams)
 
@@ -347,17 +300,12 @@ def shoppingCart(request):
             else:
                 deleteProductListFromSession(request)
 
-    # if request.session.get('user_id', False):
-    #     subscribed_channels = [ch['channel_name'] for ch in
-    #                           Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
-    #                               'channel_name')]
-    # else:
-    #     subscribed_channels = None
-
-    subscribed_channels = [ch['channel_name'] for ch in
-                           Notification_Channels.objects.filter(
-                               notification_subscription__user_id=1).values(
-                               'channel_name')]
+    if request.session.get('user_id', False):
+        subscribed_channels = [ch['channel_name'] for ch in
+                              Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
+                                  'channel_name')]
+    else:
+        subscribed_channels = None
 
     tparams = {
         'title': MAIN_TITLE + title,
@@ -365,9 +313,8 @@ def shoppingCart(request):
         'totalPrice': price,
         'numCart': request.session.get('cartNumber', 0),
         'subscribed_channels': subscribed_channels,
-        # 'isAuthenticated': request.session.get('isAuthenticated', False),
-        # 'username': request.session.get('user_name', None),
-        # 'thisUrl': resolve(request.path_info).url_name,
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None)
     }
     return render(request, 'pages/shopping-cart.html', tparams)
 
@@ -409,6 +356,17 @@ def checkout(request):
             p = Purchase.objects.all().filter(token_payment=checkoutToken).first()
             if payment.executeCheckout(checkoutToken, buyerID):
                 p.onCompletedPayment()
+                # emailReq = requests.get(auth.AUTH_SERVICE_API_URL + "email/" + request.session['user_id'])
+                # try:
+                #     data = json.loads(emailReq.text)
+                req = requests.post(genre.BASE_CATALOG_URL + "/v1/notification/email", json={
+                    "body": "Olá, este email serve para lhe informar que o seu pagamento foi efetuado com sucesso.",
+                    "subject": "STROAM - Pagamento Efetuado",
+                    "to": "test@stroam.com"
+                })
+                # except Exception:
+                #     print('error sending email on payment completed')
+                #     pass
                 return redirect('paymentCompleted')
             p.onPaymentError()
             return redirect('paymentError')
@@ -427,17 +385,12 @@ def checkout(request):
             LOGGER.error(str(error))
             raise Http404('Bad Request: \n\n' + str(error))
 
-    # if request.session.get('user_id', False):
-    #     subscribed_channels = [ch['channel_name'] for ch in
-    #                           Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
-    #                               'channel_name')]
-    # else:
-    #     subscribed_channels = None
-
-    subscribed_channels = [ch['channel_name'] for ch in
-                           Notification_Channels.objects.filter(
-                               notification_subscription__user_id=1).values(
-                               'channel_name')]
+    if request.session.get('user_id', False):
+        subscribed_channels = [ch['channel_name'] for ch in
+                              Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
+                                  'channel_name')]
+    else:
+        subscribed_channels = None
 
     tparams = {
         'title': MAIN_TITLE + title,
@@ -448,9 +401,8 @@ def checkout(request):
         'totalPrice': totalPrice,
         'cartShowing': False,
         'subscribed_channels': subscribed_channels,
-        # 'isAuthenticated': request.session.get('isAuthenticated', False),
-        # 'username': request.session.get('user_name', None),
-        # 'thisUrl': resolve(request.path_info).url_name,
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None)
     }
     return render(request, 'pages/checkout.html', tparams)
 
@@ -458,24 +410,18 @@ def paymentCompleted(request):
     title = 'Payment Completed'
     deleteProductListFromSession(request)
 
-    # if request.session.get('user_id', False):
-    #     subscribed_channels = [ch['channel_name'] for ch in
-    #                           Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
-    #                               'channel_name')]
-    # else:
-    #     subscribed_channels = None
-
-    subscribed_channels = [ch['channel_name'] for ch in
-                           Notification_Channels.objects.filter(
-                               notification_subscription__user_id=1).values(
-                               'channel_name')]
+    if request.session.get('user_id', False):
+        subscribed_channels = [ch['channel_name'] for ch in
+                              Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
+                                  'channel_name')]
+    else:
+        subscribed_channels = None
 
     tparams = {
         'title': MAIN_TITLE + title,
         'subscribed_channels': subscribed_channels,
-        # 'isAuthenticated': request.session.get('isAuthenticated', False),
-        # 'username': request.session.get('user_name', None),
-        # 'thisUrl': resolve(request.path_info).url_name,
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None)
     }
     return render(request, 'pages/payment-completed.html', tparams)
 
@@ -483,17 +429,12 @@ def paymentError(request):
     title = 'Payment Canceled'
     deleteProductListFromSession(request)
 
-    # if request.session.get('user_id', False):
-    #     subscribed_channels = [ch['channel_name'] for ch in
-    #                           Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
-    #                               'channel_name')]
-    # else:
-    #     subscribed_channels = None
-
-    subscribed_channels = [ch['channel_name'] for ch in
-                           Notification_Channels.objects.filter(
-                               notification_subscription__user_id=1).values(
-                               'channel_name')]
+    if request.session.get('user_id', False):
+        subscribed_channels = [ch['channel_name'] for ch in
+                              Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
+                                  'channel_name')]
+    else:
+        subscribed_channels = None
 
     print("checkoutError")
     print(request.body)
@@ -501,18 +442,17 @@ def paymentError(request):
     tparams = {
         'title': MAIN_TITLE + title,
         'subscribed_channels': subscribed_channels,
-        # 'isAuthenticated': request.session.get('isAuthenticated', False),
-        # 'username': request.session.get('user_name', None),
-        # 'thisUrl': resolve(request.path_info).url_name,
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None)
     }
     return render(request, 'pages/payment-error.html', tparams)
 
 def userPanel(request):
     title = 'User Panel'
 
-    # if not request.session.get('isAuthenticated', False):
-    # #     TODO - create user not authenticated page
-    #     return redirect('homepage')
+    if not request.session.get('isAuthenticated', False):
+    #     TODO - create user not authenticated page
+        return redirect('homepage')
 
     if request.method == 'POST':
         if request.POST.get('orderID', False):
@@ -521,14 +461,12 @@ def userPanel(request):
             payment.deleteCheckout(p.token_payment)
             return HttpResponse('')
         else:
-            # if request.session.get('user_id', False):
-            #     notifications.unsubscribe(user_id=request.session['user_id'], channel_name=request.POST['channel_name'])
-            notifications.unsubscribe(user_id=1, channel_name=request.POST['channel_name'])
+            if request.session.get('user_id', False):
+                notifications.unsubscribe(user_id=request.session['user_id'], channel_name=request.POST['channel_name'])
             return redirect('user-panel')
 
     purchaseData = {}
-    # allPurchases = Purchase.objects.filter(user_id=request.session['user_id'])
-    allPurchases = Purchase.objects.filter(user_id=1)
+    allPurchases = Purchase.objects.filter(user_id=request.session['user_id'])
     for purchase in allPurchases:
         productions = Purchase_Production.objects.filter(purchase_id=purchase.id)
         purchaseData[purchase.id] = {}
@@ -549,8 +487,7 @@ def userPanel(request):
 
     subscribed_channels = []
     subscriptionsData = {}
-    # allSubscriptions = Notification_Subscription.objects.filter(user_id=request.session['user_id'])
-    allSubscriptions = Notification_Subscription.objects.filter(user_id=1)
+    allSubscriptions = Notification_Subscription.objects.filter(user_id=request.session['user_id'])
     for subscription in allSubscriptions:
         channels = Notification_Channels.objects.filter(notification_subscription=subscription.pk)
         for ch in channels:
@@ -573,9 +510,8 @@ def userPanel(request):
         'subscriptionsData': subscriptionsData,
         'subscribed_channels': subscribed_channels,
         'numCart': request.session.get('cartNumber', 0),
-        # 'isAuthenticated': request.session.get('isAuthenticated', False),
-        # 'username': request.session.get('user_name', None),
-        # 'thisUrl': resolve(request.path_info).url_name,
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None)
     }
     return render(request, 'pages/user-panel.html', tparams)
 
@@ -583,37 +519,31 @@ def myMovies(request):
     title = 'My Library'
 
     if not request.session.get('isAuthenticated', False):
-    #     TODO - create user not authenticated page
+        # TODO - create user not authenticated page
         return redirect('homepage')
 
     movies = []
-    # purchasedProds = Purchase_Production.objects.filter(purchase_id__user_id=request.session['user_id'], purchase_id__payment_status=Purchase.PAYMENT_COMPLETED)
-    purchasedProds = Purchase_Production.objects.filter(purchase_id__user_id=1, purchase_id__payment_status=Purchase.PAYMENT_COMPLETED)
+    purchasedProds = Purchase_Production.objects.filter(purchase_id__user_id=request.session['user_id'],
+                                                        purchase_id__payment_status=Purchase.PAYMENT_COMPLETED)
     for prod in purchasedProds:
         movies.append(production.getSingleProduction(prod.production_id))
     if movies:
         shuffle(list(set(movies)))
 
-    # if request.session.get('user_id', False):
-    #     subscribed_channels = [ch['channel_name'] for ch in
-    #                           Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
-    #                               'channel_name')]
-    # else:
-    #     subscribed_channels = None
-
-    subscribed_channels = [ch['channel_name'] for ch in
-                           Notification_Channels.objects.filter(
-                               notification_subscription__user_id=1).values(
-                               'channel_name')]
+    if request.session.get('user_id', False):
+        subscribed_channels = [ch['channel_name'] for ch in
+                              Notification_Channels.objects.filter(notification_subscription__user_id=request.session['user_id']).values(
+                                  'channel_name')]
+    else:
+        subscribed_channels = None
 
     tparams = {
         'title': MAIN_TITLE + title,
         'movies': movies,
         'subscribed_channels': subscribed_channels,
         'numCart': request.session.get('cartNumber', 0),
-        # 'isAuthenticated': request.session.get('isAuthenticated', False),
-        # 'username': request.session.get('user_name', None),
-        # 'thisUrl': resolve(request.path_info).url_name,
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None)
     }
     return render(request, 'pages/my-movies.html', tparams)
 
@@ -645,9 +575,8 @@ def pushtest(request):
     title = 'Send a push notification'
     tparams = {
         'title': MAIN_TITLE + title,
-        # 'isAuthenticated': request.session.get('isAuthenticated', False),
-        # 'username': request.session.get('user_name', None),
-        # 'thisUrl': resolve(request.path_info).url_name,
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None)
     }
     return render(request, 'pages/push.html', tparams)
 
@@ -662,8 +591,7 @@ def deleteAll(request):
 
     tparams = {
         'title': MAIN_TITLE + title,
-        # 'isAuthenticated': request.session.get('isAuthenticated', False),
-        # 'username': request.session.get('user_name', None),
-        # 'thisUrl': resolve(request.path_info).url_name,
+        'isAuthenticated': request.session.get('isAuthenticated', False),
+        'username': request.session.get('user_name', None)
     }
     return render(request, 'pages/delete-all.html', tparams)

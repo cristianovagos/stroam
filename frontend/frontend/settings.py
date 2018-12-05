@@ -22,7 +22,7 @@ if USE_DOCKER:
 else:
     print('NOT USING DOCKER')
 
-NOTIFICATION_SERVER_HOST = os.getenv('NOTIFICATION_SERVER_HOST', '127.0.0.1')
+NOTIFICATION_SERVER_HOST = os.getenv('NOTIFICATION_SERVER_HOST', 'localhost')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -83,50 +83,82 @@ TEMPLATES = [
 WSGI_APPLICATION = 'frontend.wsgi.application'
 ASGI_APPLICATION = 'frontend.routing.application'
 
-if USE_DOCKER:
-    CHANNEL_LAYERS = {
-        'default': {
-            'BACKEND': 'channels_redis.core.RedisChannelLayer',
-            'CONFIG': {
-                "hosts": [('frontend-redis', 6379)],
-            },
+# if USE_DOCKER:
+#     CHANNEL_LAYERS = {
+#         'default': {
+#             'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#             'CONFIG': {
+#                 "hosts": [('frontend-redis', 6379)],
+#             },
+#         },
+#     }
+# else:
+#     CHANNEL_LAYERS = {
+#         'default': {
+#             'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#             'CONFIG': {
+#                 "hosts": [('127.0.0.1', 6379)],
+#             },
+#         },
+#     }
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
         },
-    }
-else:
-    CHANNEL_LAYERS = {
-        'default': {
-            'BACKEND': 'channels_redis.core.RedisChannelLayer',
-            'CONFIG': {
-                "hosts": [('127.0.0.1', 6379)],
-            },
-        },
-    }
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-if USE_DOCKER:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'stroamdb',
-            'USER': 'stroamuser',
-            'PASSWORD': 'stroam',
-            'HOST': 'frontend-db',
-            'PORT': '5432',
-        }
+# if USE_DOCKER:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': 'stroamdb',
+#             'USER': 'stroamuser',
+#             'PASSWORD': 'stroam',
+#             'HOST': 'frontend-db',
+#             'PORT': '5432',
+#         }
+#     }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': 'stroamdb',
+#             'USER': 'stroamuser',
+#             'PASSWORD': 'stroam',
+#             'HOST': '127.0.0.1',
+#             'PORT': '5432',
+#         }
+#     }
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'stroamdb',
+        'USER': 'stroamuser',
+        'PASSWORD': 'stroam',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'stroamdb',
-            'USER': 'stroamuser',
-            'PASSWORD': 'stroam',
-            'HOST': '127.0.0.1',
-            'PORT': '5432',
-        }
-    }
+}
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'stroamdb',
+#         'USER': 'stroamuser',
+#         'PASSWORD': 'stroam',
+#         'HOST': 'frontend-db',
+#         'PORT': '5432',
+#     }
+# }
+
 # frontend-db
 # ON LOCAL DEVELOPMENT CHANGE HOST TO '127.0.0.1'
 

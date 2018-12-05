@@ -100,16 +100,15 @@
                                             </a>
                                         </td>
                                         <td>
-{#                                            TODO auth #}
-{#                                            {% if isAuthenticated %}#}
+                                            {% if isAuthenticated %}
                                                 <a class="btn btn-success" href="{% url 'checkoutCreate' %}">
                                                     <span class="fas fa-check"></span> Checkout
                                                 </a>
-{#                                            {% else %}#}
-{#                                                <a class="btn btn-success" href="{% url 'makeauth' %}">#}
-{#                                                    <span class="fas fa-check"></span> Checkout#}
-{#                                                </a>#}
-{#                                            {% endif %}#}
+                                            {% else %}
+                                                <a class="btn btn-success" href="{% url 'makeauth' %}">
+                                                    <span class="fas fa-check"></span> Checkout
+                                                </a>
+                                            {% endif %}
                                         </td>
                                     </tr>
                                 </tbody>

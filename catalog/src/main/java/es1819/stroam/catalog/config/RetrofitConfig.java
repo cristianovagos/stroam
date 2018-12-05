@@ -1,5 +1,6 @@
 package es1819.stroam.catalog.config;
 
+import es1819.stroam.catalog.model.retrofit.authemail.AuthEmailService;
 import es1819.stroam.catalog.model.retrofit.frontend.FrontendService;
 import es1819.stroam.catalog.model.retrofit.omdb.OmdbService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,12 @@ public class RetrofitConfig {
 
     @Value("${stroam.frontend.port}")
     private String FRONTEND_PORT;
+
+    @Value("${stroam.auth.host}")
+    private String AUTH_HOST;
+
+    @Value("${stroam.auth.port}")
+    private String AUTH_PORT;
 
     @Bean
     public OmdbService omdbService() {
@@ -51,5 +58,14 @@ public class RetrofitConfig {
                 .baseUrl("http://" + FRONTEND_HOST + ":" + FRONTEND_PORT)
                 .build();
         return retrofit.create(FrontendService.class);
+    }
+
+    @Bean
+    public AuthEmailService authEmailService() {
+        final Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(JacksonConverterFactory.create())
+                .baseUrl("http://" + AUTH_HOST + ":" + AUTH_PORT)
+                .build();
+        return retrofit.create(AuthEmailService.class);
     }
 }
