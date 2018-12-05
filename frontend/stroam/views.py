@@ -2,7 +2,6 @@ import json
 import base64
 import requests
 from random import shuffle
-from django.urls import resolve
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -42,8 +41,6 @@ def home(request):
                     "code": auth_code
                 })
                 json_res = json.loads(req.text)
-
-                print(json_res)
         else:
             json_res = body
 
@@ -383,7 +380,7 @@ def checkout(request):
             billingData = data.get('BILLING_ADDRESS', {})
         else:
             LOGGER.error(str(error))
-            raise Http404('Bad Request: \n\n' + str(error))
+            return redirect('paymentError')
 
     if request.session.get('user_id', False):
         subscribed_channels = [ch['channel_name'] for ch in
