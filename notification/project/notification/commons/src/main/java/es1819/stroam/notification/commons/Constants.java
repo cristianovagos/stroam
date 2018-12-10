@@ -79,6 +79,7 @@ public class Constants {
     public static Properties runtimeProperties = null;
     public static final String PROPERTY_DEBUG_MODE_NAME = "debug.mode";
     public static final String PROPERTY_BROKER_ADDRESS_NAME = "broker.address";
+    public static final String PROPERTY_SERIAL_PORT_NAME = "serial.port.name";
 
     //General constants
     public static final String CONFIGURATION_FILE_IGNORE_LINE_TAG = "#";
@@ -101,4 +102,10 @@ public class Constants {
 
     //Phone message constants
     public static final int PHONE_MESSAGE_MAX_CHARACTERS= 160;
+
+    //Arduino constants
+    public static final int DEVICE_BOOT_DELAY = 5000; //5 seconds
+    public static final int DEVICE_WAIT_RESPONSE_DELAY = 30000;
+    public static final String DEVICE_SMS_SEND_SUCCESS_RESPONSE = "OK";
+    public static final String DEVICE_SMS_SEND_FAIL_RESPONSE = "ERROR";
 }

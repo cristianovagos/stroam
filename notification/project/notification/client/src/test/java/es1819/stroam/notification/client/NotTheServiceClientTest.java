@@ -12,8 +12,8 @@ public class NotTheServiceClientTest implements NotTheServiceClientCallback {
         try {
             notTheServiceClient.connect();
             notTheServiceClient.subscribe("/test");
-            /*System.out.println("email requestId: " +
-                    notTheServiceClient.sendEmail("test@stroam.com", "teste", "test"));*/
+            System.out.println("email requestId: " +
+                    notTheServiceClient.sendEmail("test@stroam.com", "teste", "test"));
             System.out.println("phone requestId: " +
                     notTheServiceClient.sendPhone("123484564", "asdojasdg"));
             notTheServiceClient.sendPush("/test", "ola");
@@ -23,7 +23,7 @@ public class NotTheServiceClientTest implements NotTheServiceClientCallback {
         }
 
         try {
-            Thread.sleep(15000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

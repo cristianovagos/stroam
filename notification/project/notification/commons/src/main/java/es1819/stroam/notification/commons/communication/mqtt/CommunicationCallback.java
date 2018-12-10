@@ -1,4 +1,4 @@
-package es1819.stroam.notification.commons.communication;
+package es1819.stroam.notification.commons.communication.mqtt;
 
 public interface CommunicationCallback {
     void messageArrived(String topic, byte[] messageBytes);

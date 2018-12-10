@@ -1,4 +1,4 @@
-package es1819.stroam.notification.commons.communication;
+package es1819.stroam.notification.commons.communication.mqtt;
 
 import org.eclipse.paho.client.mqttv3.*;
 

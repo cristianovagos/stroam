@@ -1,6 +1,6 @@
 package es1819.stroam.notification.main;
 
-import es1819.stroam.notification.commons.communication.Communication;
+import es1819.stroam.notification.commons.communication.mqtt.Communication;
 import es1819.stroam.notification.commons.Constants;
 import es1819.stroam.notification.server.Server;
 
@@ -9,13 +9,13 @@ import java.io.*;
 public class Main {
 
     static {
-        try {
+        /*try {
             PrintStream errFilePrintStream = new PrintStream(
                     new FileOutputStream("./notTheServiceLog.txt", true));
             System.setErr(errFilePrintStream);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } //TODO: nao usar no desenvolvimento
+        }*/ //TODO: nao usar no desenvolvimento
     }
 
     public static void main(String[] args) {

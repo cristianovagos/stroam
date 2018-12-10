@@ -1,8 +1,8 @@
 package es1819.stroam.notification.client;
 
 import es1819.stroam.notification.commons.Constants;
-import es1819.stroam.notification.commons.communication.Communication;
-import es1819.stroam.notification.commons.communication.CommunicationCallback;
+import es1819.stroam.notification.commons.communication.mqtt.Communication;
+import es1819.stroam.notification.commons.communication.mqtt.CommunicationCallback;
 import es1819.stroam.notification.commons.communication.message.request.EmailRequestMessage;
 import es1819.stroam.notification.commons.communication.message.request.PhoneRequestMessage;
 import es1819.stroam.notification.commons.communication.message.request.RequestMessage;
