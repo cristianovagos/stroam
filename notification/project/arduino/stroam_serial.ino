@@ -45,7 +45,7 @@ void loop() {
     if(character == char(-1))
       continue;
 
-    messageText[++i] = character;
+    messageText[i++] = character;
     //Serial.print(character); //# debug #
   }
   //Serial.println(); //sends "\n" to indicate the end of the string
