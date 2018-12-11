@@ -3,7 +3,7 @@
 var info = {};
 var selected_ba = 0;
 var selected_cc = 0;
-var root = "http://engserv-3-aulas.ws.atnog.av.it.pt/pay/"
+var root = "http://127.0.0.1:5000/pay/"
 
 window.onload = updateData;
 // Selecting the first credit card and billing address

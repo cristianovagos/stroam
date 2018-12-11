@@ -1,6 +1,6 @@
 window.onload = updateData;
 var info = {}
-var root = "http://engserv-3-aulas.ws.atnog.av.it.pt/pay/"
+var root = "http://127.0.0.1:5000/pay/"
 
 function updateData(){
 
