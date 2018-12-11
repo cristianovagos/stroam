@@ -1,10 +1,11 @@
 window.onload = updateData;
 var info = {}
+var root = "http://engserv-3-aulas.ws.atnog.av.it.pt/pay/"
 
 function updateData(){
 
   var Http = new XMLHttpRequest();
-  var url= window.location.href + 'api/v1/user';
+  var url= root + 'api/v1/user';
   Http.open("GET", url);
   Http.send();
   Http.onreadystatechange=(e)=>{
