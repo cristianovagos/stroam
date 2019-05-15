@@ -1,4 +1,5 @@
-![alt text](http://code.ua.pt/projects/es1819-stroam/repository/revisions/master/raw/logo.png)
+# STROAM
+![STROAM](logo.png)
 
 STROAM is a media streaming platform built using Service Oriented Architecture, with multiple services.
 
